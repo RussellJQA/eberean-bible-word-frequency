@@ -7,7 +7,7 @@ import csv
 import json
 import os
 
-from get_bible_metadata import get_book_nums, get_word_frequency, get_bible_books
+from get_files_and_data import get_book_nums, get_word_frequency, get_bible_books
 from create_raw_freq_data import create_raw_freq_data
 from chapter_word_freq_html import get_main_tag, write_html_file
 
