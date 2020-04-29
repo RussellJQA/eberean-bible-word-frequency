@@ -10,6 +10,7 @@ import os
 from get_files_and_data import get_book_nums, get_word_frequency, get_bible_books
 from create_raw_freq_data import create_raw_freq_data
 from chapter_word_freq_html import get_main_tag, write_html_file
+from write_bible_chapter import write_bible_chapter
 
 bible_books = get_bible_books()
 book_lengths = {
@@ -174,14 +175,28 @@ def write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency):
                 )
 
 
+def write_html_file2(book_abbrev, chapter, words_in_chapter, relative_word_frequency):
+
+    # if book_abbrev == "Gen" and chapter == "1":
+    rows = []
+    for item in relative_word_frequency.items():
+        if item[0] != "TOTAL WORDS":
+            num_in_kjv = "{:,}".format(item[1][1])
+            simple_relative_frequency = "{:,}".format(item[1][3])
+            row = [item[0], item[1][0], num_in_kjv, item[1][2], simple_relative_frequency]
+            #   word with 4 freqencies
+            rows.append(row)
+    write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows)
+
+
 def write_csv_and_html(
     words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
 ):
 
     book_abbrev = key[0:3]
-    chapter = key[4:].zfill(3)  # 0-pad for consistent cross-platform sorting
+    chapter = key[4:]
 
-    csv_fn = os.path.join(book_folder, f"{book_abbrev}{chapter}_word_freq.csv")
+    csv_fn = os.path.join(book_folder, f"{book_abbrev}{chapter.zfill(3)}_word_freq.csv")
     write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency)
 
     # In addition to the above .csv file, generate an .html file with sortable tables
@@ -197,8 +212,13 @@ def write_csv_and_html(
     #   6. https://anvil.works/docs/data-tables/data-tables-in-code#searching-querying-a-table
 
     main_tag = get_main_tag(words_in_bible, key, relative_word_frequency)
-    html_fn = os.path.join(book_folder, f"{book_abbrev}{chapter}_word_freq.html")
+    html_fn = os.path.join(
+        book_folder, f"{book_abbrev}{chapter.zfill(3)}_word_freq.html"
+    )
     write_html_file(html_fn, f"{key}: KJV Chapter Word Frequencies", main_tag)
+
+    words_in_chapter = "{:,}".format(relative_word_frequency["TOTAL WORDS"][0])
+    write_html_file2(book_abbrev, chapter, words_in_chapter, relative_word_frequency)
 
 
 def book_index_html(book_abbrev, book_folder):
@@ -235,7 +255,6 @@ def generate_word_freq_files():
     frequency_jsons = os.path.join(os.getcwd(), "frequency_jsons")
     if not os.path.isdir(frequency_jsons):
         os.mkdir(frequency_jsons)
-
 
     previous_book_abbrev = ""
     book_folder = ""

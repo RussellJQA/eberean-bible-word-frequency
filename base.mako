@@ -38,19 +38,13 @@
 </head>
 
 <body>
-    <header role="banner">
-        <%block name="header">
+    <header role="banner"><%block name="header">
         <h1>${title_h1}</h1>
-        </%block>
-    </header>
-
+    </%block></header>
     ${self.body()}
-
-    <footer role="contentinfo">
-        <%block name="footer">
-            <p>Copyright &copy; ${year} by ${author}</p>
-        </%block>
-    </footer>
+    <footer role="contentinfo"><%block name="footer">
+        <p>Copyright &copy; ${year} by ${author}</p>
+    </%block></footer>
 </body>
 
 </html>

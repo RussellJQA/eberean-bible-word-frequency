@@ -5,55 +5,66 @@ import os
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
+from get_files_and_data import get_book_nums, get_verse_counts
+
 template_lookup = TemplateLookup([""])
 raw_template = Template(filename="bible_chapter_template.mako", lookup=template_lookup)
 
-# Data which varies between Bible chapters
-book_abbrev = "Gen"
-chapter = "1"
-words_in_chapter = "797"
-rows = [
-    ["whales", "1", "1", "992.0", "790,663"],
-    ["yielding", "5", "7", "708.6", "564,759"],
-]
+def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
 
-# Data which is the same for each Bible chapter
-description = "eBEREAN: electronic Bible Exploration REsources and ANalysis."
-datestamp = date.today().strftime("%Y-%m-%d")
-year = datestamp[0:4]
-author = "Russell Johnson"
-site = "RussellJ.heliohost.org"
-title_h1 = f"{book_abbrev} {chapter}: KJV Chapter Word Frequencies"
-og_site_name = "RussellJ"
-words_in_bible = "790,663"
+    # print(words_in_chapter, type(words_in_chapter))
 
-base_template_args = {
-    "description": description,
-    "datestamp": datestamp,
-    "author": author,
-    "site": site,
-    "year": year,
-    "og_site_name": og_site_name,
-    "title_h1": title_h1,
-}
+    verse_counts_by_chapter = get_verse_counts()
 
-new_template_args = {
-    "book_abbrev": book_abbrev,
-    "chapters_in_book": 50,
-    "chapter": chapter,
-    "words_in_bible": words_in_bible,
-    "words_in_chapter": words_in_chapter,
-    "rows": rows,
-}
+    datestamp = date.today().strftime("%Y-%m-%d")
 
-filled_in_template_args = {**base_template_args, ** new_template_args}
-# In Python 3.9, PEP 584 will let you add 2 dicts using | or |=
-filled_in_template = raw_template.render(**filled_in_template_args)
+    base_template_args = {
+        "description": "eBEREAN: electronic Bible Exploration REsources and ANalysis.",
+        "datestamp": datestamp,
+        "author": "Russell Johnson",
+        "site": "RussellJ.heliohost.org",
+        "year": datestamp[0:4],
+        "og_site_name": "RussellJ",
+        "title_h1": f"{book_abbrev} {chapter}: KJV Chapter Word Frequencies",
+    }
 
-html_folder = os.path.join(os.getcwd(), "NEW_HTML")
-if not os.path.isdir(html_folder):
-    os.mkdir(html_folder)
+    new_template_args = {
+        "book_abbrev": book_abbrev,
+        "chapters_in_book": verse_counts_by_chapter[f"{book_abbrev} {chapter}"],
+        "chapter": chapter,
+        "words_in_bible": "790,663",
+        "words_in_chapter": words_in_chapter,
+        "rows": rows,
+    }
 
-html_fn = "Gen001_word_freq.html"
-with open(os.path.join(html_folder, html_fn), "w", newline="") as write_file:
-    write_file.write(filled_in_template)
+    # Merge dictionaries
+    filled_in_template_args = {**base_template_args, **new_template_args}
+    # In Python 3.9, PEP 584 will let you merge  2 dicts using | or |=
+    filled_in_template = raw_template.render(**filled_in_template_args)
+
+    book_nums = get_book_nums()
+    book_num = f"{str(book_nums[book_abbrev]).zfill(2)}"
+    html_folder = os.path.join(os.getcwd(), "NEW_HTML", f"{book_num}_{book_abbrev}")
+    if not os.path.isdir(html_folder):
+        os.mkdir(html_folder)
+
+    html_fn = f"{book_abbrev}{chapter.zfill(3)}_word_freq.html"
+    with open(os.path.join(html_folder, html_fn), "w", newline="") as write_file:
+        write_file.write(filled_in_template)
+
+
+def main():
+
+    book_abbrev = "Gen"
+    chapter = "1"
+    words_in_chapter = "797"
+    rows = [
+        ["whales", "1", "1", "992.0", "790,663"],
+        ["yielding", "5", "7", "708.6", "564,759"],
+    ]
+
+    write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows)
+
+
+if __name__ == "__main__":
+    main()

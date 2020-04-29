@@ -75,7 +75,6 @@ main_start = Template(
             </ul>
             (See TBD for further explanation of both types of relative frequency.)
         </p>
-
 """
 )
 
@@ -118,7 +117,9 @@ table_end = """
 
 footer = Template(
     """
-    <footer role="contentinfo"><p>Copyright &copy; ${year} by ${author}</p></footer>
+    <footer role="contentinfo">
+        <p>Copyright &copy; ${year} by ${author}</p>
+    </footer>
 """
 )
 

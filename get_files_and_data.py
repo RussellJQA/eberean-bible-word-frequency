@@ -3,10 +3,12 @@ import os
 import requests
 
 
-def get_binary_file_via_requests(web_folder, binary_file, download_folder, re_download=False):
+def get_binary_file_via_requests(
+    web_folder, binary_file, download_folder, re_download=False
+):
 
     download_file = os.path.join(download_folder, binary_file)
-    if re_download or not os.path.exists(download_file):  
+    if re_download or not os.path.exists(download_file):
         binary_url = web_folder + binary_file
         resp = requests.get(binary_url)
         if resp.status_code == 200:
@@ -32,34 +34,58 @@ def get_json_data(web_folder, json_fn, download_folder):
 
 def get_bible_books():
 
-    web_folder = r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+    web_folder = (
+        r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+    )
     return get_json_data(web_folder, "bible_books.json", "downloads")
-
-
-def get_word_frequency():
-
-    web_folder = r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
-    return get_json_data(web_folder, "word_frequency.json", "downloads")
 
 
 def get_book_nums():
 
-    web_folder = r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+    web_folder = (
+        r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+    )
     return get_json_data(web_folder, "book_numbers.json", "downloads")
+
+
+def get_verse_counts():
+
+    web_folder = (
+        r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+    )
+    return get_json_data(web_folder, "verse_counts_by_chapter.json", "downloads")
+
+
+def get_word_frequency():
+
+    web_folder = (
+        r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+    )
+    return get_json_data(web_folder, "word_frequency.json", "downloads")
 
 
 def main():
 
-    # TODO: Suppress pylint errors properly
-
     bible_books = get_bible_books()
-    print(type(bible_books))  # Use bible_books to avoid pylint error
-
-    word_frequency = get_word_frequency()
-    print(type(word_frequency))  # Use word_frequency to avoid pylint error
+    if len(bible_books) != 66:
+        print(
+            f"The Bible has 66 books, but 'bible_books' has {len(bible_books)} books."
+        )
 
     book_nums = get_book_nums()
-    print(type(book_nums))  # Use book_nums to avoid pylint error
+    if len(book_nums) != 66:
+        print(f"The Bible has 66 books, but 'book_nums' has {len(book_nums)} books.")
+
+    verse_counts_by_chapter = get_verse_counts()
+    if len(verse_counts_by_chapter) != 1189:
+        print(
+            f"The Bible has 1,189 chapters, but 'verse_counts_by_chapter' has {len(verse_counts_by_chapter)} chapters."
+        )
+
+    # TODO: Suppress pylint error properly, instead of by printing type() values.
+    #   Or, do some sort of check, as was done with the other dictionaries above.
+    word_frequency = get_word_frequency()
+    print(type(word_frequency))
 
 
 if __name__ == "__main__":
