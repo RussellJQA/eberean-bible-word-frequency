@@ -57,16 +57,17 @@ def get_zip_data(web_folder, zip_fn, download_folder):
     return zip_downloaded
 
 
-def is_desired_file(archive_member):
+def is_desired_file(filename):
 
     apocryphal_pattern1 = "eng-kjv_04[123456789]_[3A-Z]{3,3}_[0-9]{2,2}_read.txt"
-    match1 = re.search(apocryphal_pattern1, archive_member)
+    match1 = re.search(apocryphal_pattern1, filename)
 
     apocryphal_pattern2 = "eng-kjv_05[0123456789]_[12A-Z]{3,3}_[0-9]{2,2}_read.txt"
-    match2 = re.search(apocryphal_pattern2, archive_member)
+    match2 = re.search(apocryphal_pattern2, filename)
 
-    pgp_pattern = ".+.asc"  # keys.asc (PGP keys) or signature.txt.asc (PGP signed message)
-    match3 = re.search(pgp_pattern, archive_member)
+    # keys.asc (PGP keys) or signature.txt.asc (PGP signed message)
+    pgp_pattern = ".+.asc"
+    match3 = re.search(pgp_pattern, filename)
 
     return not (match1 or match2 or match3)
 
@@ -79,22 +80,16 @@ def unzip_data(download_folder, zip_fn, unzip_subfolder):
 
     with zipfile.ZipFile(os.path.join(download_folder, zip_fn), "r") as zip_ref:
 
-        archive_members_list = zip_ref.namelist()
-        print(
-            f"\nZip file {zip_fn} contains {len(archive_members_list)} archive members."
-        )
+        file_list = zip_ref.namelist()
+        print(f"\nZip file {zip_fn} contains {len(file_list)} archived files.")
 
-        desired_files = filter(is_desired_file, archive_members_list)
-        # count = sum(1 for _ in desired_files)  # count of members in filter
-        desired_files_list = list(desired_files)
-        print(
-            f"Unzipping its {len(desired_files_list)} desired archive members."
-        )
+        desired_files = [file for file in file_list if is_desired_file(file)]
+        print(f"Unzipping the {len(desired_files)} desired files.")
         # 1191 files:
         #   1,189 KJV Bible chapter files
         #   copr.htm                        copyright info (as extracted from above)
         #   eng-kjv_000_000_000_read.txt    a README.txt file
-        zip_ref.extractall(unzip_path, desired_files_list)
+        zip_ref.extractall(unzip_path, desired_files)
 
 
 def main():
