@@ -7,9 +7,9 @@ import csv
 import json
 import os
 
-from get_files_and_data import get_book_nums, get_word_frequency, get_bible_books
-from create_raw_freq_data import create_raw_freq_data
-from chapter_word_freq_html import get_main_tag, write_html_file
+from get_files_and_data import get_book_nums, get_bible_books
+from create_raw_freq_data import create_raw_freq_data, get_word_frequency
+from write_bible_book_index import write_bible_book_index
 from write_bible_chapter import write_bible_chapter
 
 bible_books = get_bible_books()
@@ -175,16 +175,26 @@ def write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency):
                 )
 
 
-def write_html_file2(book_abbrev, chapter, words_in_chapter, relative_word_frequency):
+def write_html_file(book_abbrev, chapter, words_in_chapter, relative_word_frequency):
 
-    # if book_abbrev == "Gen" and chapter == "1":
+    # TODO: Can a dictionary comprehension be used here?
+    #   (May have to first remove the "TOTAL WORDS" entry.)
+
     rows = []
     for item in relative_word_frequency.items():
         if item[0] != "TOTAL WORDS":
-            num_in_kjv = "{:,}".format(item[1][1])
+            num_in_kjv = "{:,}".format(
+                item[1][1]
+            )  # Add thousands separator (e.g., 1234 -> "1,234")
             simple_relative_frequency = "{:,}".format(item[1][3])
-            row = [item[0], item[1][0], num_in_kjv, item[1][2], simple_relative_frequency]
-            #   word with 4 freqencies
+            row = [
+                item[0],
+                item[1][0],
+                num_in_kjv,
+                item[1][2],
+                simple_relative_frequency,
+            ]
+            #  .csv column headings: word, numInChap, numInKjv, weightedRelFreq, simpleRelFreq
             rows.append(row)
     write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows)
 
@@ -211,32 +221,8 @@ def write_csv_and_html(
     #       https://github.com/stefanhoelzl/vue.py/blob/master/examples/grid_component/app.py
     #   6. https://anvil.works/docs/data-tables/data-tables-in-code#searching-querying-a-table
 
-    main_tag = get_main_tag(words_in_bible, key, relative_word_frequency)
-    html_fn = os.path.join(
-        book_folder, f"{book_abbrev}{chapter.zfill(3)}_word_freq.html"
-    )
-    write_html_file(html_fn, f"{key}: KJV Chapter Word Frequencies", main_tag)
-
     words_in_chapter = "{:,}".format(relative_word_frequency["TOTAL WORDS"][0])
-    write_html_file2(book_abbrev, chapter, words_in_chapter, relative_word_frequency)
-
-
-def book_index_html(book_abbrev, book_folder):
-
-    print(f"Generating files for {book_abbrev}")
-
-    main_tag = "    <main id='main_content' role='main' tabindex='-1'>\n"
-
-    for chapter in range(1, book_lengths[book_abbrev] + 1):
-        book_and_chapter = f"{book_abbrev}{str(chapter).zfill(3)}"
-        main_tag += f"        <a href='{book_and_chapter}_word_freq.html'>{book_and_chapter} Word Frequencies</a><br>\n"
-
-    main_tag += "    </main>\n"
-
-    html_fn = os.path.join(book_folder, f"{book_abbrev}_index.html")
-    write_html_file(
-        html_fn, f"{book_abbrev}: KJV Chapter Word Frequencies", main_tag,
-    )
+    write_html_file(book_abbrev, chapter, words_in_chapter, relative_word_frequency)
 
 
 def generate_word_freq_files():
@@ -283,7 +269,7 @@ def generate_word_freq_files():
                 html_folder, book_folder, previous_book_abbrev, book_abbrev
             )
             if book_abbrev != previous_book_abbrev:
-                book_index_html(book_abbrev, book_folder)
+                write_bible_book_index(book_abbrev)
             write_csv_and_html(
                 words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
             )

@@ -85,14 +85,10 @@ def unzip_data(download_folder, zip_fn, unzip_subfolder):
 
         desired_files = [file for file in file_list if is_desired_file(file)]
         print(f"Unzipping the {len(desired_files)} desired files.")
-        # 1191 files:
-        #   1,189 KJV Bible chapter files
-        #   copr.htm                        copyright info (as extracted from above)
-        #   eng-kjv_000_000_000_read.txt    a README.txt file
         zip_ref.extractall(unzip_path, desired_files)
 
 
-def main():
+def get_and_unzip_kjv():
 
     """
     If a new .zip file is downloaded, then un-zip it
@@ -103,6 +99,16 @@ def main():
         r"https://ebible.org/Scriptures/", "eng-kjv_readaloud.zip", "downloads"
     ):
         unzip_data("downloads", "eng-kjv_readaloud.zip", "kjv_chapter_files")
+
+    # Un-zipping un-zips 1191 files:
+    #   1,189 KJV Bible chapter files
+    #   copr.htm                        copyright info (as extracted from above)
+    #   eng-kjv_000_000_000_read.txt    a README.txt file
+
+
+def main():
+
+    get_and_unzip_kjv()
 
 
 if __name__ == "__main__":

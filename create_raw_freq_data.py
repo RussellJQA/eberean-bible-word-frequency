@@ -1,33 +1,9 @@
-"""
-
-King James Version + Apocrypha
-The King James Version or Authorized Version of the Holy Bible, using the standardized text of 1769, with Apocrypha/Deuterocanon
-Public Domain
-Language: English
-Dialect: archaic British
-
-Letters patent issued by King James with no expiration date means that to print this translation in the United Kingdom or import printed copies into the UK,
-you need permission.
-Currently, the Cambridge University Press, the Oxford University Press, and Collins have the exclusive right to print this Bible
-translation in the UK. This royal decree has no effect outside of the UK, where this work is firmly in the Public Domain.
-Please see http://www.cambridge.org/about-us/who-we-are/queens-printers-patent and https://en.wikipedia.org/wiki/King_James_Version#Copyright_status
-for more information.
-This free text of the King James Version of the Holy Bible is brought to you courtesy of the Crosswire Bible Society and eBible.org.
-
-
-2018-08-27
-
-"""
-# Chapter files extracted from https://ebible.org/Scriptures/eng-kjv_readaloud.zip
-# (linked to at https://ebible.org/kjv/)
-
-# Above link and the following copyright information are from:
-#   https://ebible.org/find/show.php?id=eng-kjv
-
 import glob
 import json
 import os.path
 import re
+
+from get_and_unzip_kjv import get_and_unzip_kjv
 
 
 def get_full_ref(chapter_file):
@@ -106,7 +82,6 @@ def calc_word_freq(passage):
 
 def calc_and_write_word_frequency_files(frequency_lists_chapters):
 
-
     word_frequency = {}
     for (_, frequency_list) in frequency_lists_chapters.items():
         for count, words in frequency_list.items():
@@ -130,10 +105,14 @@ def calc_and_write_word_frequency_files(frequency_lists_chapters):
         json.dump(word_frequency_sorted, write_file)
 
     word_frequency_lists = build_frequency_lists(word_frequency)
-    with open(os.path.join(output_folder, "word_frequency_lists.json"), "w") as write_file:
+    with open(
+        os.path.join(output_folder, "word_frequency_lists.json"), "w"
+    ) as write_file:
         json.dump(word_frequency_lists, write_file, indent=4)
 
-    with open(os.path.join(output_folder, "word_frequency_lists_chapters.json"), "w") as write_file:
+    with open(
+        os.path.join(output_folder, "word_frequency_lists_chapters.json"), "w"
+    ) as write_file:
         json.dump(frequency_lists_chapters, write_file, indent=4)
 
 
@@ -143,26 +122,46 @@ def create_raw_freq_data():
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
     source_files = os.path.join(script_dir, "downloads", "kjv_chapter_files")
-    # TODO: Download these files, if needed
+
+    get_and_unzip_kjv()  # Download KJV chapter files, if needed
     kjv_chapter_files = sorted(glob.glob(os.path.join(source_files, "*.txt")))
     # sorted() because glob() may return the list in an arbitrary order
 
     for chapter_file in kjv_chapter_files:
-        read_file = open(chapter_file, "r", encoding="utf-8")
-        lines = read_file.readlines()
-        # There's no need to exclude the blank line at the end of chapter files,
-        # since readlines() already seems to ignore it.
+        if not chapter_file.endswith("eng-kjv_000_000_000_read.txt"):
+            #   Ignore what's essentially a README.txt file
+            read_file = open(chapter_file, "r", encoding="utf-8")
+            lines = read_file.readlines()
+            # There's no need to exclude the blank line at the end of chapter files,
+            # since readlines() already seems to ignore it.
 
-        full_ref = get_full_ref(chapter_file)
+            full_ref = get_full_ref(chapter_file)
 
-        freq_this_chapter = calc_word_freq(lines[2:])
-        frequency_lists_chapters[full_ref] = build_frequency_lists(freq_this_chapter)
+            freq_this_chapter = calc_word_freq(lines[2:])
+            frequency_lists_chapters[full_ref] = build_frequency_lists(
+                freq_this_chapter
+            )
 
     calc_and_write_word_frequency_files(frequency_lists_chapters)
 
+
+def get_word_frequency():
+
+    json_path = r"frequency_jsons\word_frequency.json"
+    if not os.path.exists(json_path):
+        create_raw_freq_data()
+
+    with open(json_path, "r") as read_file:
+        json_data = json.load(read_file)
+        return json_data
+
+
 def main():
 
-    create_raw_freq_data()
+    # TODO: Suppress pylint error properly, instead of by printing type() values.
+    #   Or, do some sort of check, as was done with the dictionaries in get_files_and_data.py.
+    word_frequency = get_word_frequency()
+    print(type(word_frequency))
 
 
 if __name__ == "__main__":

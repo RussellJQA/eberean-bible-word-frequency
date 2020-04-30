@@ -12,8 +12,6 @@ raw_template = Template(filename="bible_chapter_template.mako", lookup=template_
 
 def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
 
-    # print(words_in_chapter, type(words_in_chapter))
-
     verse_counts_by_chapter = get_verse_counts()
 
     datestamp = date.today().strftime("%Y-%m-%d")
@@ -44,7 +42,7 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
 
     book_nums = get_book_nums()
     book_num = f"{str(book_nums[book_abbrev]).zfill(2)}"
-    html_folder = os.path.join(os.getcwd(), "NEW_HTML", f"{book_num}_{book_abbrev}")
+    html_folder = os.path.join(os.getcwd(), "HTML", f"{book_num}_{book_abbrev}")
     if not os.path.isdir(html_folder):
         os.mkdir(html_folder)
 

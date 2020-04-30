@@ -18,7 +18,10 @@ def get_binary_file_via_requests(
             print(f"Download failed with status code: {resp.status_code}")
 
 
-def get_json_data(web_folder, json_fn, download_folder):
+def get_web_json_data(web_folder, json_fn, download_folder):
+
+    """ Gets JSON data from the Web.
+    """
 
     if not os.path.isdir(download_folder):
         os.mkdir(download_folder)
@@ -37,7 +40,7 @@ def get_bible_books():
     web_folder = (
         r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
     )
-    return get_json_data(web_folder, "bible_books.json", "downloads")
+    return get_web_json_data(web_folder, "bible_books.json", "downloads")
 
 
 def get_book_nums():
@@ -45,7 +48,7 @@ def get_book_nums():
     web_folder = (
         r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
     )
-    return get_json_data(web_folder, "book_numbers.json", "downloads")
+    return get_web_json_data(web_folder, "book_numbers.json", "downloads")
 
 
 def get_verse_counts():
@@ -53,15 +56,7 @@ def get_verse_counts():
     web_folder = (
         r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
     )
-    return get_json_data(web_folder, "verse_counts_by_chapter.json", "downloads")
-
-
-def get_word_frequency():
-
-    web_folder = (
-        r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
-    )
-    return get_json_data(web_folder, "word_frequency.json", "downloads")
+    return get_web_json_data(web_folder, "verse_counts_by_chapter.json", "downloads")
 
 
 def main():
@@ -81,11 +76,6 @@ def main():
         print(
             f"The Bible has 1,189 chapters, but 'verse_counts_by_chapter' has {len(verse_counts_by_chapter)} chapters."
         )
-
-    # TODO: Suppress pylint error properly, instead of by printing type() values.
-    #   Or, do some sort of check, as was done with the other dictionaries above.
-    word_frequency = get_word_frequency()
-    print(type(word_frequency))
 
 
 if __name__ == "__main__":
