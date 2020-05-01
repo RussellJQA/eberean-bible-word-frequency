@@ -9,8 +9,8 @@
                 <li>Word: A word which occurs in this chapter of the KJV Bible</li>
                 <li>In chapter: The number of occurrences of that word in this chapter of the KJV</li>
                 <li>In KJV: The number of occurrences of that word in the entire KJV</li>
+                <li>Simple Freq: The simple, unweighted relative frequency of that word in this chapter of the KJV</li>
                 <li>Weighted Freq: The weighted relative frequency of that word in this chapter of the KJV</li>
-                <li>Unweighted Freq: The unweighted relative frequency of that word in this chapter of the KJV</li>
             </ul>
             ## TODO: Replace TBD below with ...
             (See TBD for further explanation of both types of relative frequency.)
@@ -26,8 +26,8 @@
                     <th title="Field #1">Word</th>
                     <th title="Field #2">In chapter</th>
                     <th title="Field #3">In KJV</th>
-                    <th title="Field #4">Weighted Freq</th>
-                    <th title="Field #4">Unweighted Freq</th>
+                    <th title="Field #4">Simple Freq</th>
+                    <th title="Field #5">Weighted Freq</th>
                 </tr>
             </thead>
             <tbody>

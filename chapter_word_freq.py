@@ -37,44 +37,10 @@ def round_4_to_6_sigfigs(num):
     return float("%.4g" % num)
 
 
-def print_word_info(word, values):
+def sort_desc_by_simple_desc_by_weighted_asc_by_word(element):
 
-    (times_in_chapter, times_in_bible, weighted_freq) = values
-    print(
-        f"{word}: chapter: {times_in_chapter}, Bible: {times_in_bible}, weighted: {weighted_freq}"
-    )
-    # chapter: How many times this word is in the chapter
-    # Bible: How many times this word is in the Bible
-    # weighted: Weighted relative frequency of this word in the chapter,
-    #           compared to its frequency in the entire Bible
-
-
-def desc_value2_asc_key(element):
-
-    """
-    The weighted relative frequency of both "composition" and "atonements" in Exodus 30 is 815.1164948453609, because:
-        2 out of 2 of the Bible's occurrences of "composition" are in this chapter
-        1 out of 1 of the Bible's occurrences of "atonements" are in this chapter
-    Of those, weight "composition" more highly (by giving it a more negative) sort key, so that it will be listed
-    earlier in the .csv file.
-
-    The sort_key calculations for the 2 corresponding rows of file "Exo030_word_freq.csv" are:
-
-        composition,2,2,815.1164948453609
-            element == ["composition", [1,1,815.1164948453609]]
-            -1 * element[1][2] == -815.1164948453609
-            -1 * element[1][0] == -2
-            element[0] == "composition"
-            sort_key == (-815.1164948453609, -2, "composition")
-        atonements,1,1,815.1164948453609
-            element == ["atonements", [1,1,815.1164948453609]]
-            -1 * element[1][2] == -815.1164948453609
-            -1 * element[1][0] == -1
-            element[0] == "atonements"
-            sort_key == (-815.1164948453609, -1, "atonements")
-    """
-
-    sort_key = (-1 * element[1][2], -1 * element[1][0], element[0])
+    sort_key = (-1 * element[1][2], -1 * element[1][3], element[0])
+    # -1 * simple_relative_frequency, -1 * weighted_relative_frequency, word
 
     return sort_key
 
@@ -91,9 +57,7 @@ def handle_book_folder(html_folder, book_folder, previous_book_abbrev, book_abbr
     return book_folder
 
 
-def get_chapter_word_freqs(
-    words_in_bible, words_in_chapter, word_frequencies, word_frequency
-):
+def get_chapter_word_freqs(words_in_bible, word_frequencies, word_frequency):
 
     chapter_word_freqs = {}
     for (chapter_frequency, words) in word_frequencies.items():
@@ -102,31 +66,37 @@ def get_chapter_word_freqs(
             for word in words:
                 times_in_bible = word_frequency[word]
 
-                ## Most natural way of stating algorithm
-                # simple_relative_frequency = times_in_chapter / (
-                #     times_in_bible / words_in_bible
-                # )
                 simple_relative_frequency = (
-                    times_in_chapter * words_in_bible
+                    words_in_bible * times_in_chapter
                 ) / times_in_bible
-                # Now, (in addition to weighted_relative_frequency), this, too, is
-                # included in both .csv files and .html files.
-
-                ## Most natural way of stating algorithm
-                # weighted_relative_frequency = (times_in_chapter / words_in_chapter) / (
-                #     times_in_bible / words_in_bible
-                # )
-                # weighted_relative_frequency = (
-                #     simple_relative_frequency / words_in_chapter
-                # )
+                # Equivalently: words_in_bible * (times_in_chapter / times_in_bible)
 
                 values = [
-                    int(chapter_frequency),
+                    times_in_chapter,
                     times_in_bible,
-                    round_4_to_6_sigfigs(simple_relative_frequency / words_in_chapter),
-                    #   This is weighted_relative_frequency (rounded)
                     round_4_to_6_sigfigs(simple_relative_frequency),
+                    # Below is weighted_relative_frequency (rounded)
+                    round_4_to_6_sigfigs(
+                        simple_relative_frequency + (times_in_chapter - 1)
+                    ),
                 ]
+
+                # weighted_relative_frequency was chosen so that (for example) for Exodus 5's:
+                #    8 out of 16 occurrences of straw
+                #    1 out of 2 occurrences of dealest
+                # weighted_relative_frequency for "straw" would be greater than for "dealest"
+
+                # The print() statements below were used (1 at a time) to help me
+                # to determine what to use for weighted_relative_frequency.
+
+                # if times_in_chapter == times_in_bible:
+                #     print(f"\tAll {times_in_chapter} occurrences of {word}")
+
+                # if 2 * times_in_chapter == times_in_bible:
+                #     print(
+                #         f"\t{times_in_chapter} out of {times_in_bible} occurrences of {word}"
+                #     )
+
                 chapter_word_freqs[word] = values
 
     return chapter_word_freqs
@@ -139,10 +109,10 @@ def get_relative_word_frequency(
     relative_word_frequency = {}
     relative_word_frequency["TOTAL WORDS"] = [words_in_chapter]
     chapter_word_freqs = get_chapter_word_freqs(
-        words_in_bible, words_in_chapter, word_frequencies, word_frequency
+        words_in_bible, word_frequencies, word_frequency
     )
     for chapter_word_freq, values in sorted(
-        chapter_word_freqs.items(), key=desc_value2_asc_key
+        chapter_word_freqs.items(), key=sort_desc_by_simple_desc_by_weighted_asc_by_word
     ):
         relative_word_frequency[chapter_word_freq] = values
 
@@ -155,7 +125,7 @@ def write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency):
         # newline="" prevents blank lines from being added between rows
         writer = csv.writer(csv_file, delimiter=",", quotechar='"')
         writer.writerow(
-            ["word", "numInChap", "numInKjv", "weightedRelFreq", "simpleRelFreq",]
+            ["word", "numInChap", "numInKjv", "simpleRelFreq", "weightedRelFreq",]
         )
         #   Column header row
 
@@ -186,15 +156,15 @@ def write_html_file(book_abbrev, chapter, words_in_chapter, relative_word_freque
             num_in_kjv = "{:,}".format(
                 item[1][1]
             )  # Add thousands separator (e.g., 1234 -> "1,234")
-            simple_relative_frequency = "{:,}".format(item[1][3])
+            simple_relative_frequency = "{:,}".format(item[1][2])
             row = [
                 item[0],
                 item[1][0],
                 num_in_kjv,
-                item[1][2],
                 simple_relative_frequency,
+                item[1][3],
             ]
-            #  .csv column headings: word, numInChap, numInKjv, weightedRelFreq, simpleRelFreq
+            #  .csv column headings: word, numInChap, numInKjv, simpleRelFreq, weightedRelFreq
             rows.append(row)
     write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows)
 
@@ -258,6 +228,8 @@ def generate_word_freq_files():
         word_frequency_lists_chapters = json.load(read_file)
         for (key, word_frequencies) in word_frequency_lists_chapters.items():
 
+            # print(key)
+
             words_in_chapter = int(next(iter(word_frequencies)))
             relative_word_frequency = get_relative_word_frequency(
                 words_in_bible, words_in_chapter, word_frequencies, word_frequency
@@ -275,6 +247,8 @@ def generate_word_freq_files():
             )
 
             previous_book_abbrev = book_abbrev
+
+    # TODO: Write master index file
 
     write_fn = os.path.join(frequency_jsons, r"chapters_relative_word_frequency.json")
     with open(write_fn, "w") as write_file:
