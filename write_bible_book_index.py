@@ -1,10 +1,10 @@
-from datetime import date
 import os
 
 from mako.template import Template  # pip install Mako
 from mako.lookup import TemplateLookup  # pip install Mako
 
-from get_files_and_data import get_bible_books, get_book_nums
+from get_bible_data import get_bible_books, get_book_nums
+from utils import get_base_template_args
 
 template_lookup = TemplateLookup([""])
 raw_template = Template(
@@ -15,23 +15,18 @@ bible_books = get_bible_books()
 book_lengths = {
     bible_books[bible_book][0]: bible_books[bible_book][1] for bible_book in bible_books
 }
+bible_book_names = {
+    bible_books[bible_book][0]: bible_book for bible_book in bible_books
+}
 
 
 def write_bible_book_index(book_abbrev):
-
-    datestamp = date.today().strftime("%Y-%m-%d")
-
-    base_template_args = {
-        "description": "eBEREAN: electronic Bible Exploration REsources and ANalysis.",
-        "datestamp": datestamp,
-        "author": "Russell Johnson",
-        "site": "RussellJ.heliohost.org",
-        "year": datestamp[0:4],
-        "og_site_name": "RussellJ",
-        "title_h1": f"{book_abbrev}: KJV Chapter Word Frequencies",
-    }
+    base_template_args = get_base_template_args(
+        f"{bible_book_names[book_abbrev]}: Bible (KJV) Chapter Word Frequencies"
+    )
 
     new_template_args = {
+        "bible_book_name": bible_book_names[book_abbrev],
         "book_abbrev": book_abbrev,
         "chapters_in_book": book_lengths[book_abbrev],
     }

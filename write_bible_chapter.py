@@ -1,32 +1,30 @@
-from datetime import date
 import os
 
 from mako.template import Template  # pip install Mako
 from mako.lookup import TemplateLookup  # pip install Mako
 
-from get_files_and_data import get_book_nums, get_verse_counts
+from get_bible_data import get_bible_books, get_book_nums, get_verse_counts
+from utils import get_base_template_args
 
 template_lookup = TemplateLookup([""])
 raw_template = Template(filename="bible_chapter_template.mako", lookup=template_lookup)
+
+bible_books = get_bible_books()
+bible_book_names = {
+    bible_books[bible_book][0]: bible_book for bible_book in bible_books
+}
 
 
 def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
 
     verse_counts_by_chapter = get_verse_counts()
 
-    datestamp = date.today().strftime("%Y-%m-%d")
-
-    base_template_args = {
-        "description": "eBEREAN: electronic Bible Exploration REsources and ANalysis.",
-        "datestamp": datestamp,
-        "author": "Russell Johnson",
-        "site": "RussellJ.heliohost.org",
-        "year": datestamp[0:4],
-        "og_site_name": "RussellJ",
-        "title_h1": f"{book_abbrev} {chapter}: KJV Chapter Word Frequencies",
-    }
+    base_template_args = get_base_template_args(
+        f"{bible_book_names[book_abbrev]} {chapter}: Bible (KJV) Chapter Word Frequencies"
+    )
 
     new_template_args = {
+        "bible_book_name": bible_book_names[book_abbrev],
         "book_abbrev": book_abbrev,
         "chapters_in_book": verse_counts_by_chapter[f"{book_abbrev} {chapter}"],
         "chapter": chapter,

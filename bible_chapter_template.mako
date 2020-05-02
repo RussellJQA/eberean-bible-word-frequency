@@ -1,7 +1,7 @@
 ## bible_chapter_template.mako
 <%inherit file="base.mako"/>
     <main id="main_content" role="main" tabindex="-1">
-        <h2>${words_in_chapter} word occurrences in ${book_abbrev} ${chapter} in the KJV (${words_in_bible} word occurrences in the entire KJV):</h2>
+        <h2>${words_in_chapter} word occurrences in ${bible_book_name} ${chapter} in the KJV (${words_in_bible} word occurrences in the entire KJV):</h2>
         <a download="${book_abbrev}${str(chapter).zfill(3)}_word_freq.csv" href="${book_abbrev}${str(chapter).zfill(3)}_word_freq.csv" target="_blank">Open or download ${book_abbrev}${str(chapter).zfill(3)}_word_freq.csv</a><br>
         <p>
             The columns in the sortable table below are:

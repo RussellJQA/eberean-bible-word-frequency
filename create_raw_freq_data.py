@@ -159,7 +159,7 @@ def get_word_frequency():
 def main():
 
     # TODO: Suppress pylint error properly, instead of by printing type() values.
-    #   Or, do some sort of check, as was done with the dictionaries in get_files_and_data.py.
+    #   Or, do some sort of check, as was done with the dictionaries in get_bible_data.py.
     word_frequency = get_word_frequency()
     print(type(word_frequency))
 

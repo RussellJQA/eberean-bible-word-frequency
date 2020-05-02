@@ -34,7 +34,7 @@ import os
 import re
 import zipfile
 
-from get_files_and_data import get_binary_file_via_from_web
+from get_bible_data import get_binary_file_via_from_web
 
 
 def get_zip_data(web_folder, zip_fn, download_folder):

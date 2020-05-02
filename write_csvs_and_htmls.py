@@ -7,7 +7,7 @@ import csv
 import json
 import os
 
-from get_files_and_data import get_book_nums, get_bible_books
+from get_bible_data import get_book_nums, get_bible_books
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
 from write_bible_book_index import write_bible_book_index
 from write_bible_chapter import write_bible_chapter
