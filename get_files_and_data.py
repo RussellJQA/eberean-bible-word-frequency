@@ -1,9 +1,10 @@
 import json
 import os
-import requests
+
+import requests  # pip install requests
 
 
-def get_binary_file_via_requests(
+def get_binary_file_via_from_web(
     web_folder, binary_file, download_folder, re_download=False
 ):
 
@@ -28,7 +29,7 @@ def get_web_json_data(web_folder, json_fn, download_folder):
 
     json_path = os.path.join(download_folder, json_fn)
     if not os.path.exists(json_path):
-        get_binary_file_via_requests(web_folder, json_fn, download_folder)
+        get_binary_file_via_from_web(web_folder, json_fn, download_folder)
 
     with open(json_path, "r") as read_file:
         json_data = json.load(read_file)

@@ -1,9 +1,8 @@
 from datetime import date
 import os
 
-# pip-installed
-from mako.template import Template
-from mako.lookup import TemplateLookup
+from mako.template import Template  # pip install Mako
+from mako.lookup import TemplateLookup  # pip install Mako
 
 from get_files_and_data import get_bible_books, get_book_nums
 

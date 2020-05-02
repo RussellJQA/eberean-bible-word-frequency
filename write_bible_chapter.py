@@ -1,14 +1,14 @@
 from datetime import date
 import os
 
-# pip-installed
-from mako.template import Template
-from mako.lookup import TemplateLookup
+from mako.template import Template  # pip install Mako
+from mako.lookup import TemplateLookup  # pip install Mako
 
 from get_files_and_data import get_book_nums, get_verse_counts
 
 template_lookup = TemplateLookup([""])
 raw_template = Template(filename="bible_chapter_template.mako", lookup=template_lookup)
+
 
 def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
 

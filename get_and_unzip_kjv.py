@@ -34,7 +34,7 @@ import os
 import re
 import zipfile
 
-from get_files_and_data import get_binary_file_via_requests
+from get_files_and_data import get_binary_file_via_from_web
 
 
 def get_zip_data(web_folder, zip_fn, download_folder):
@@ -52,7 +52,7 @@ def get_zip_data(web_folder, zip_fn, download_folder):
         if response != "y":
             zip_downloaded = False
             return zip_downloaded
-    get_binary_file_via_requests(web_folder, zip_fn, download_folder, re_download=True)
+    get_binary_file_via_from_web(web_folder, zip_fn, download_folder, re_download=True)
 
     return zip_downloaded
 
