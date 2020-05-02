@@ -20,7 +20,7 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
     verse_counts_by_chapter = get_verse_counts()
 
     base_template_args = get_base_template_args(
-        f"{bible_book_names[book_abbrev]} {chapter}: Bible (KJV) Chapter Word Frequencies"
+        f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]} {chapter}"
     )
 
     new_template_args = {

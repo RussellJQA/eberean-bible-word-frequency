@@ -9,6 +9,7 @@ import os
 
 from get_bible_data import get_book_nums, get_bible_books
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
+from write_bible_word_frequency_index import write_bible_word_frequency_index
 from write_bible_book_index import write_bible_book_index
 from write_bible_chapter import write_bible_chapter
 
@@ -194,7 +195,9 @@ def write_csv_and_html(
     write_html_file(book_abbrev, chapter, relative_word_frequency)
 
 
-def generate_word_freq_files():
+def write_csvs_and_htmls():
+
+    write_bible_word_frequency_index()  # Write master index file
 
     # TODO:
     # Refactor using a function which instead of calculating word frequencies in a chapter
@@ -227,8 +230,6 @@ def generate_word_freq_files():
         word_frequency_lists_chapters = json.load(read_file)
         for (key, word_frequencies) in word_frequency_lists_chapters.items():
 
-            # print(key)
-
             words_in_chapter = int(next(iter(word_frequencies)))
             relative_word_frequency = get_relative_word_frequency(
                 words_in_bible, words_in_chapter, word_frequencies, word_frequency
@@ -247,15 +248,13 @@ def generate_word_freq_files():
 
             previous_book_abbrev = book_abbrev
 
-    # TODO: Write master index file
-
     write_fn = os.path.join(frequency_jsons, r"chapters_relative_word_frequency.json")
     with open(write_fn, "w") as write_file:
         json.dump(chapters_relative_word_frequency, write_file, indent=4)
 
 
 def main():
-    generate_word_freq_files()
+    write_csvs_and_htmls()
 
 
 if __name__ == "__main__":

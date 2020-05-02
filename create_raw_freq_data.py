@@ -158,10 +158,12 @@ def get_word_frequency():
 
 def main():
 
-    # TODO: Suppress pylint error properly, instead of by printing type() values.
-    #   Or, do some sort of check, as was done with the dictionaries in get_bible_data.py.
     word_frequency = get_word_frequency()
-    print(type(word_frequency))
+    expected_num_words = 12553
+    if (num_words := len(word_frequency)) != expected_num_words:
+        print(
+            f"\nThe number of unique words was {num_words}, rather than the expected {expected_num_words}.\n"
+        )
 
 
 if __name__ == "__main__":
