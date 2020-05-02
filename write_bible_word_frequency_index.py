@@ -8,7 +8,7 @@ from utils import get_base_template_args
 
 template_lookup = TemplateLookup([""])
 raw_template = Template(
-    filename="bible_word_frequency_index_template.mako", lookup=template_lookup
+    filename="bible_word_frequency_index.mako", lookup=template_lookup
 )
 
 

@@ -1,4 +1,4 @@
-## bible_book_index_template.mako
+## bible_book_index.mako
 <%inherit file="base.mako"/>
     <main id='main_content' role='main' tabindex='-1'>
         <nav>

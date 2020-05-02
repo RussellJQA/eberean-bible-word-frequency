@@ -7,7 +7,7 @@ from get_bible_data import get_bible_books, get_book_nums, get_verse_counts
 from utils import get_base_template_args
 
 template_lookup = TemplateLookup([""])
-raw_template = Template(filename="bible_chapter_template.mako", lookup=template_lookup)
+raw_template = Template(filename="bible_chapter.mako", lookup=template_lookup)
 
 bible_books = get_bible_books()
 bible_book_names = {

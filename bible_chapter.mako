@@ -1,4 +1,4 @@
-## bible_chapter_template.mako
+## bible_chapter.mako
 <%inherit file="base.mako"/>
     <main id="main_content" role="main" tabindex="-1">
         <h2>${words_in_chapter} word occurrences in ${bible_book_name} ${chapter} in the KJV (${words_in_bible} word occurrences in the entire KJV):</h2>
