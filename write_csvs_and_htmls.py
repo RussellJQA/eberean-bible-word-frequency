@@ -57,7 +57,9 @@ def handle_book_folder(html_folder, book_folder, previous_book_abbrev, book_abbr
     return book_folder
 
 
-def get_chapter_word_freqs(words_in_bible, word_frequencies, word_frequency):
+def get_chapter_word_freqs(
+    words_in_bible, words_in_chapter, word_frequencies, word_frequency
+):
 
     chapter_word_freqs = {}
     for (chapter_frequency, words) in word_frequencies.items():
@@ -77,7 +79,8 @@ def get_chapter_word_freqs(words_in_bible, word_frequencies, word_frequency):
                     round_4_to_6_sigfigs(simple_relative_frequency),
                     # Below is weighted_relative_frequency (rounded)
                     round_4_to_6_sigfigs(
-                        simple_relative_frequency + (times_in_chapter - 1)
+                        (simple_relative_frequency / words_in_chapter)
+                        + (times_in_chapter - 1)
                     ),
                 ]
 
@@ -109,7 +112,7 @@ def get_relative_word_frequency(
     relative_word_frequency = {}
     relative_word_frequency["TOTAL WORDS"] = [words_in_chapter]
     chapter_word_freqs = get_chapter_word_freqs(
-        words_in_bible, word_frequencies, word_frequency
+        words_in_bible, words_in_chapter, word_frequencies, word_frequency
     )
     for chapter_word_freq, values in sorted(
         chapter_word_freqs.items(), key=sort_desc_by_simple_desc_by_weighted_asc_by_word
