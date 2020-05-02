@@ -148,27 +148,24 @@ def write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency):
                 )
 
 
-def write_html_file(book_abbrev, chapter, words_in_chapter, relative_word_frequency):
+def write_html_file(book_abbrev, chapter, relative_word_frequency):
 
-    # TODO: Can a dictionary comprehension be used here?
-    #   (May have to first remove the "TOTAL WORDS" entry.)
+    words_in_chapter = "{:,}".format(relative_word_frequency["TOTAL WORDS"][0])
+    del relative_word_frequency["TOTAL WORDS"]  # Not wanted for dict comprehension
+    #   OK to do here, since CSVs were already written, and we're now done with this extra entry
 
-    rows = []
-    for item in relative_word_frequency.items():
-        if item[0] != "TOTAL WORDS":
-            num_in_kjv = "{:,}".format(
-                item[1][1]
-            )  # Add thousands separator (e.g., 1234 -> "1,234")
-            simple_relative_frequency = "{:,}".format(item[1][2])
-            row = [
-                item[0],
-                item[1][0],
-                num_in_kjv,
-                simple_relative_frequency,
-                item[1][3],
-            ]
-            #  .csv column headings: word, numInChap, numInKjv, simpleRelFreq, weightedRelFreq
-            rows.append(row)
+    # Corresponding .csv column headings: word, numInChap, numInKjv, simpleRelFreq, weightedRelFreq
+    rows = [
+        [
+            item[0],
+            item[1][0],
+            "{:,}".format(item[1][1]),  # formats with a 1,000s separator
+            "{:,}".format(item[1][2]),
+            item[1][3],
+        ]
+        for item in relative_word_frequency.items()
+    ]
+
     write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows)
 
 
@@ -194,8 +191,7 @@ def write_csv_and_html(
     #       https://github.com/stefanhoelzl/vue.py/blob/master/examples/grid_component/app.py
     #   6. https://anvil.works/docs/data-tables/data-tables-in-code#searching-querying-a-table
 
-    words_in_chapter = "{:,}".format(relative_word_frequency["TOTAL WORDS"][0])
-    write_html_file(book_abbrev, chapter, words_in_chapter, relative_word_frequency)
+    write_html_file(book_abbrev, chapter, relative_word_frequency)
 
 
 def generate_word_freq_files():
