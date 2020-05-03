@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:site_name" content="${og_site_name}">
     <title>${title_h1}</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 
 <body>

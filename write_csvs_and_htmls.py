@@ -6,6 +6,7 @@ compared to its frequency in the entire Bible
 import csv
 import json
 import os
+from shutil import copyfile
 
 from get_bible_data import get_book_nums, get_bible_books
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
@@ -199,6 +200,15 @@ def write_csvs_and_htmls():
 
     write_bible_word_frequency_index()  # Write master index file
 
+    html_folder = os.path.join(os.getcwd(), "HTML")
+    if not os.path.isdir(html_folder):
+        os.mkdir(html_folder)
+
+    copyfile("style.css", os.path.join(html_folder, "style.css"))
+    copyfile(
+        "style_freq_tables.css", os.path.join(html_folder, "style_freq_tables.css")
+    )
+
     # TODO:
     # Refactor using a function which instead of calculating word frequencies in a chapter
     # relative to word frequencies in the Bible,
@@ -222,10 +232,6 @@ def write_csvs_and_htmls():
         create_raw_freq_data()
 
     with open(read_fn, "r") as read_file:
-
-        html_folder = os.path.join(os.getcwd(), "HTML")
-        if not os.path.isdir(html_folder):
-            os.mkdir(html_folder)
 
         word_frequency_lists_chapters = json.load(read_file)
         for (key, word_frequencies) in word_frequency_lists_chapters.items():

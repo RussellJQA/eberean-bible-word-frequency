@@ -1,6 +1,7 @@
 ## bible_chapter.mako
 <%inherit file="base.mako"/>
-    <main id="main_content" role="main" tabindex="-1">
+        <link rel="stylesheet" type="text/css" href="../style_freq_tables.css">
+        <main id="main_content" role="main" tabindex="-1">
         <h2>${words_in_chapter} word occurrences in ${bible_book_name} ${chapter} in the KJV (${words_in_bible} word occurrences in the entire KJV):</h2>
         <nav>
             <a href='../bible_word_frequency_index.html'>KJV Bible Chapter Word Frequencies</a>
