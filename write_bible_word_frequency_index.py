@@ -18,7 +18,11 @@ def write_bible_word_frequency_index():
     book_nums = get_book_nums()
 
     base_template_args = get_base_template_args("KJV Bible Chapter Word Frequencies")
-    new_template_args = {"bible_books": bible_books, "book_nums": book_nums}
+    new_template_args = {
+        "style_sheet_path": r"./style.css",
+        "bible_books": bible_books,
+        "book_nums": book_nums,
+    }
 
     # Merge dictionaries
     filled_in_template_args = {**base_template_args, **new_template_args}

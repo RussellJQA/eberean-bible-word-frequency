@@ -24,6 +24,7 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
     )
 
     new_template_args = {
+        "style_sheet_path": r"../style.css",
         "bible_book_name": bible_book_names[book_abbrev],
         "book_abbrev": book_abbrev,
         "chapters_in_book": verse_counts_by_chapter[f"{book_abbrev} {chapter}"],

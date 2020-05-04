@@ -25,6 +25,7 @@ def write_bible_book_index(book_abbrev):
     )
 
     new_template_args = {
+        "style_sheet_path": r"../style.css",
         "bible_book_name": bible_book_names[book_abbrev],
         "book_abbrev": book_abbrev,
         "chapters_in_book": book_lengths[book_abbrev],

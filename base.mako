@@ -14,7 +14,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:site_name" content="${og_site_name}">
     <title>${title_h1}</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
+
+    <link rel="stylesheet" type="text/css" href="${style_sheet_path}">
+    ##  I had originally just put the style sheet in the root.
+    ##  That worked fine except if I just opened a downloaded copy of the Web site,
+    ##  and opened 1 of its pages directly.
+    ##  So, to allow even that to work, I'm passing the style sheet location as
+    ##  parameter to the template.
 </head>
 
 <body>
