@@ -35,10 +35,6 @@ def get_top_7_words(csv_path):
 
 def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
 
-    verse_counts_by_chapter = get_verse_counts()
-
-    # book_nums = get_book_nums()
-    # book_num = f"{str(book_nums[book_abbrev]).zfill(2)}"
     book_num = f"{str(get_book_nums()[book_abbrev]).zfill(2)}"
     html_folder = os.path.join(os.getcwd(), "HTML", f"{book_num}_{book_abbrev}")
     if not os.path.isdir(html_folder):
@@ -57,16 +53,18 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
     keywords += get_top_7_words(os.path.join(html_folder, csv_file_name))
     # Include top 7 words in the page's keywords metatag
 
+    description = (
+        f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]} {chapter}"
+    )
     base_template_args = get_base_template_args(
-        ",".join(keywords),
-        f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]} {chapter}",
+        description, ",".join(keywords), description
     )
 
     new_template_args = {
         "style_sheet_path": r"../style.css",
         "bible_book_name": bible_book_names[book_abbrev],
         "book_abbrev": book_abbrev,
-        "chapters_in_book": verse_counts_by_chapter[f"{book_abbrev} {chapter}"],
+        "chapters_in_book": get_verse_counts()[f"{book_abbrev} {chapter}"],
         "chapter": chapter,
         "words_in_bible": "790,663",
         "words_in_chapter": words_in_chapter,
