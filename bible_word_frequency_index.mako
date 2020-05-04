@@ -5,7 +5,10 @@
             This site provides information about how often each word occurs in the <a href="https://ebible.org/Scriptures/eng-kjv_readaloud.zip">(KJV) Bible<a>.
         </p>
         <p>
-            For each chapter in the Bible, it displays a sortable table with 5 columns of information for each word in that chapter:
+            For each chapter in the Bible, there is a separate, corresponding Web page.
+        </p>
+        <p>
+            Each of those Web pages displays a sortable table with 5 columns of information for each word in that chapter:
             <ol>
                 <li>Word: the word</li>
                 <li>In chapter: The number of times that word occurs in that Bible chapter</li>
@@ -27,7 +30,7 @@
             </ol>
         </p>
         <p>
-            The page also has a downloadable .csv file containing the same information.
+            Each page also links to a downloadable .csv file containing the same information.
         </p>
         % for bible_book in bible_books:
         <a href='${str(book_nums[bible_books[bible_book][0]]).zfill(2)}_${bible_books[bible_book][0]}/${bible_books[bible_book][0]}_index.html'>${bible_book}</a><br>
