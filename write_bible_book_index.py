@@ -21,7 +21,10 @@ bible_book_names = {
 def write_bible_book_index(book_abbrev):
 
     base_template_args = get_base_template_args(
-        f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]}"
+        ",".join(
+            ["KJV", "Bible", bible_book_names[book_abbrev], "chapter", "word frequency"]
+        ),
+        f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]}",
     )
 
     new_template_args = {

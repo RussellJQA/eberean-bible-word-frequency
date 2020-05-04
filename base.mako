@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="${description}">
+    <meta name="keywords" content="${keywords}">
     <meta name="date" content="${datestamp}">
     <meta name="last-modified" content="${datestamp}">
     <meta name="language" content="english">

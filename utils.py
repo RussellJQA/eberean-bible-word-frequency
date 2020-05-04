@@ -1,12 +1,13 @@
 from datetime import date
 
 
-def get_base_template_args(title_h1):
+def get_base_template_args(keywords, title_h1):
 
     datestamp = date.today().strftime("%Y-%m-%d")
 
     base_template_args = {
         "description": "eBEREAN: electronic Bible Exploration REsources and ANalysis.",
+        "keywords": keywords,
         "datestamp": datestamp,
         "author": "Russell Johnson",
         "site": "RussellJ.heliohost.org",

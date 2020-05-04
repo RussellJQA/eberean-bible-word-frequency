@@ -156,6 +156,15 @@ def write_html_file(book_abbrev, chapter, relative_word_frequency):
     del relative_word_frequency["TOTAL WORDS"]  # Not wanted for dict comprehension
     #   OK to do here, since CSVs were already written, and we're now done with this extra entry
 
+    # Some possible alternatives for the sortable table implementation:
+    #   1. https://www.w3schools.com/howto/howto_js_sort_table.asp
+    # **2. https://brython.info/gallery/sort_table.html
+    # ***3. https://brython.info/gallery/sort_table_template.html
+    #   4. https://stefanhoelzl.github.io/vue.py/examples/grid_component/
+    #       source at
+    #       https://github.com/stefanhoelzl/vue.py/blob/master/examples/grid_component/app.py
+    #   5. https://anvil.works/docs/data-tables/data-tables-in-code#searching-querying-a-table
+
     # Corresponding .csv column headings: word, numInChap, numInKjv, simpleRelFreq, weightedRelFreq
     rows = [
         [
@@ -180,18 +189,6 @@ def write_csv_and_html(
 
     csv_fn = os.path.join(book_folder, f"{book_abbrev}{chapter.zfill(3)}_word_freq.csv")
     write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency)
-
-    # In addition to the above .csv file, generate an .html file with sortable tables
-    # Currently, that's done with method #1 below, but we may want to look at some of
-    # other alternatives:
-    #  *1. https://www.kryogenix.org/code/browser/sorttable/sorttable.js
-    #   2. https://www.w3schools.com/howto/howto_js_sort_table.asp
-    # **3. https://brython.info/gallery/sort_table.html
-    # ***4. https://brython.info/gallery/sort_table_template.html
-    #   5. https://stefanhoelzl.github.io/vue.py/examples/grid_component/
-    #       source at
-    #       https://github.com/stefanhoelzl/vue.py/blob/master/examples/grid_component/app.py
-    #   6. https://anvil.works/docs/data-tables/data-tables-in-code#searching-querying-a-table
 
     write_html_file(book_abbrev, chapter, relative_word_frequency)
 

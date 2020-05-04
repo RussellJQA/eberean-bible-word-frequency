@@ -17,7 +17,10 @@ def write_bible_word_frequency_index():
     bible_books = get_bible_books()
     book_nums = get_book_nums()
 
-    base_template_args = get_base_template_args("KJV Bible Chapter Word Frequencies")
+    base_template_args = get_base_template_args(
+        ",".join(["KJV", "Bible", "chapter", "word frequency"]),
+        "Home: KJV Bible Chapter Word Frequencies",
+    )
     new_template_args = {
         "style_sheet_path": r"./style.css",
         "bible_books": bible_books,
