@@ -42,10 +42,9 @@ And since they're both in the chapter, they would also have the same Weighted Re
     Simple Relative Frequency / Total number of words in the chapter
     395,332 / 632 = 625.5
 
-That's why we add the number of occurrences of the specified word in the chapter (minus 1):
+That's why we include the number of occurrences (minus 1) of the word in the chapter in the Weighted Relative Frequency calculation:
 
 - abel: 625.5 + (8-1) = 632.5
 - artificer: 625.5 + (1-1) = 625.5
 
-
-- 
+That gives "abel" a higher Weighted Relative Frequency.
