@@ -26,10 +26,10 @@
                 % for row in rows:
                 <tr>
                     <td>${row[0]}</td>
-                    <td class="integer">${row[1]}</td>
-                    <td class="integer">${row[2]}</td>
-                    <td>${row[3]}</td>
-                    <td>${row[4]}</td>
+                    <td class="numerical">${row[1]}</td>
+                    <td class="numerical">${row[2]}</td>
+                    <td class="numerical">${row[3]}</td>
+                    <td class="numerical">${row[4]}</td>
                 </tr>
                 % endfor
             </tbody>

@@ -1,4 +1,4 @@
-### Simple Freq (Simple Relative Frequency)
+## Simple Freq (Simple Relative Frequency)
 
 In Psalm 23, the words "anointest" and "to" both occur 1 time. This is the only occurrence of "anointest" in the entire KJV Bible. But the word "to" occurs 13,630 times, including this one.
 
@@ -8,13 +8,13 @@ So, it's more noteworthy that "anointest" occurs in Psalm 23 than that "to" occu
 - to:        790,663 * (1/13360) = 58.01
 
 | Word	    | In chapter |	In KJV | Simple Freq |
-|:----------|-----------:|--------:|------------:|
+|-----------|-----------:|--------:|------------:|
 | anointest |          1 |       1 |     790,663 |
 | to	    |          1 | 	13,630 |	   58.01 |
 
-### Weighted Freq (Weighted Relative Frequency)
+## Weighted Freq (Weighted Relative Frequency)
 
-#### Example 1
+### Example 1
 
 The word "merciful" occurs 40 times in the KJV, including 1 time in Deuteronomy 4 and 1 time in Psalm 117. So for both those chapters, the Simple Relative Frequency of "merciful" is the same:
 
@@ -26,11 +26,11 @@ Deuteronomy 4 has a total of 1,503 words, but Psalm 117 only has 33 words. So, i
 - Psa 117: merciful: (19,767 /   33) + (1-1) = 599
 
 | Chapter | Word      | In chapter |  In KJV | Simple Freq | Weighted Freq |
-|:------- |:----------|-----------:|--------:|------------:|--------------:|
+|-------- |-----------|-----------:|--------:|------------:|--------------:|
 | Deu 4   | merciful  |          1 |       1 |      19,757 |           599 |
 | Psa 117 | merciful  |          1 |      40 |      19,757 |         13.15 |
 
-#### Example 2
+### Example 2
 
 Genesis 4 contains 8 of the KJV's 16 occurrences of "abel", and 1 of the 2 occurrences of "artificer". (For frequency calculations, all words are lowercased.) Both have the same Simple Relative Frequency:
 
@@ -39,8 +39,8 @@ Genesis 4 contains 8 of the KJV's 16 occurrences of "abel", and 1 of the 2 occur
 
 And since they're both in the chapter, they would also have the same Weighted Relative Frequency if that was calculated simply as:
 
-    Simple Relative Frequency / Total number of words in the chapter
-    395,332 / 632 = 625.5
+- Simple Relative Frequency / Total number of words in the chapter
+- 395,332 / 632 = 625.5
 
 That's why we include the number of occurrences (minus 1) of the word in the chapter in the Weighted Relative Frequency calculation:
 

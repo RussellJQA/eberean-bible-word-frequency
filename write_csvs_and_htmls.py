@@ -11,6 +11,7 @@ from shutil import copyfile
 from get_bible_data import get_book_nums, get_bible_books
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
 from write_bible_word_frequency_index import write_bible_word_frequency_index
+from write_examples import write_examples
 from write_bible_book_index import write_bible_book_index
 from write_bible_chapter import write_bible_chapter
 
@@ -196,6 +197,7 @@ def write_csv_and_html(
 def write_csvs_and_htmls():
 
     write_bible_word_frequency_index()  # Write master index file
+    write_examples()
 
     html_folder = os.path.join(os.getcwd(), "HTML")
     if not os.path.isdir(html_folder):
