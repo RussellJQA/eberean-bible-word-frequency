@@ -10,19 +10,29 @@
 		<li>Word: the word</li>
 		<li>In chapter: The number of times that word occurs in that Bible chapter</li>
 		<li>In KJV: The number of times that word occurs in the entire Bible</li>
-		<li>Simple Freq: The simple, unweighted relative frequency of that word in this chapter:<br>
-			&nbsp;&nbsp;the total number of words in the Bible multiplied by the quotient of:<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;In chapter (2nd column): The number of times that word occurs in that Bible chapter<br>
-			&nbsp;&nbsp;divided by:<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;In KJV (3rd column): The number of times that word occurs in the entire Bible
+		<li>Simple Freq: The simple, unweighted relative frequency of that word in this chapter, which is calculated as:<br>
+			<ul>
+				<li>the total number of words in the Bible multiplied by the quotient of:</li>
+				<li><ul>
+					<li>In chapter (2nd column): The number of times that word occurs in that Bible chapter</li>
+				</ul></li>
+				<li>divided by:</li>
+				<li><ul>
+					<li>In KJV (3rd column): The number of times that word occurs in the entire Bible</li>
+				</ul></li>
+			</ul>
 		</li>
 		<li>Weighted Freq: The weighted relative frequency of that word in this chapter:<br>
-			&nbsp;&nbsp;the sum of:<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;the quotient of:<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Simple Freq (4th column)<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;divided by:<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the total number of words in the chapter<br>
-			&nbsp;&nbsp;and In chapter (2nd column) - 1<br>
+			<ul>
+				<li>the sum of:</li>
+				<li><ul>
+					<li>the quotient of:</li>
+					<li><ul><li>Simple Freq (4th column)</li></ul></li>
+					<li>divided by:</li>
+					<li><ul><li>the total number of words in the chapter</li></ul></li>
+				</ul></li>
+				<li>and [In chapter (2nd column) - 1]
+			</ul>
 		</li>
 	</ol>
 </p>
@@ -30,4 +40,4 @@
 	Each page also links to a downloadable .csv file containing the same information.
 </p>
 
-For more information about relative frequencies, see our [examples](examples.md). 
+For more information about relative frequencies, see our [Examples](examples.md). 

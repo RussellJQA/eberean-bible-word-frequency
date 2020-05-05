@@ -25,14 +25,13 @@
 </head>
 
 <body>
-    <a name="top"></a>
     <header role="banner"><%block name="header">
         <h1>${title_h1}</h1>
     </%block></header>
     ${self.body()}
     <footer role="contentinfo"><%block name="footer">
-        <p><a href="#top">Back to Top</a></p>
-        <p><a href="https://github.com/RussellJQA/bible-word-frequency">Website source code on GitHub</a></p>
+        <p><a href="#top">Back to Top</a></p>  ## In HTML5, no 'top' anchor is needed
+        <p><a href="https://github.com/RussellJQA/eberean-bible-word-frequency">Website source code on GitHub</a></p>
         <p>Copyright &copy; ${year} by ${author}</p>
     </%block></footer>
 </body>

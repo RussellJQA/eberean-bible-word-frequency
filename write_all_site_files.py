@@ -10,7 +10,7 @@ from shutil import copyfile
 
 from get_bible_data import get_book_nums, get_bible_books
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
-from write_bible_word_frequency_index import write_bible_word_frequency_index
+from write_site_index import write_site_index
 from write_examples import write_examples
 from write_bible_book_index import write_bible_book_index
 from write_bible_chapter import write_bible_chapter
@@ -125,7 +125,7 @@ def get_relative_word_frequency(
     return relative_word_frequency
 
 
-def write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency):
+def write_chapter_csv(words_in_bible, key, csv_fn, relative_word_frequency):
 
     with open(csv_fn, mode="w", newline="") as csv_file:
         # newline="" prevents blank lines from being added between rows
@@ -151,7 +151,7 @@ def write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency):
                 )
 
 
-def write_html_file(book_abbrev, chapter, relative_word_frequency):
+def write_chapter_html(book_abbrev, chapter, relative_word_frequency):
 
     words_in_chapter = "{:,}".format(relative_word_frequency["TOTAL WORDS"][0])
     del relative_word_frequency["TOTAL WORDS"]  # Not wanted for dict comprehension
@@ -181,7 +181,7 @@ def write_html_file(book_abbrev, chapter, relative_word_frequency):
     write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows)
 
 
-def write_csv_and_html(
+def write_chapter_files(
     words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
 ):
 
@@ -189,14 +189,14 @@ def write_csv_and_html(
     chapter = key[4:]
 
     csv_fn = os.path.join(book_folder, f"{book_abbrev}{chapter.zfill(3)}_word_freq.csv")
-    write_csv_file(words_in_bible, key, csv_fn, relative_word_frequency)
+    write_chapter_csv(words_in_bible, key, csv_fn, relative_word_frequency)
 
-    write_html_file(book_abbrev, chapter, relative_word_frequency)
+    write_chapter_html(book_abbrev, chapter, relative_word_frequency)
 
 
-def write_csvs_and_htmls():
+def write_all_site_files():
 
-    write_bible_word_frequency_index()  # Write master index file
+    write_site_index()  # Write master index file
     write_examples()
 
     html_folder = os.path.join(os.getcwd(), "HTML")
@@ -247,7 +247,7 @@ def write_csvs_and_htmls():
             )
             if book_abbrev != previous_book_abbrev:
                 write_bible_book_index(book_abbrev)
-            write_csv_and_html(
+            write_chapter_files(
                 words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
             )
 
@@ -259,7 +259,7 @@ def write_csvs_and_htmls():
 
 
 def main():
-    write_csvs_and_htmls()
+    write_all_site_files()
 
 
 if __name__ == "__main__":

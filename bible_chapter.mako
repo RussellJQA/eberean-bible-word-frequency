@@ -5,7 +5,7 @@
         <h2>${words_in_chapter} word occurrences in ${bible_book_name} ${chapter} in the KJV (${words_in_bible} word occurrences in the entire KJV):</h2>
         <p>For an explanation of what information is in the linked-to .csv file and in the table below, see the Home page .</p>
         <nav>
-            <a href='../bible_word_frequency_index.html'>Home: KJV Bible Chapter Word Frequencies</a><br>
+            <a href='../index.html'>Home: KJV Bible Chapter Word Frequencies</a><br>
             <a href="${book_abbrev}_index.html">${bible_book_name}</a><br>
             <a href="${csv_file_name}" target="_blank" type="text/csv">Open ${csv_file_name} in new tab or window</a><br><br>
         </nav>

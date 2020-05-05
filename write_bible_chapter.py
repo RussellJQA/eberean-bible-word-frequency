@@ -1,14 +1,8 @@
 import csv
 import os
 
-from mako.template import Template  # pip install Mako
-from mako.lookup import TemplateLookup  # pip install Mako
-
 from get_bible_data import get_bible_books, get_book_nums, get_verse_counts
-from utils import get_base_template_args
-
-template_lookup = TemplateLookup([""])
-raw_template = Template(filename="bible_chapter.mako", lookup=template_lookup)
+from utils import get_base_template_args, write_html
 
 bible_books = get_bible_books()
 bible_book_names = {
@@ -35,12 +29,9 @@ def get_top_7_words(csv_path):
 
 def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
 
-    book_num = f"{str(get_book_nums()[book_abbrev]).zfill(2)}"
-    html_folder = os.path.join(os.getcwd(), "HTML", f"{book_num}_{book_abbrev}")
-    if not os.path.isdir(html_folder):
-        os.mkdir(html_folder)
-
-    csv_file_name = f"{book_abbrev}{str(chapter).zfill(3)}_word_freq.csv"
+    description = (
+        f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]} {chapter}"
+    )
 
     keywords = [
         "KJV",
@@ -50,12 +41,15 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
         "chapter",
         "word frequency",
     ]
+
+    book_num = f"{str(get_book_nums()[book_abbrev]).zfill(2)}"
+    html_folder = os.path.join(os.getcwd(), "HTML", f"{book_num}_{book_abbrev}")
+    if not os.path.isdir(html_folder):
+        os.mkdir(html_folder)
+    csv_file_name = f"{book_abbrev}{str(chapter).zfill(3)}_word_freq.csv"
     keywords += get_top_7_words(os.path.join(html_folder, csv_file_name))
     # Include top 7 words in the page's keywords metatag
 
-    description = (
-        f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]} {chapter}"
-    )
     base_template_args = get_base_template_args(
         description, ",".join(keywords), description
     )
@@ -72,14 +66,13 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
         "rows": rows,
     }
 
-    # Merge dictionaries
-    filled_in_template_args = {**base_template_args, **new_template_args}
-    # In Python 3.9, PEP 584 will let you merge  2 dicts using | or |=
-    filled_in_template = raw_template.render(**filled_in_template_args)
-
-    html_fn = f"{book_abbrev}{chapter.zfill(3)}_word_freq.html"
-    with open(os.path.join(html_folder, html_fn), "w", newline="") as write_file:
-        write_file.write(filled_in_template)
+    write_html(
+        base_template_args,
+        new_template_args,
+        "bible_chapter.mako",
+        html_folder,
+        f"{book_abbrev}{chapter.zfill(3)}_word_freq.html",
+    )
 
 
 def main():
