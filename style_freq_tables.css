@@ -12,3 +12,7 @@ td {
 .numerical {
     text-align: right;
 }
+
+table {
+    border-collapse: collapse;
+}
