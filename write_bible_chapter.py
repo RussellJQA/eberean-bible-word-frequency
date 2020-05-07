@@ -44,12 +44,24 @@ def get_bible_chapter_text(book_num, book_abbrev, chapter):
         lines = read_file.readlines()
 
     lines2 = []
-    for line in lines:
-        line = line.replace("¶ ", "\n\n</p>\n            <p>\n                ")
-        line = re.sub("(^[A-Za-z].+)", "\n                \\1", line.strip())
+
+    for line in lines[2:]:
+
+        # TODO: If this is Psalm chapter 119, then add:
+        #   Hebrew letters before lines 1, 9, etc.
+        #   Ending/beginning paragraph tags (</p> ... <p>) before lines 9, 17, etc.
+
+        line = re.sub("(^.+)", "\n                \\1", line.strip())
+        #   Indent only the Bible text's HTML SOURCE code by 16-spaces
+        #   (4 spaces in from the enclosing <p> and </p>).
+
+        line = line.replace("    ¶ ", "</p>\n            <p>\n                ")
+        #   Replace text's paragraph markers with properly (un-)indented
+        #   HTML paragraph ending/beginning paragraph tags (</p> ... <p>).
+
         lines2.append(line)
-    bible_chapter_text = "                " + "".join(lines2[2:]).strip()
-    #   The 1st 2 lines of the file aren't part of the Biblical text
+
+    bible_chapter_text = "                " + "".join(lines2).strip()
 
     return bible_chapter_text
 
