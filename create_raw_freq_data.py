@@ -128,19 +128,22 @@ def create_raw_freq_data():
     # sorted() because glob() may return the list in an arbitrary order
 
     for chapter_file in kjv_chapter_files:
+
         if not chapter_file.endswith("eng-kjv_000_000_000_read.txt"):
             #   Ignore what's essentially a README.txt file
-            read_file = open(chapter_file, "r", encoding="utf-8")
-            lines = read_file.readlines()
-            # There's no need to exclude the blank line at the end of chapter files,
-            # since readlines() already seems to ignore it.
 
-            full_ref = get_full_ref(chapter_file)
+            with open(chapter_file, "r", encoding="utf-8") as read_file:
 
-            freq_this_chapter = calc_word_freq(lines[2:])
-            frequency_lists_chapters[full_ref] = build_frequency_lists(
-                freq_this_chapter
-            )
+                lines = read_file.readlines()
+                # There's no need to exclude the blank line at the end of chapter files,
+                # since readlines() already seems to ignore it.
+
+                full_ref = get_full_ref(chapter_file)
+
+                freq_this_chapter = calc_word_freq(lines[2:])
+                frequency_lists_chapters[full_ref] = build_frequency_lists(
+                    freq_this_chapter
+                )
 
     calc_and_write_word_frequency_files(frequency_lists_chapters)
 

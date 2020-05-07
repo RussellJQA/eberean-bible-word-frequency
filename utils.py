@@ -36,5 +36,7 @@ def write_html(base_template_args, new_template_args, mako_file, html_folder, ht
     raw_template = Template(filename=mako_file, lookup=template_lookup)
     filled_in_template = raw_template.render(**filled_in_template_args)
 
-    with open(os.path.join(html_folder, html_fn), "w", newline="") as write_file:
+    with open(
+        os.path.join(html_folder, html_fn), "w", encoding="utf-8", newline=""
+    ) as write_file:
         write_file.write(filled_in_template)

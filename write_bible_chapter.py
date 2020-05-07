@@ -1,5 +1,6 @@
 import csv
 import os
+import re
 
 from get_bible_data import get_bible_books, get_book_nums, get_verse_counts
 from utils import get_base_template_args, write_html
@@ -25,6 +26,34 @@ def get_top_7_words(csv_path):
             if count == 7:  # We only care about 7 rows of data
                 break
     return top_7_words
+
+
+def get_bible_chapter_text(book_num, book_abbrev, chapter):
+
+    book_int = (int(book_num) + 1) if (int(book_num) <= 39) else (int(book_num) + 30)
+    revised_book_num = str(book_int).zfill(3)
+    chapter_num = chapter.zfill(3 if (book_abbrev == "Psa") else 2)
+    chapter_file = (
+        f"eng-kjv_{revised_book_num}_{book_abbrev.upper()}_{chapter_num}_read.txt"
+    )
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    source_files = os.path.join(script_dir, "downloads", "kjv_chapter_files")
+    chapter_path = os.path.join(source_files, chapter_file)
+
+    with open(chapter_path, "r", encoding="utf-8", newline="") as read_file:
+        # bible_chapter_text = read_file.read()
+        lines = read_file.readlines()
+
+    for line in lines:
+        line = re.sub("^(.+)", "........\\1", line)
+        # TODO: FInd some alternative to this that works.
+        # (It properly indents the Bible chapter text in the HTML file.)
+        line = line.strip()
+
+    bible_chapter_text = "".join(lines[2:])
+    bible_chapter_text = bible_chapter_text.replace("¶ ", "        </p>\n        <p>\n")
+
+    return bible_chapter_text
 
 
 def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
@@ -54,6 +83,8 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
         description, ",".join(keywords), description
     )
 
+    bible_chapter_text = get_bible_chapter_text(book_num, book_abbrev, chapter)
+
     new_template_args = {
         "style_sheet_path": r"../style.css",
         "bible_book_name": bible_book_names[book_abbrev],
@@ -63,6 +94,7 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
         "words_in_bible": "790,663",
         "words_in_chapter": words_in_chapter,
         "csv_file_name": csv_file_name,
+        "bible_chapter_text": bible_chapter_text,
         "rows": rows,
     }
 

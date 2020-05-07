@@ -8,6 +8,7 @@ import json
 import os
 from shutil import copyfile
 
+from get_and_unzip_kjv import get_and_unzip_kjv
 from get_bible_data import get_book_nums, get_bible_books
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
 from write_site_index import write_site_index
@@ -196,6 +197,7 @@ def write_chapter_files(
 
 def write_all_site_files():
 
+    get_and_unzip_kjv()  # Download KJV chapter files, if needed
     write_site_index()  # Write master index file
     write_examples()
 
@@ -247,6 +249,7 @@ def write_all_site_files():
             )
             if book_abbrev != previous_book_abbrev:
                 write_bible_book_index(book_abbrev)
+                print(f"Writing files for {book_abbrev}.")
             write_chapter_files(
                 words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
             )
