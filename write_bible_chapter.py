@@ -41,17 +41,15 @@ def get_bible_chapter_text(book_num, book_abbrev, chapter):
     chapter_path = os.path.join(source_files, chapter_file)
 
     with open(chapter_path, "r", encoding="utf-8", newline="") as read_file:
-        # bible_chapter_text = read_file.read()
         lines = read_file.readlines()
 
+    lines2 = []
     for line in lines:
-        line = re.sub("^(.+)", "........\\1", line)
-        # TODO: FInd some alternative to this that works.
-        # (It properly indents the Bible chapter text in the HTML file.)
-        line = line.strip()
-
-    bible_chapter_text = "".join(lines[2:])
-    bible_chapter_text = bible_chapter_text.replace("¶ ", "        </p>\n        <p>\n")
+        line = line.replace("¶ ", "\n\n</p>\n            <p>\n                ")
+        line = re.sub("(^[A-Za-z].+)", "\n                \\1", line.strip())
+        lines2.append(line)
+    bible_chapter_text = "                " + "".join(lines2[2:]).strip()
+    #   The 1st 2 lines of the file aren't part of the Biblical text
 
     return bible_chapter_text
 

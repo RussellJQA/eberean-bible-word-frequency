@@ -3,7 +3,7 @@
         <link rel="stylesheet" type="text/css" href="../style_freq_tables.css">
         <main id="main_content" role="main" tabindex="-1">
         <h2>${words_in_chapter} word occurrences in ${bible_book_name} ${chapter} in the KJV (${words_in_bible} word occurrences in the entire KJV):</h2>
-        <p>For an explanation of what information is in the linked-to .csv file and in the table below, see the Home page .</p>
+        <p>For an explanation of what information is in the linked-to .csv file and in the sortable (by any column) table below, see the Home page.</p>
         
         <nav>
             <a href='../index.html'>Home: KJV Bible Chapter Word Frequencies</a><br>
@@ -13,9 +13,9 @@
 
         <details>
             <summary>Read ${bible_book_name} ${chapter}</summary>
-        <p>
+            <p>
 ${bible_chapter_text}
-        </p>
+            </p>
         </details><br>
 
         <!-- Table sorting uses the following script, as explained at
