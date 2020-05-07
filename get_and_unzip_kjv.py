@@ -96,7 +96,7 @@ def get_and_unzip_kjv():
 
     # .zip file linked to at https://ebible.org/kjv/
     if get_zip_data(
-        r"https://ebible.org/Scriptures/", "eng-kjv_readaloud.zip", "downloads"
+        "https://ebible.org/Scriptures/", "eng-kjv_readaloud.zip", "downloads"
     ):
         unzip_data("downloads", "eng-kjv_readaloud.zip", "kjv_chapter_files")
 

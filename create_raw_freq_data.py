@@ -150,7 +150,7 @@ def create_raw_freq_data():
 
 def get_word_frequency():
 
-    json_path = r"frequency_jsons\word_frequency.json"
+    json_path = os.path.join("frequency_jsons", "word_frequency.json")
     if not os.path.exists(json_path):
         create_raw_freq_data()
 

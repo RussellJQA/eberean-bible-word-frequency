@@ -23,7 +23,7 @@ def write_site_index():
     bible_books = get_bible_books()
     book_nums = get_book_nums()
     new_template_args = {
-        "style_sheet_path": r"./style.css",
+        "resources_path": ".",
         "readme_html": readme_html,
         "bible_books": bible_books,
         "book_nums": book_nums,

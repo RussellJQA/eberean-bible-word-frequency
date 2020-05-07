@@ -14,9 +14,9 @@ def get_base_template_args(description, keywords, title_h1):
         "keywords": keywords,
         "datestamp": datestamp,
         "author": "Russell Johnson",
-        "site": "RussellJ.heliohost.org",
+        "site": "RussellJQA/eberean-bible-word-frequency",
         "year": datestamp[0:4],
-        "og_site_name": "RussellJ",
+        "og_site_name": "RussellJQA/eberean-bible-word-frequency",
         "title_h1": title_h1,
     }
 

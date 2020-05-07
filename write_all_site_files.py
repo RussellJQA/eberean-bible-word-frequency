@@ -209,6 +209,7 @@ def write_all_site_files():
     copyfile(
         "style_freq_tables.css", os.path.join(html_folder, "style_freq_tables.css")
     )
+    copyfile("GitHub-Mark-64px.png", os.path.join(html_folder, "GitHub-Mark-64px.png"))
 
     # TODO:
     # Refactor using a function which instead of calculating word frequencies in a chapter
@@ -256,7 +257,7 @@ def write_all_site_files():
 
             previous_book_abbrev = book_abbrev
 
-    write_fn = os.path.join(frequency_jsons, r"chapters_relative_word_frequency.json")
+    write_fn = os.path.join(frequency_jsons, "chapters_relative_word_frequency.json")
     with open(write_fn, "w") as write_file:
         json.dump(chapters_relative_word_frequency, write_file, indent=4)
 

@@ -96,7 +96,7 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
     bible_chapter_text = get_bible_chapter_text(book_num, book_abbrev, chapter)
 
     new_template_args = {
-        "style_sheet_path": r"../style.css",
+        "resources_path": "..",
         "bible_book_name": bible_book_names[book_abbrev],
         "book_abbrev": book_abbrev,
         "chapters_in_book": get_verse_counts()[f"{book_abbrev} {chapter}"],

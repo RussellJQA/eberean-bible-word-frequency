@@ -30,7 +30,7 @@ def write_examples():
     #   It will fail HTML validation by the W3C's [Nu Html Checker](https://validator.w3.org/)
     #   Replace it with CSS styling.
     new_template_args = {
-        "style_sheet_path": r"./style.css",
+        "resources_path": ".",
         "examples_html": examples_html,
     }
 

@@ -39,7 +39,7 @@ def get_web_json_data(web_folder, json_fn, download_folder):
 def get_bible_books():
 
     web_folder = (
-        r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
     )
     return get_web_json_data(web_folder, "bible_books.json", "downloads")
 
@@ -47,7 +47,7 @@ def get_bible_books():
 def get_book_nums():
 
     web_folder = (
-        r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
     )
     return get_web_json_data(web_folder, "book_numbers.json", "downloads")
 
@@ -55,7 +55,7 @@ def get_book_nums():
 def get_verse_counts():
 
     web_folder = (
-        r"https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
+        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
     )
     return get_web_json_data(web_folder, "verse_counts_by_chapter.json", "downloads")
 
