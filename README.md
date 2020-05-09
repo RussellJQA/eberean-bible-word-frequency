@@ -40,4 +40,4 @@
 	Each page also links to a downloadable .csv file containing the same information.
 </p>
 
-For more information about relative frequencies, see our [Examples](examples.md). 
+For more information about relative frequencies, see our [examples](examples.md). 

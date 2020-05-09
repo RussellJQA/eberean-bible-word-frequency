@@ -63,19 +63,17 @@ def get_verse_counts():
 def main():
 
     bible_books = get_bible_books()
-    if len(bible_books) != 66:
-        print(
-            f"The Bible has 66 books, but 'bible_books' has {len(bible_books)} books."
-        )
+    if (books := len(bible_books)) != 66:
+        print(f"The Bible has 66 books, but 'bible_books' has {books} books.")
 
     book_nums = get_book_nums()
-    if len(book_nums) != 66:
-        print(f"The Bible has 66 books, but 'book_nums' has {len(book_nums)} books.")
+    if (books := len(book_nums)) != 66:
+        print(f"The Bible has 66 books, but 'book_nums' has {books} books.")
 
     verse_counts_by_chapter = get_verse_counts()
-    if len(verse_counts_by_chapter) != 1189:
+    if (chapters := len(verse_counts_by_chapter)) != 1189:
         print(
-            f"The Bible has 1,189 chapters, but 'verse_counts_by_chapter' has {len(verse_counts_by_chapter)} chapters."
+            f"The Bible has 1,189 chapters, but 'verse_counts_by_chapter' has {chapters} chapters."
         )
 
 

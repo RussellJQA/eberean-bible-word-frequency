@@ -9,17 +9,12 @@ import os
 from shutil import copyfile
 
 from get_and_unzip_kjv import get_and_unzip_kjv
-from get_bible_data import get_book_nums, get_bible_books
+from get_bible_data import get_book_nums
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
 from write_site_index import write_site_index
 from write_examples import write_examples
 from write_bible_book_index import write_bible_book_index
 from write_bible_chapter import write_bible_chapter
-
-bible_books = get_bible_books()
-book_lengths = {
-    bible_books[bible_book][0]: bible_books[bible_book][1] for bible_book in bible_books
-}
 
 
 def round_4_to_6_sigfigs(num):
@@ -52,8 +47,8 @@ def sort_desc_by_simple_desc_by_weighted_asc_by_word(element):
 def handle_book_folder(html_folder, book_folder, previous_book_abbrev, book_abbrev):
 
     if previous_book_abbrev != book_abbrev:
-        book_nums = get_book_nums()
-        book_num_name = f"{str(book_nums[book_abbrev]).zfill(2)}-{book_abbrev.lower()}"
+        zfilled_book_num = str(get_book_nums()[book_abbrev]).zfill(2)
+        book_num_name = f"{zfilled_book_num}-{book_abbrev.lower()}"
         book_folder = os.path.join(html_folder, book_num_name)
         if not os.path.isdir(book_folder):
             os.mkdir(book_folder)
@@ -220,8 +215,8 @@ def build_web_site():
     if not os.path.isdir(images_folder):
         os.mkdir(images_folder)
     copyfile(
-        "images/GitHub-Mark-64px.png",
-        os.path.join(images_folder, "GitHub-Mark-64px.png"),
+        "images/github-mark-64px.png",
+        os.path.join(images_folder, "github-mark-64px.png"),
     )
 
     # TODO:

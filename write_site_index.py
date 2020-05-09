@@ -21,12 +21,16 @@ def write_site_index():
     #   GitHub repos's README.md file points to GitHub repos's examples.md file
     #   Update to point to corresponding examples.html file
     bible_books = get_bible_books()
+    book_abbrevs = {
+        bible_book: bible_books[bible_book][0] for bible_book in bible_books
+    }
     book_nums = get_book_nums()
     new_template_args = {
         "images_path": "./images",
         "styles_path": "./styles",
         "readme_html": readme_html,
         "bible_books": bible_books,
+        "book_abbrevs": book_abbrevs,
         "book_nums": book_nums,
     }
 
