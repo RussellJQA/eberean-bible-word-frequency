@@ -34,7 +34,7 @@ def write_examples():
         "examples_html": examples_html,
     }
 
-    html_folder = os.path.join(os.getcwd(), "HTML")
+    html_folder = os.path.join(os.getcwd(), "public_html")
     write_html(
         base_template_args,
         new_template_args,

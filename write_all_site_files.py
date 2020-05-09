@@ -53,7 +53,7 @@ def handle_book_folder(html_folder, book_folder, previous_book_abbrev, book_abbr
 
     if previous_book_abbrev != book_abbrev:
         book_nums = get_book_nums()
-        book_num_name = f"{str(book_nums[book_abbrev]).zfill(2)}_{book_abbrev}"
+        book_num_name = f"{str(book_nums[book_abbrev]).zfill(2)}-{book_abbrev.lower()}"
         book_folder = os.path.join(html_folder, book_num_name)
         if not os.path.isdir(book_folder):
             os.mkdir(book_folder)
@@ -189,25 +189,27 @@ def write_chapter_files(
     book_abbrev = key[0:3]
     chapter = key[4:]
 
-    csv_fn = os.path.join(book_folder, f"{book_abbrev}{chapter.zfill(3)}_word_freq.csv")
+    csv_fn = os.path.join(
+        book_folder, f"{book_abbrev.lower()}{chapter.zfill(3)}-word-freq.csv"
+    )
     write_chapter_csv(words_in_bible, key, csv_fn, relative_word_frequency)
 
     write_chapter_html(book_abbrev, chapter, relative_word_frequency)
 
 
-def write_all_site_files():
+def build_web_site():
 
     get_and_unzip_kjv()  # Download KJV chapter files, if needed
     write_site_index()  # Write master index file
     write_examples()
 
-    html_folder = os.path.join(os.getcwd(), "HTML")
+    html_folder = os.path.join(os.getcwd(), "public_html")
     if not os.path.isdir(html_folder):
         os.mkdir(html_folder)
 
     copyfile("style.css", os.path.join(html_folder, "style.css"))
     copyfile(
-        "style_freq_tables.css", os.path.join(html_folder, "style_freq_tables.css")
+        "style_freq_tables.css", os.path.join(html_folder, "style-freq-tables.css")
     )
     copyfile("GitHub-Mark-64px.png", os.path.join(html_folder, "GitHub-Mark-64px.png"))
 
@@ -263,7 +265,7 @@ def write_all_site_files():
 
 
 def main():
-    write_all_site_files()
+    build_web_site()
 
 
 if __name__ == "__main__":

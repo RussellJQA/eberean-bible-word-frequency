@@ -5,6 +5,6 @@
             <a href='../index.html'>Home: KJV Bible Chapter Word Frequencies</a><br><br>
         </nav>
         % for chapter in range (1, chapters_in_book+1):
-        <a href='${book_abbrev}${str(chapter).zfill(3)}_word_freq.html'>${bible_book_name} ${str(chapter).zfill(3)}</a><br>
+        <a href='${book_abbrev.lower()}${str(chapter).zfill(3)}-word-freq.html'>${bible_book_name} ${str(chapter).zfill(3)}</a><br>
         % endfor
     </main>

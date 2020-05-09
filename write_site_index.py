@@ -29,7 +29,7 @@ def write_site_index():
         "book_nums": book_nums,
     }
 
-    html_folder = os.path.join(os.getcwd(), "HTML")
+    html_folder = os.path.join(os.getcwd(), "public_html")
     write_html(
         base_template_args,
         new_template_args,

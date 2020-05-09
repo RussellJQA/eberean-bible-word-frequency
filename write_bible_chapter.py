@@ -82,10 +82,12 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
     ]
 
     book_num = f"{str(get_book_nums()[book_abbrev]).zfill(2)}"
-    html_folder = os.path.join(os.getcwd(), "HTML", f"{book_num}_{book_abbrev}")
+    html_folder = os.path.join(
+        os.getcwd(), "public_html", f"{book_num}-{book_abbrev.lower()}"
+    )
     if not os.path.isdir(html_folder):
         os.mkdir(html_folder)
-    csv_file_name = f"{book_abbrev}{str(chapter).zfill(3)}_word_freq.csv"
+    csv_file_name = f"{book_abbrev.lower()}{str(chapter).zfill(3)}-word-freq.csv"
     keywords += get_top_7_words(os.path.join(html_folder, csv_file_name))
     # Include top 7 words in the page's keywords metatag
 
@@ -113,7 +115,7 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
         new_template_args,
         "bible_chapter.mako",
         html_folder,
-        f"{book_abbrev}{chapter.zfill(3)}_word_freq.html",
+        f"{book_abbrev.lower()}{chapter.zfill(3)}-word-freq.html",
     )
 
 

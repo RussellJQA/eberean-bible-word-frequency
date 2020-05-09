@@ -32,13 +32,15 @@ def write_bible_book_index(book_abbrev):
 
     book_nums = get_book_nums()
     book_num = f"{str(book_nums[book_abbrev]).zfill(2)}"
-    html_folder = os.path.join(os.getcwd(), "HTML", f"{book_num}_{book_abbrev}")
+    html_folder = os.path.join(
+        os.getcwd(), "public_html", f"{book_num}-{book_abbrev.lower()}"
+    )
     write_html(
         base_template_args,
         new_template_args,
         "bible_book_index.mako",
         html_folder,
-        f"{book_abbrev}_index.html",
+        f"{book_abbrev.lower()}-index.html",
     )
 
 
