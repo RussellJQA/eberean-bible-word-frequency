@@ -24,7 +24,8 @@ def write_bible_book_index(book_abbrev):
     )
 
     new_template_args = {
-        "resources_path": "..",
+        "images_path": "../images",
+        "styles_path": "../styles",
         "bible_book_name": bible_book_names[book_abbrev],
         "book_abbrev": book_abbrev,
         "chapters_in_book": book_lengths[book_abbrev],
@@ -38,7 +39,7 @@ def write_bible_book_index(book_abbrev):
     write_html(
         base_template_args,
         new_template_args,
-        "bible_book_index.mako",
+        "templates/bible_book_index.mako",
         html_folder,
         f"{book_abbrev.lower()}-index.html",
     )

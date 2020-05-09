@@ -207,11 +207,22 @@ def build_web_site():
     if not os.path.isdir(html_folder):
         os.mkdir(html_folder)
 
-    copyfile("style.css", os.path.join(html_folder, "style.css"))
+    styles_folder = os.path.join(html_folder, "styles")
+    if not os.path.isdir(styles_folder):
+        os.mkdir(styles_folder)
+    copyfile("styles/style.css", os.path.join(styles_folder, "style.css"))
     copyfile(
-        "style_freq_tables.css", os.path.join(html_folder, "style-freq-tables.css")
+        "styles/style_freq_tables.css",
+        os.path.join(styles_folder, "style-freq-tables.css"),
     )
-    copyfile("GitHub-Mark-64px.png", os.path.join(html_folder, "GitHub-Mark-64px.png"))
+
+    images_folder = os.path.join(html_folder, "images")
+    if not os.path.isdir(images_folder):
+        os.mkdir(images_folder)
+    copyfile(
+        "images/GitHub-Mark-64px.png",
+        os.path.join(images_folder, "GitHub-Mark-64px.png"),
+    )
 
     # TODO:
     # Refactor using a function which instead of calculating word frequencies in a chapter

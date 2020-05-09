@@ -16,7 +16,7 @@
     <meta property="og:site_name" content="${og_site_name}">
     <title>${title_h1}</title>
 
-    <link rel="stylesheet" type="text/css" href="${resources_path}/style.css">
+    <link rel="stylesheet" type="text/css" href="${styles_path}/style.css">
     ##  I had originally just put the style sheet in the root.
     ##  That worked fine except if I just opened a downloaded copy of the Web site,
     ##  and opened 1 of its pages directly.
@@ -32,7 +32,7 @@
     <footer role="contentinfo"><%block name="footer">
         <p><a href="#top">Back to Top</a></p>
         <!-- ## In HTML5, no 'top' anchor is needed -->
-        <p><a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${resources_path}/GitHub-Mark-64px.png" height="16" width="16" alt="GitHub repository">Website source code</a></p>
+        <p><a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${images_path}/GitHub-Mark-64px.png" height="16" width="16" alt="GitHub repository">Website source code</a></p>
         <p>Copyright &copy; ${year} by ${author}</p>
     </%block></footer>
 </body>

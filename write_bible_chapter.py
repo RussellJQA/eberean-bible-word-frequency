@@ -98,7 +98,8 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
     bible_chapter_text = get_bible_chapter_text(book_num, book_abbrev, chapter)
 
     new_template_args = {
-        "resources_path": "..",
+        "images_path": "../images",
+        "styles_path": "../styles",
         "bible_book_name": bible_book_names[book_abbrev],
         "book_abbrev": book_abbrev,
         "chapters_in_book": get_verse_counts()[f"{book_abbrev} {chapter}"],
@@ -113,7 +114,7 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
     write_html(
         base_template_args,
         new_template_args,
-        "bible_chapter.mako",
+        "templates/bible_chapter.mako",
         html_folder,
         f"{book_abbrev.lower()}{chapter.zfill(3)}-word-freq.html",
     )

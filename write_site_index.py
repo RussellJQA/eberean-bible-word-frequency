@@ -23,7 +23,8 @@ def write_site_index():
     bible_books = get_bible_books()
     book_nums = get_book_nums()
     new_template_args = {
-        "resources_path": ".",
+        "images_path": "./images",
+        "styles_path": "./styles",
         "readme_html": readme_html,
         "bible_books": bible_books,
         "book_nums": book_nums,
@@ -33,7 +34,7 @@ def write_site_index():
     write_html(
         base_template_args,
         new_template_args,
-        "site_index.mako",
+        "templates/site_index.mako",
         html_folder,
         "index.html",
     )

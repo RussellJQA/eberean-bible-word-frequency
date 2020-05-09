@@ -30,7 +30,8 @@ def write_examples():
     #   It will fail HTML validation by the W3C's [Nu Html Checker](https://validator.w3.org/)
     #   Replace it with CSS styling.
     new_template_args = {
-        "resources_path": ".",
+        "images_path": "./images",
+        "styles_path": "./styles",
         "examples_html": examples_html,
     }
 
@@ -38,7 +39,7 @@ def write_examples():
     write_html(
         base_template_args,
         new_template_args,
-        "examples.mako",
+        "templates/examples.mako",
         html_folder,
         "examples.html",
     )
