@@ -1,22 +1,7 @@
 import json
 import os
 
-import requests  # pip install requests
-
-
-def get_binary_file_via_from_web(
-    web_folder, binary_file, download_folder, re_download=False
-):
-
-    download_file = os.path.join(download_folder, binary_file)
-    if re_download or not os.path.exists(download_file):
-        binary_url = web_folder + binary_file
-        resp = requests.get(binary_url)
-        if resp.status_code == 200:
-            with open(download_file, "wb") as write_file:
-                write_file.write(resp.content)
-        else:
-            print(f"Download failed with status code: {resp.status_code}")
+from utils import get_binary_file_via_from_web
 
 
 def get_web_json_data(web_folder, json_fn, download_folder):

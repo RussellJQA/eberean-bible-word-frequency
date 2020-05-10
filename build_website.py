@@ -8,6 +8,7 @@ import json
 import os
 from shutil import copyfile
 
+from utils import get_binary_file_via_from_web, unzip_data
 from get_and_unzip_kjv import get_and_unzip_kjv
 from get_bible_data import get_book_nums
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
@@ -47,9 +48,11 @@ def sort_desc_by_simple_desc_by_weighted_asc_by_word(element):
 def handle_book_folder(html_folder, book_folder, previous_book_abbrev, book_abbrev):
 
     if previous_book_abbrev != book_abbrev:
+
         zfilled_book_num = str(get_book_nums()[book_abbrev]).zfill(2)
         book_num_name = f"{zfilled_book_num}-{book_abbrev.lower()}"
         book_folder = os.path.join(html_folder, book_num_name)
+
         if not os.path.isdir(book_folder):
             os.mkdir(book_folder)
 
@@ -194,10 +197,6 @@ def write_chapter_files(
 
 def build_web_site():
 
-    get_and_unzip_kjv()  # Download KJV chapter files, if needed
-    write_site_index()  # Write master index file
-    write_examples()
-
     html_folder = os.path.join(os.getcwd(), "public_html")
     if not os.path.isdir(html_folder):
         os.mkdir(html_folder)
@@ -211,13 +210,26 @@ def build_web_site():
         os.path.join(styles_folder, "style-freq-tables.css"),
     )
 
-    images_folder = os.path.join(html_folder, "images")
-    if not os.path.isdir(images_folder):
-        os.mkdir(images_folder)
+    github_mark_path = "downloads/GitHub-Mark/PNG/GitHub-Mark-64px.png"
+    if not os.path.exists(github_mark_path):
+        get_binary_file_via_from_web(
+            "https://github-media-downloads.s3.amazonaws.com/",
+            "GitHub-Mark.zip",
+            "downloads",
+        )
+        unzip_data("downloads", "GitHub-Mark.zip")
+
+        images_folder = os.path.join(html_folder, "images")
+        if not os.path.isdir(images_folder):
+            os.mkdir(images_folder)
     copyfile(
-        "images/github-mark-64px.png",
-        os.path.join(images_folder, "github-mark-64px.png"),
+        github_mark_path, os.path.join(images_folder, "github-mark-64px.png"),
     )
+
+    get_and_unzip_kjv()  # Download KJV chapter files, if needed
+
+    write_site_index()  # Write master index file
+    write_examples()
 
     # TODO:
     # Refactor using a function which instead of calculating word frequencies in a chapter

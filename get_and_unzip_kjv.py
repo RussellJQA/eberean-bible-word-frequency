@@ -32,32 +32,12 @@ You may copy the King James Version of the Holy Bible freely. If you find a typo
 
 import os
 import re
-import zipfile
 
+from utils import unzip_data
 from get_bible_data import get_binary_file_via_from_web
 
 
-def get_zip_data(web_folder, zip_fn, download_folder):
-
-    zip_downloaded = True
-
-    if not os.path.isdir(download_folder):
-        os.mkdir(download_folder)
-
-    zip_path = os.path.join(download_folder, zip_fn)
-    if os.path.exists(zip_path):
-        response = input(
-            f"\nFile {zip_fn} already exists, do you want to download it anyway [y/n, default: y]?: "
-        ).lower()
-        if response != "y":
-            zip_downloaded = False
-            return zip_downloaded
-    get_binary_file_via_from_web(web_folder, zip_fn, download_folder, re_download=True)
-
-    return zip_downloaded
-
-
-def is_desired_file(filename):
+def is_desired_kjv_file(filename):
 
     apocryphal_pattern1 = "eng-kjv_04[123456789]_[3A-Z]{3,3}_[0-9]{2,2}_read.txt"
     match1 = re.search(apocryphal_pattern1, filename)
@@ -72,38 +52,38 @@ def is_desired_file(filename):
     return not (match1 or match2 or match3)
 
 
-def unzip_data(download_folder, zip_fn, unzip_subfolder):
-
-    unzip_path = os.path.join(download_folder, unzip_subfolder)
-    if not os.path.isdir(unzip_path):
-        os.mkdir(unzip_path)
-
-    with zipfile.ZipFile(os.path.join(download_folder, zip_fn), "r") as zip_ref:
-
-        file_list = zip_ref.namelist()
-        print(f"\nZip file {zip_fn} contains {len(file_list)} archived files.")
-
-        desired_files = [file for file in file_list if is_desired_file(file)]
-        print(f"Unzipping the {len(desired_files)} desired files.")
-        zip_ref.extractall(unzip_path, desired_files)
-
-
 def get_and_unzip_kjv():
 
     """
-    If a new .zip file is downloaded, then un-zip it
+    If KJV .zip file not yet downloaded or user (when prompted) requests to download it:
+        Download it
+        Unzip it
     """
 
-    # .zip file linked to at https://ebible.org/kjv/
-    if get_zip_data(
-        "https://ebible.org/Scriptures/", "eng-kjv_readaloud.zip", "downloads"
-    ):
-        unzip_data("downloads", "eng-kjv_readaloud.zip", "kjv_chapter_files")
+    download_folder = "downloads"
+    if not os.path.isdir(download_folder):
+        os.mkdir(download_folder)
+    zip_fn = "eng-kjv_readaloud.zip"
+    zip_path = os.path.join(download_folder, zip_fn)
 
-    # Un-zipping un-zips 1191 files:
-    #   1,189 KJV Bible chapter files
-    #   copr.htm                        copyright info (as extracted from above)
-    #   eng-kjv_000_000_000_read.txt    a README.txt file
+    prompt = f"\nFile {zip_fn} already exists, do you want to download it anyway [y/n, default: y]?: "
+    if (not os.path.exists(zip_path)) or ((input(prompt)).lower() == "y"):
+        get_binary_file_via_from_web(
+            "https://ebible.org/Scriptures/",
+            zip_fn,
+            download_folder,
+            force_download=True,
+        )
+        unzip_data(
+            "downloads",
+            "eng-kjv_readaloud.zip",
+            "kjv_chapter_files",
+            is_desired_kjv_file,
+        )
+        # Un-zipping un-zips 1191 files:
+        #   1,189 KJV Bible chapter files
+        #   copr.htm                        copyright info (as extracted from above)
+        #   eng-kjv_000_000_000_read.txt    a README.txt file
 
 
 def main():
