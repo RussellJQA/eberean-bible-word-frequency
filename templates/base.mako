@@ -1,6 +1,6 @@
 ## base.mako
 <!doctype html>
-<html lang='en'>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -31,7 +31,7 @@
     ${self.body()}
     <footer role="contentinfo"><%block name="footer">
         <p><a href="#top">Back to Top</a></p>
-        <!-- ## In HTML5, no 'top' anchor is needed -->
+        <!-- ## In HTML5, no "top" anchor is needed -->
         <p><a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${images_path}/github-mark-64px.png" height="16" width="16" alt="GitHub repository">Website source code</a></p>
         <p>Copyright &copy; ${year} by ${author}</p>
     </%block></footer>

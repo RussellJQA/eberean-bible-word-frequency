@@ -6,7 +6,7 @@
         <p>For an explanation of what information is in the linked-to .csv file and in the sortable (by any column) table below, see the Home page.</p>
         
         <nav>
-            <a href='../index.html'>Home: KJV Bible Chapter Word Frequencies</a><br>
+            <a href="../index.html">Home: KJV Bible Chapter Word Frequencies</a><br>
             <a href="${book_abbrev.lower()}-index.html">${bible_book_name}</a><br>
             <a href="${csv_file_name}" target="_blank" type="text/csv">Open ${csv_file_name} in new tab or window</a><br><br>
         </nav>

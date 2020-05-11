@@ -5,6 +5,21 @@ from get_bible_data import get_bible_books, get_book_nums
 from utils import get_base_template_args, write_html
 
 
+def get_bible_book_index_hrefs():
+
+    bible_book_index_hrefs = {}
+
+    bible_books = get_bible_books()
+    for bible_book in bible_books:
+        book_abbrev = bible_books[bible_book][0]
+        book_num = str(get_book_nums()[book_abbrev]).zfill(2)
+        bible_book_index_hrefs[
+            bible_book
+        ] = f"{book_num}-{book_abbrev.lower()}/{book_abbrev.lower()}-index.html"
+
+    return bible_book_index_hrefs
+
+
 def write_site_index():
 
     description = "KJV Bible Chapter Word Frequencies"
@@ -20,18 +35,12 @@ def write_site_index():
     readme_html = readme_html.replace("examples.md", "examples.html")
     #   GitHub repos's README.md file points to GitHub repos's examples.md file
     #   Update to point to corresponding examples.html file
-    bible_books = get_bible_books()
-    book_abbrevs = {
-        bible_book: bible_books[bible_book][0] for bible_book in bible_books
-    }
-    book_nums = get_book_nums()
+    bible_book_index_hrefs = get_bible_book_index_hrefs()
     new_template_args = {
         "images_path": "./images",
         "styles_path": "./styles",
         "readme_html": readme_html,
-        "bible_books": bible_books,
-        "book_abbrevs": book_abbrevs,
-        "book_nums": book_nums,
+        "bible_book_index_hrefs": bible_book_index_hrefs,
     }
 
     html_folder = os.path.join(os.getcwd(), "public_html")
