@@ -3,7 +3,7 @@ import json
 import os.path
 import re
 
-from get_and_unzip_kjv import get_and_unzip_kjv
+from get_downloads import get_downloads
 
 
 def get_full_ref(chapter_file):
@@ -123,7 +123,7 @@ def create_raw_freq_data():
     script_dir = os.path.dirname(os.path.realpath(__file__))
     source_files = os.path.join(script_dir, "downloads", "kjv_chapter_files")
 
-    get_and_unzip_kjv()  # Download KJV chapter files, if needed
+    get_downloads()  # Download KJV chapter files, if needed
     kjv_chapter_files = sorted(glob.glob(os.path.join(source_files, "*.txt")))
     # sorted() because glob() may return the list in an arbitrary order
 

@@ -2,6 +2,7 @@ import csv
 import os
 import re
 
+from get_downloads import get_downloads
 from get_bible_data import get_bible_books, get_book_nums, get_verse_counts
 from utils import get_base_template_args, write_html
 
@@ -121,6 +122,28 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
 
 
 def main():
+
+    gen001_word_freq = """word,numInChap,numInKjv,simpleRelFreq,weightedRelFreq
+TOTAL (Gen 1),797,790663
+whales,1,1,790663,992.0
+yielding,5,7,564759,712.6
+"""
+    html_folder = os.path.join(os.getcwd(), "public_html")
+    if not os.path.isdir(html_folder):
+        os.mkdir(html_folder)
+    chapter_folder = os.path.join(html_folder, "01-gen")
+    if not os.path.isdir(chapter_folder):
+        os.mkdir(chapter_folder)
+
+    with open(
+        os.path.join(chapter_folder, "gen001-word-freq.csv"),
+        "w",
+        encoding="utf-8",
+        newline="",
+    ) as write_file:
+        write_file.write(gen001_word_freq)
+
+    get_downloads()
 
     book_abbrev = "Gen"
     chapter = "1"

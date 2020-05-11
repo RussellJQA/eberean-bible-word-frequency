@@ -32,6 +32,7 @@ You may copy the King James Version of the Holy Bible freely. If you find a typo
 
 import os
 import re
+from shutil import copyfile
 
 from utils import unzip_data
 from get_bible_data import get_binary_file_via_from_web
@@ -52,7 +53,7 @@ def is_desired_kjv_file(filename):
     return not (match1 or match2 or match3)
 
 
-def get_and_unzip_kjv():
+def get_kjv():
 
     """
     If KJV .zip file not yet downloaded or user (when prompted) requests to download it:
@@ -86,9 +87,56 @@ def get_and_unzip_kjv():
         #   eng-kjv_000_000_000_read.txt    a README.txt file
 
 
+def get_github_mark(html_folder):
+
+    github_mark_path = "downloads/GitHub-Mark/PNG/GitHub-Mark-64px.png"
+    if not os.path.exists(github_mark_path):
+        get_binary_file_via_from_web(
+            "https://github-media-downloads.s3.amazonaws.com/",
+            "GitHub-Mark.zip",
+            "downloads",
+        )
+        unzip_data("downloads", "GitHub-Mark.zip")
+
+    if not os.path.isdir(html_folder):
+        os.mkdir(html_folder)
+    images_folder = os.path.join(html_folder, "images")
+    if not os.path.isdir(images_folder):
+        os.mkdir(images_folder)
+    copyfile(
+        github_mark_path, os.path.join(images_folder, "github-mark-64px.png"),
+    )
+
+
+def get_sorttable_js(html_folder):
+
+    sorttable_js_path = "downloads/sorttable.js"
+    if not os.path.exists(sorttable_js_path):
+        get_binary_file_via_from_web(
+            "https://www.kryogenix.org/code/browser/sorttable/",
+            "sorttable.js",
+            "downloads",
+        )
+
+    if not os.path.isdir(html_folder):
+        os.mkdir(html_folder)
+    scripts_folder = os.path.join(html_folder, "scripts")
+    if not os.path.isdir(scripts_folder):
+        os.mkdir(scripts_folder)
+    copyfile(sorttable_js_path, os.path.join(scripts_folder, "sorttable.js"))
+
+
+def get_downloads():
+
+    get_kjv()
+    html_folder = os.path.join(os.getcwd(), "public_html")
+    get_github_mark(html_folder)
+    get_sorttable_js(html_folder)
+
+
 def main():
 
-    get_and_unzip_kjv()
+    get_downloads()
 
 
 if __name__ == "__main__":

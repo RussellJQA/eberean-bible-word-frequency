@@ -8,8 +8,7 @@ import json
 import os
 from shutil import copyfile
 
-from utils import get_binary_file_via_from_web, unzip_data
-from get_and_unzip_kjv import get_and_unzip_kjv
+from get_downloads import get_downloads
 from get_bible_data import get_book_nums
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
 from write_site_index import write_site_index
@@ -184,7 +183,6 @@ def write_chapter_files(
     words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
 ):
 
-    book_abbrev = key[0:3]
     chapter = key[4:]
 
     csv_fn = os.path.join(
@@ -210,23 +208,7 @@ def build_web_site():
         os.path.join(styles_folder, "style-freq-tables.css"),
     )
 
-    github_mark_path = "downloads/GitHub-Mark/PNG/GitHub-Mark-64px.png"
-    if not os.path.exists(github_mark_path):
-        get_binary_file_via_from_web(
-            "https://github-media-downloads.s3.amazonaws.com/",
-            "GitHub-Mark.zip",
-            "downloads",
-        )
-        unzip_data("downloads", "GitHub-Mark.zip")
-
-        images_folder = os.path.join(html_folder, "images")
-        if not os.path.isdir(images_folder):
-            os.mkdir(images_folder)
-    copyfile(
-        github_mark_path, os.path.join(images_folder, "github-mark-64px.png"),
-    )
-
-    get_and_unzip_kjv()  # Download KJV chapter files, if needed
+    get_downloads()  # Download KJV chapter files, GitHub mark, and sorttable.js, if needed
 
     write_site_index()  # Write master index file
     write_examples()

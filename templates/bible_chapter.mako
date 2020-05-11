@@ -20,7 +20,7 @@ ${bible_chapter_text}
 
         <!-- Table sorting uses the following script, as explained at
         https://stackoverflow.com/questions/10683712/html-table-sort/51648529 -->
-        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+        <script src="../scripts/sorttable.js"></script>
         <table class="sortable">
             <thead>
                 <tr>

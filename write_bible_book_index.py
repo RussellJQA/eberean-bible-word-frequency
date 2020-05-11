@@ -29,14 +29,17 @@ def write_bible_book_index(book_abbrev):
     }
 
     book_num = f"{str(get_book_nums()[book_abbrev]).zfill(2)}"
-    html_folder = os.path.join(
-        os.getcwd(), "public_html", f"{book_num}-{book_abbrev.lower()}"
-    )
+    html_folder = os.path.join(os.getcwd(), "public_html")
+    if not os.path.isdir(html_folder):
+        os.mkdir(html_folder)
+    chapter_folder = os.path.join(html_folder, f"{book_num}-{book_abbrev.lower()}")
+    if not os.path.isdir(chapter_folder):
+        os.mkdir(chapter_folder)
     write_html(
         base_template_args,
         new_template_args,
         "templates/bible_book_index.mako",
-        html_folder,
+        chapter_folder,
         f"{book_abbrev.lower()}-index.html",
     )
 
