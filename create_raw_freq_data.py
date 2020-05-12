@@ -3,6 +3,7 @@ import json
 import os.path
 import re
 
+from utils import mkdir_if_not_isdir
 from get_downloads import get_downloads
 
 
@@ -93,8 +94,7 @@ def calc_and_write_word_frequency_files(frequency_lists_chapters):
                         word_frequency[word] = count
 
     output_folder = "frequency_jsons"
-    if not os.path.isdir(output_folder):
-        os.mkdir(output_folder)
+    mkdir_if_not_isdir(output_folder)
 
     # Write dict of KJV words, each paired (in a list) with its # of occurrences
     # {["a", 8282], ["aaron", 350], ["aaronites", 2], ... ["zuzims", 1]}

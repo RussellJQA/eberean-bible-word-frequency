@@ -34,7 +34,7 @@ import os
 import re
 from shutil import copyfile
 
-from utils import unzip_data
+from utils import mkdir_if_not_isdir, unzip_data
 from get_bible_data import get_binary_file_via_from_web
 
 
@@ -62,8 +62,7 @@ def get_kjv():
     """
 
     download_folder = "downloads"
-    if not os.path.isdir(download_folder):
-        os.mkdir(download_folder)
+    mkdir_if_not_isdir(download_folder)
     zip_fn = "eng-kjv_readaloud.zip"
     zip_path = os.path.join(download_folder, zip_fn)
 
@@ -98,11 +97,9 @@ def get_github_mark(html_folder):
         )
         unzip_data("downloads", "GitHub-Mark.zip")
 
-    if not os.path.isdir(html_folder):
-        os.mkdir(html_folder)
+    mkdir_if_not_isdir(html_folder)
     images_folder = os.path.join(html_folder, "images")
-    if not os.path.isdir(images_folder):
-        os.mkdir(images_folder)
+    mkdir_if_not_isdir(images_folder)
     copyfile(
         github_mark_path, os.path.join(images_folder, "github-mark-64px.png"),
     )
@@ -118,11 +115,9 @@ def get_sorttable_js(html_folder):
             "downloads",
         )
 
-    if not os.path.isdir(html_folder):
-        os.mkdir(html_folder)
+    mkdir_if_not_isdir(html_folder)
     scripts_folder = os.path.join(html_folder, "scripts")
-    if not os.path.isdir(scripts_folder):
-        os.mkdir(scripts_folder)
+    mkdir_if_not_isdir(scripts_folder)
     copyfile(sorttable_js_path, os.path.join(scripts_folder, "sorttable.js"))
 
 

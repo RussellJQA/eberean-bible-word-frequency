@@ -7,12 +7,17 @@ import zipfile
 import requests  # pip install requests
 
 
+def mkdir_if_not_isdir(folder):
+
+    if not os.path.isdir(folder):
+        os.mkdir(folder)
+
+
 def get_binary_file_via_from_web(
     web_folder, binary_file, download_folder, force_download=False
 ):
 
-    if not os.path.isdir(download_folder):
-        os.mkdir(download_folder)
+    mkdir_if_not_isdir(download_folder)
     download_file = os.path.join(download_folder, binary_file)
 
     if force_download or not os.path.exists(download_file):
@@ -34,8 +39,7 @@ def unzip_data(download_folder, zip_fn, unzip_subfolder=None, check_files=None):
         if unzip_subfolder is None
         else os.path.join(download_folder, unzip_subfolder)
     )
-    if not os.path.isdir(unzip_path):
-        os.mkdir(unzip_path)
+    mkdir_if_not_isdir(unzip_path)
 
     with zipfile.ZipFile(os.path.join(download_folder, zip_fn), "r") as zip_ref:
 
@@ -71,8 +75,7 @@ def get_base_template_args(description, keywords, title_h1):
 
 def write_html(base_template_args, new_template_args, mako_file, html_folder, html_fn):
 
-    if not os.path.isdir(html_folder):
-        os.mkdir(html_folder)
+    mkdir_if_not_isdir(html_folder)
 
     # Merge dictionaries
     filled_in_template_args = {**base_template_args, **new_template_args}

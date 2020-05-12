@@ -1,7 +1,7 @@
 import json
 import os
 
-from utils import get_binary_file_via_from_web
+from utils import mkdir_if_not_isdir, get_binary_file_via_from_web
 
 
 def get_web_json_data(web_folder, json_fn, download_folder):
@@ -9,9 +9,7 @@ def get_web_json_data(web_folder, json_fn, download_folder):
     """ Gets JSON data from the Web.
     """
 
-    if not os.path.isdir(download_folder):
-        os.mkdir(download_folder)
-
+    mkdir_if_not_isdir(download_folder)
     json_path = os.path.join(download_folder, json_fn)
     if not os.path.exists(json_path):
         get_binary_file_via_from_web(web_folder, json_fn, download_folder)

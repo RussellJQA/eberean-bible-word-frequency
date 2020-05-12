@@ -8,6 +8,7 @@ import json
 import os
 from shutil import copyfile
 
+from utils import mkdir_if_not_isdir
 from get_downloads import get_downloads
 from get_bible_data import get_book_nums
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
@@ -47,13 +48,11 @@ def sort_desc_by_simple_desc_by_weighted_asc_by_word(element):
 def handle_book_folder(html_folder, book_folder, previous_book_abbrev, book_abbrev):
 
     if previous_book_abbrev != book_abbrev:
-
         zfilled_book_num = str(get_book_nums()[book_abbrev]).zfill(2)
         book_num_name = f"{zfilled_book_num}-{book_abbrev.lower()}"
-        book_folder = os.path.join(html_folder, book_num_name)
 
-        if not os.path.isdir(book_folder):
-            os.mkdir(book_folder)
+        book_folder = os.path.join(html_folder, book_num_name)
+        mkdir_if_not_isdir(book_folder)
 
     return book_folder
 
@@ -106,9 +105,9 @@ def get_chapter_word_freqs(
     return chapter_word_freqs
 
 
-def get_relative_word_frequency(
-    words_in_bible, words_in_chapter, word_frequencies, word_frequency
-):
+def get_relative_word_frequency(words_in_bible, word_frequencies, word_frequency):
+
+    words_in_chapter = int(next(iter(word_frequencies)))
 
     relative_word_frequency = {}
     relative_word_frequency["TOTAL WORDS"] = [words_in_chapter]
@@ -193,21 +192,22 @@ def write_chapter_files(
     write_chapter_html(book_abbrev, chapter, relative_word_frequency)
 
 
-def build_web_site():
-
-    html_folder = os.path.join(os.getcwd(), "public_html")
-    if not os.path.isdir(html_folder):
-        os.mkdir(html_folder)
+def copy_styles(html_folder):
 
     styles_folder = os.path.join(html_folder, "styles")
-    if not os.path.isdir(styles_folder):
-        os.mkdir(styles_folder)
+    mkdir_if_not_isdir(styles_folder)
     copyfile("styles/style.css", os.path.join(styles_folder, "style.css"))
     copyfile(
         "styles/style_freq_tables.css",
         os.path.join(styles_folder, "style-freq-tables.css"),
     )
 
+
+def build_web_site():
+
+    html_folder = os.path.join(os.getcwd(), "public_html")
+    mkdir_if_not_isdir(html_folder)
+    copy_styles(html_folder)
     get_downloads()  # Download KJV chapter files, GitHub mark, and sorttable.js, if needed
 
     write_site_index()  # Write master index file
@@ -220,29 +220,26 @@ def build_web_site():
     # Such a function might be used for calculating (relative) word frequencies for the OT, NT,
     # individual book, daily readings, etc.
 
-    words_in_bible = 790663
-    word_frequency = get_word_frequency()
-    chapters_relative_word_frequency = {}
-
     frequency_jsons = os.path.join(os.getcwd(), "frequency_jsons")
-    if not os.path.isdir(frequency_jsons):
-        os.mkdir(frequency_jsons)
-
-    previous_book_abbrev = ""
-    book_folder = ""
+    mkdir_if_not_isdir(frequency_jsons)
 
     read_fn = os.path.join(frequency_jsons, "word_frequency_lists_chapters.json")
     if not os.path.exists(read_fn):
         create_raw_freq_data()
 
+    previous_book_abbrev = ""
+    book_folder = ""
+
+    words_in_bible = 790663
+    word_frequency = get_word_frequency()
+
+    chapters_relative_word_frequency = {}
     with open(read_fn, "r") as read_file:
 
         word_frequency_lists_chapters = json.load(read_file)
         for (key, word_frequencies) in word_frequency_lists_chapters.items():
-
-            words_in_chapter = int(next(iter(word_frequencies)))
             relative_word_frequency = get_relative_word_frequency(
-                words_in_bible, words_in_chapter, word_frequencies, word_frequency
+                words_in_bible, word_frequencies, word_frequency
             )
             chapters_relative_word_frequency[key] = relative_word_frequency
 
