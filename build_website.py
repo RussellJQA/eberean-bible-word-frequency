@@ -45,14 +45,13 @@ def sort_desc_by_simple_desc_by_weighted_asc_by_word(element):
     return sort_key
 
 
-def handle_book_folder(html_folder, book_folder, previous_book_abbrev, book_abbrev):
+def get_book_folder(html_folder, book_abbrev):
 
-    if previous_book_abbrev != book_abbrev:
-        zfilled_book_num = str(get_book_nums()[book_abbrev]).zfill(2)
-        book_num_name = f"{zfilled_book_num}-{book_abbrev.lower()}"
+    zfilled_book_num = str(get_book_nums()[book_abbrev]).zfill(2)
+    book_num_name = f"{zfilled_book_num}-{book_abbrev.lower()}"
 
-        book_folder = os.path.join(html_folder, book_num_name)
-        mkdir_if_not_isdir(book_folder)
+    book_folder = os.path.join(html_folder, book_num_name)
+    mkdir_if_not_isdir(book_folder)
 
     return book_folder
 
@@ -227,8 +226,7 @@ def build_web_site():
     if not os.path.exists(read_fn):
         create_raw_freq_data()
 
-    previous_book_abbrev = ""
-    book_folder = ""
+    # book_folder = ""
 
     words_in_bible = 790663
     word_frequency = get_word_frequency()
@@ -244,17 +242,13 @@ def build_web_site():
             chapters_relative_word_frequency[key] = relative_word_frequency
 
             book_abbrev = key[0:3]
-            book_folder = handle_book_folder(
-                html_folder, book_folder, previous_book_abbrev, book_abbrev
-            )
-            if book_abbrev != previous_book_abbrev:
+            if len(key) == 5 and key[4] == "1":  # If chapter 1
+                book_folder = get_book_folder(html_folder, book_abbrev)
                 write_bible_book_index(book_abbrev)
                 print(f"Writing files for {book_abbrev}.")
             write_chapter_files(
                 words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
             )
-
-            previous_book_abbrev = book_abbrev
 
     write_fn = os.path.join(frequency_jsons, "chapters_relative_word_frequency.json")
     with open(write_fn, "w") as write_file:
