@@ -1,7 +1,7 @@
 ## bible_chapter.mako
 <%inherit file="base.mako"/>
-        <link rel="stylesheet" type="text/css" href="../styles/style-freq-tables.css">
-        <main id="main_content" role="main" tabindex="-1">
+    <link rel="stylesheet" type="text/css" href="../styles/style-freq-tables.css">
+    <main id="main_content" role="main" tabindex="-1">
         <h2>${words_in_chapter} word occurrences in ${bible_book_name} ${chapter} in the KJV (${words_in_bible} word occurrences in the entire KJV):</h2>
         <p>For an explanation of what information is in the linked-to .csv file and in the sortable (by any column) table below, see the Home page.</p>
         
@@ -17,9 +17,9 @@
 ${bible_chapter_text}
             </p>
         </details><br>
-
-        <!-- Table sorting uses the following script, as explained at
-        https://stackoverflow.com/questions/10683712/html-table-sort/51648529 -->
+<%doc>Table sorting uses the following script, as explained at
+    https://stackoverflow.com/questions/10683712/html-table-sort/51648529
+</%doc>
         <script src="../scripts/sorttable.js"></script>
         <table class="sortable">
             <thead>
@@ -28,7 +28,7 @@ ${bible_chapter_text}
                     <th title="Field #2">In chapter</th>
                     <th title="Field #3">In KJV</th>
                     <th title="Field #4">Simple Freq</th>
-                    <th title="Field #5">Weighted Freq</th>
+                    <th title="Field #5"  id="weighted-freq">Weighted Freq</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,5 +43,16 @@ ${bible_chapter_text}
                 % endfor
             </tbody>
         </table>
+<%doc> See https://stackoverflow.com/questions/43303279/automatic-button-clicking-on-page-load </%doc>
+        <script>
+            // Click table's "Weighted Freq" column header twice, so that:
+            //  The table's sorted by it that column, in descending order
+            //      and
+            //  That column's column header column-sorted-by indicator chevron is showing
+            window.onload = function () {
+                document.getElementById("weighted-freq").click()
+                document.getElementById("weighted-freq").click()
+            }
+        </script>
 
     </main>

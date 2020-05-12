@@ -17,24 +17,26 @@
     <title>${title_h1}</title>
 
     <link rel="stylesheet" type="text/css" href="${styles_path}/style.css">
-    ##  I had originally just put the style sheet in the root.
-    ##  That worked fine except if I just opened a downloaded copy of the Web site,
-    ##  and opened 1 of its pages directly.
-    ##  So, to allow even that to work, I'm passing the style sheet location as
-    ##  parameter to the template.
+##  I had originally just put the style sheet in the root.
+##  That worked fine except if I just opened a downloaded copy of the Web site,
+##  and opened 1 of its pages directly.
+##  So, to allow even that to work, I'm passing the style sheet location as
+##  parameter to the template.
 </head>
 
 <body>
+
     <header role="banner"><%block name="header">
         <h1>${title_h1}</h1>
     </%block></header>
     ${self.body()}
     <footer role="contentinfo"><%block name="footer">
         <p><a href="#top">Back to Top</a></p>
-        <!-- ## In HTML5, no "top" anchor is needed -->
+## In HTML5, no "top" anchor is needed
         <p><a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${images_path}/github-mark-64px.png" height="16" width="16" alt="GitHub repository">Website source code</a></p>
         <p>Copyright &copy; ${year} by ${author}</p>
     </%block></footer>
+
 </body>
 
 </html>
