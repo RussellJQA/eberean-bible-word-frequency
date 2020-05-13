@@ -191,8 +191,17 @@ def write_chapter_files(
     write_chapter_html(book_abbrev, chapter, relative_word_frequency)
 
 
+def copy_scripts(html_folder):
+
+    mkdir_if_not_isdir(html_folder)
+    styles_folder = os.path.join(html_folder, "scripts")
+    mkdir_if_not_isdir(styles_folder)
+    copyfile("scripts/sorttable.js", os.path.join(styles_folder, "sorttable.js"))
+
+
 def copy_styles(html_folder):
 
+    mkdir_if_not_isdir(html_folder)
     styles_folder = os.path.join(html_folder, "styles")
     mkdir_if_not_isdir(styles_folder)
     copyfile("styles/style.css", os.path.join(styles_folder, "style.css"))
@@ -206,6 +215,7 @@ def build_web_site():
 
     html_folder = os.path.join(os.getcwd(), "public_html")
     mkdir_if_not_isdir(html_folder)
+    copy_scripts(html_folder)
     copy_styles(html_folder)
     get_downloads()  # Download KJV chapter files, GitHub mark, and sorttable.js, if needed
 

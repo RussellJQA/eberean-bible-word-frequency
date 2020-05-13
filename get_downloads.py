@@ -66,8 +66,10 @@ def get_kjv():
     zip_fn = "eng-kjv_readaloud.zip"
     zip_path = os.path.join(download_folder, zip_fn)
 
-    prompt = f"\nFile {zip_fn} already exists, do you want to download it anyway [y/n, default: y]?: "
-    if (not os.path.exists(zip_path)) or ((input(prompt)).lower() == "y"):
+    prompt = (
+        f"\nFile {zip_fn} already exists, do you want to download it anyway [y/N]?: "
+    )
+    if (not os.path.exists(zip_path)) or ((input(prompt)).lower() == "n"):
         get_binary_file_via_from_web(
             "https://ebible.org/Scriptures/",
             zip_fn,
@@ -105,20 +107,20 @@ def get_github_mark(html_folder):
     )
 
 
-def get_sorttable_js(html_folder):
+# def get_sorttable_js(html_folder):
 
-    sorttable_js_path = "downloads/sorttable.js"
-    if not os.path.exists(sorttable_js_path):
-        get_binary_file_via_from_web(
-            "https://www.kryogenix.org/code/browser/sorttable/",
-            "sorttable.js",
-            "downloads",
-        )
+#     sorttable_js_path = "downloads/sorttable.js"
+#     if not os.path.exists(sorttable_js_path):
+#         get_binary_file_via_from_web(
+#             "https://www.kryogenix.org/code/browser/sorttable/",
+#             "sorttable.js",
+#             "downloads",
+#         )
 
-    mkdir_if_not_isdir(html_folder)
-    scripts_folder = os.path.join(html_folder, "scripts")
-    mkdir_if_not_isdir(scripts_folder)
-    copyfile(sorttable_js_path, os.path.join(scripts_folder, "sorttable.js"))
+#     mkdir_if_not_isdir(html_folder)
+#     scripts_folder = os.path.join(html_folder, "scripts")
+#     mkdir_if_not_isdir(scripts_folder)
+#     copyfile(sorttable_js_path, os.path.join(scripts_folder, "sorttable.js"))
 
 
 def get_downloads():
@@ -126,7 +128,10 @@ def get_downloads():
     get_kjv()
     html_folder = os.path.join(os.getcwd(), "public_html")
     get_github_mark(html_folder)
-    get_sorttable_js(html_folder)
+
+    # get_sorttable_js(html_folder)
+    #   Skip this for now, and possibly permanently,
+    #   so that I can use a modified version with a stable sort.
 
 
 def main():
