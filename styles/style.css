@@ -2,6 +2,10 @@
     text-align: right;
 }
 
+.indentation-list {
+    list-style-type: none;
+}
+
 nav a {
     display: block;
     margin: 1px 0px;

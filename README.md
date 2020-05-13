@@ -10,28 +10,18 @@
 		<li>Word: the word</li>
 		<li>In chapter: The number of times that word occurs in that Bible chapter</li>
 		<li>In KJV: The number of times that word occurs in the entire Bible</li>
-		<li>Simple Freq: The simple, unweighted relative frequency of that word in this chapter, which is calculated as:
-			<ul>
-				<li>the total number of words in the Bible multiplied by the quotient of:</li>
-				<li><ul>
-					<li>In chapter (2nd column): The number of times that word occurs in that Bible chapter</li>
-				</ul></li>
-				<li>divided by:</li>
-				<li><ul>
-					<li>In KJV (3rd column): The number of times that word occurs in the entire Bible</li>
-				</ul></li>
+		<li>Simple Freq: The simple, unweighted relative frequency of that word in this chapter. This is calculated as the total number of words in the Bible multiplied by the quotient of:
+			<ul class="indentation-list">
+				<li>In chapter (2nd column): The number of times that word occurs in that Bible chapter</li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;divided by:</li>
+				<li>In KJV (3rd column): The number of times that word occurs in the entire Bible</li>
 			</ul>
 		</li>
-		<li>Weighted Freq: The weighted relative frequency of that word in this chapter:
-			<ul>
-				<li>the sum of:</li>
-				<li><ul>
-					<li>the quotient of:</li>
-					<li><ul><li>Simple Freq (4th column)</li></ul></li>
-					<li>divided by:</li>
-					<li><ul><li>the total number of words in the chapter</li></ul></li>
-				</ul></li>
-				<li>and [In chapter (2nd column) - 1]
+		<li>Weighted Freq: The weighted relative frequency of that word in this chapter. This is the sum of:
+			<ul class="indentation-list">
+				<li>Simple Freq (4th column) divided by the total number of words in the chapter</li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;and</li>
+				<li>In chapter (2nd column) - 1</li>
 			</ul>
 		</li>
 	</ol>
