@@ -206,7 +206,7 @@ def copy_styles(html_folder):
     mkdir_if_not_isdir(styles_folder)
     copyfile("styles/style.css", os.path.join(styles_folder, "style.css"))
     copyfile(
-        "styles/style_freq_tables.css",
+        "styles/style-freq-tables.css",
         os.path.join(styles_folder, "style-freq-tables.css"),
     )
 

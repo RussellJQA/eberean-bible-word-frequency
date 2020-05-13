@@ -1,0 +1,30 @@
+/* Modified from https://cdn.rawgit.com/White-Tiger/sorttable.js/master/docs/example.html */
+
+tbody tr:hover {
+	background: #eee;
+}
+
+/* sorttable styles, these add the placeholder sort arrow and cursor */
+
+.sortable th:not(.sorttable_nosort) {
+	cursor: pointer;
+}
+
+.sortable th:not(.sorttable_nosort):not(.sorttable_sorted):not(.sorttable_sorted_reverse):after {
+	opacity: 0.25;
+	display: inline;
+	content: '\a0\25B4';
+}
+
+.countedtable {
+	counter-reset: countedtable;
+}
+
+.countedtable td:nth-child(1):before {
+	counter-increment: countedtable;
+	content: counter(countedtable);
+}
+
+.countedtable td:nth-child(7):before {
+	content: counter(countedtable);
+}

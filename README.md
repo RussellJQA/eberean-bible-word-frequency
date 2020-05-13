@@ -1,5 +1,5 @@
 <p>
-	This Web site provides information about how often each word occurs in the <a href="https://ebible.org/Scriptures/eng-kjv_readaloud.zip">(KJV) Bible<a>.
+	This Web site provides information about how often each word occurs in the <a href="https://ebible.org/Scriptures/eng-kjv_readaloud.zip">(KJV) Bible</a>.
 </p>
 <p>
 	For each chapter in the Bible, there is a separate, corresponding Web page.
@@ -10,7 +10,7 @@
 		<li>Word: the word</li>
 		<li>In chapter: The number of times that word occurs in that Bible chapter</li>
 		<li>In KJV: The number of times that word occurs in the entire Bible</li>
-		<li>Simple Freq: The simple, unweighted relative frequency of that word in this chapter, which is calculated as:<br>
+		<li>Simple Freq: The simple, unweighted relative frequency of that word in this chapter, which is calculated as:
 			<ul>
 				<li>the total number of words in the Bible multiplied by the quotient of:</li>
 				<li><ul>
@@ -22,7 +22,7 @@
 				</ul></li>
 			</ul>
 		</li>
-		<li>Weighted Freq: The weighted relative frequency of that word in this chapter:<br>
+		<li>Weighted Freq: The weighted relative frequency of that word in this chapter:
 			<ul>
 				<li>the sum of:</li>
 				<li><ul>

@@ -2,7 +2,9 @@
 <%inherit file="base.mako"/>
     <main id="main_content" role="main" tabindex="-1">
         ${readme_html}
-        % for bible_book_key in bible_book_index_hrefs:
-        <a href="${bible_book_index_hrefs[bible_book_key]}">${bible_book_key}</a><br>
-        % endfor
+        <nav>
+            % for bible_book_key in bible_book_index_hrefs:
+            <a href="${bible_book_index_hrefs[bible_book_key]}">${bible_book_key}</a>
+            % endfor
+        <nav>
     </main>

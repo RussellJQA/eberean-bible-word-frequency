@@ -1,3 +1,72 @@
+.numerical {
+    text-align: right;
+}
+
+nav a {
+    display: block;
+    margin: 1px 0px;
+    /* top/bottom left/right */
+}
+
+li {
+    margin: 5px 0px;
+    /* top/bottom left/right */
+}
+
+details {
+    margin: 20px 0px;
+}
+
+/* table (and its sub-elements) styling modified from https://cdn.rawgit.com/White-Tiger/sorttable.js/master/docs/example.html */
+
+table {
+    padding: 0;
+    border-spacing: 0;
+    border: 1px solid black;
+    text-align: center;
+}
+
+th {
+    background: #F0F9FF;
+    padding: 0 5px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
+thead th {
+    border-top: none;
+}
+
+tfoot th {
+    border-bottom: none;
+}
+
+tr:not(:last-child) td {
+    border-bottom: 1px dotted gray;
+}
+
+th:not(:last-child), td:not(:last-child) {
+    border-right: 1px dotted gray;
+}
+
+td {
+    padding: 2px 5px;
+}
+
 footer {
-    text-align: center
+    text-align: center;
+}
+
+footer nav a {
+    margin: 10px 0px;
+}
+
+footer img {
+    vertical-align: middle;
+    margin: 0px 5px 0px 0px;
+    /* top right bottom left */
+}
+
+#github-link-text {
+    vertical-align: middle;
 }

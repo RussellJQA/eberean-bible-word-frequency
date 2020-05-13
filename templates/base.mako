@@ -31,9 +31,11 @@
     </%block></header>
     ${self.body()}
     <footer role="contentinfo"><%block name="footer">
-        <p><a href="#top">Back to Top</a></p>
+        <nav>
+            <a href="#top">Back to Top</a>
 ## In HTML5, no "top" anchor is needed
-        <p><a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${images_path}/github-mark-64px.png" height="16" width="16" alt="GitHub repository">Website source code</a></p>
+            <a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${images_path}/github-mark-64px.png" height="16" width="16" alt="GitHub repository">Website source code</a>
+        </nav>
         <p>Copyright &copy; ${year} by ${author}</p>
     </%block></footer>
 
