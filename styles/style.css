@@ -1,3 +1,7 @@
+#github-link-text {
+    vertical-align: middle;
+}
+
 .numerical {
     text-align: right;
 }
@@ -69,8 +73,4 @@ footer img {
     vertical-align: middle;
     margin: 0px 5px 0px 0px;
     /* top right bottom left */
-}
-
-#github-link-text {
-    vertical-align: middle;
 }

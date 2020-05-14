@@ -68,6 +68,7 @@ def get_base_template_args(description, keywords, title_h1):
         "year": datestamp[0:4],
         "og_site_name": "RussellJQA/eberean-bible-word-frequency",
         "title_h1": title_h1,
+        "github_account": "https://github.com/RussellJQA",
     }
 
     return base_template_args

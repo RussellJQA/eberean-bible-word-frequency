@@ -34,9 +34,9 @@
         <nav>
             <a href="#top">Back to Top</a>
 ## In HTML5, no "top" anchor is needed
-            <a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${images_path}/github-mark-64px.png" height="16" width="16" alt="GitHub repository">Website source code</a>
+            <a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${images_path}/github-mark-64px.png" height="16" width="16" alt="GitHub repository"><span class="github-link-text">Website source code</span></a>
         </nav>
-        <p>Copyright &copy; ${year} by ${author}</p>
+        <p>Copyright &copy; ${year} by <a href="${github_account}" target="_blank">${author}</a></p>
     </%block></footer>
 
 </body>

@@ -14,7 +14,7 @@ def get_full_ref(chapter_file):
     book_abbr = book_number_name_chapter[3:6].title()  # Gen, Exo, ..., Rev
     chapter_number = book_number_name_chapter[7:10].lstrip("0").rstrip("_")
     # Filenames normally contain 2-digit chapter numbers, but have 3 for Psalms
-    # Remove leading '0's (as from '01' and '001') and trailing '_'s (as from '01_')
+    # Remove leading 0s (as from "01" and "001") and trailing "_"s (as from "01_")
 
     # Calculate verse counts
     full_ref = book_abbr + " " + chapter_number

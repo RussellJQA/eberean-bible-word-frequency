@@ -236,8 +236,6 @@ def build_web_site():
     if not os.path.exists(read_fn):
         create_raw_freq_data()
 
-    # book_folder = ""
-
     words_in_bible = 790663
     word_frequency = get_word_frequency()
 
