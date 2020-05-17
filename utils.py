@@ -1,9 +1,9 @@
-from datetime import date
-from mako.template import Template  # pip install Mako
-from mako.lookup import TemplateLookup  # pip install Mako
+import datetime
 import os
 import zipfile
 
+import mako.template  # pip install Mako
+import mako.lookup  # pip install Mako
 import requests  # pip install requests
 
 
@@ -56,7 +56,7 @@ def unzip_data(download_folder, zip_fn, unzip_subfolder=None, check_files=None):
 
 def get_base_template_args(description, keywords, title_h1):
 
-    datestamp = date.today().strftime("%Y-%m-%d")
+    datestamp = datetime.date.today().strftime("%Y-%m-%d")
 
     base_template_args = {
         "description": "eBEREAN (electronic Bible Exploration REsources and ANalysis) - "
@@ -82,8 +82,8 @@ def write_html(base_template_args, new_template_args, mako_file, html_folder, ht
     filled_in_template_args = {**base_template_args, **new_template_args}
     # In Python 3.9, PEP 584 will let you merge  2 dicts using | or |=
 
-    template_lookup = TemplateLookup([""])
-    raw_template = Template(filename=mako_file, lookup=template_lookup)
+    template_lookup = mako.lookup.TemplateLookup([""])
+    raw_template = mako.template.Template(filename=mako_file, lookup=template_lookup)
     filled_in_template = raw_template.render(**filled_in_template_args)
 
     with open(

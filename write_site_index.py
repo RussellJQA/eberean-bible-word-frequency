@@ -1,5 +1,6 @@
-import markdown2  # pip install markdown2
 import os
+
+import markdown2  # pip install markdown2
 
 from get_bible_data import get_bible_books, get_book_nums
 from utils import get_base_template_args, write_html

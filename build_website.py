@@ -6,7 +6,7 @@ compared to its frequency in the entire Bible
 import csv
 import json
 import os
-from shutil import copyfile
+import shutil
 
 from utils import mkdir_if_not_isdir
 from get_downloads import get_downloads
@@ -174,7 +174,13 @@ def write_chapter_html(book_abbrev, chapter, relative_word_frequency):
         for item in relative_word_frequency.items()
     ]
 
-    write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows)
+    write_bible_chapter(
+        book_abbrev,
+        chapter,
+        words_in_chapter,
+        rows,
+        custom_paragraphing=(book_abbrev == "Psa" and chapter == "119"),
+    )
 
 
 def write_chapter_files(
@@ -196,7 +202,7 @@ def copy_scripts(html_folder):
     mkdir_if_not_isdir(html_folder)
     styles_folder = os.path.join(html_folder, "scripts")
     mkdir_if_not_isdir(styles_folder)
-    copyfile("scripts/sorttable.js", os.path.join(styles_folder, "sorttable.js"))
+    shutil.copyfile("scripts/sorttable.js", os.path.join(styles_folder, "sorttable.js"))
 
 
 def copy_styles(html_folder):
@@ -204,8 +210,8 @@ def copy_styles(html_folder):
     mkdir_if_not_isdir(html_folder)
     styles_folder = os.path.join(html_folder, "styles")
     mkdir_if_not_isdir(styles_folder)
-    copyfile("styles/style.css", os.path.join(styles_folder, "style.css"))
-    copyfile(
+    shutil.copyfile("styles/style.css", os.path.join(styles_folder, "style.css"))
+    shutil.copyfile(
         "styles/style-freq-tables.css",
         os.path.join(styles_folder, "style-freq-tables.css"),
     )

@@ -13,9 +13,7 @@
 
         <details>
             <summary>Read ${bible_book_name} ${chapter}</summary>
-            <p>
 ${bible_chapter_text}
-            </p>
         </details>
 <%doc>Table sorting uses the following script, as explained at
     https://stackoverflow.com/questions/10683712/html-table-sort/51648529

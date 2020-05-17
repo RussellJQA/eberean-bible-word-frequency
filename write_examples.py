@@ -1,5 +1,6 @@
-import markdown2  # pip install markdown2
 import os
+
+import markdown2  # pip install markdown2
 
 from utils import get_base_template_args, write_html
 

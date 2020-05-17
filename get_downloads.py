@@ -32,7 +32,7 @@ You may copy the King James Version of the Holy Bible freely. If you find a typo
 
 import os
 import re
-from shutil import copyfile
+import shutil
 
 from utils import mkdir_if_not_isdir, unzip_data
 from get_bible_data import get_binary_file_via_from_web
@@ -102,7 +102,7 @@ def get_github_mark(html_folder):
     mkdir_if_not_isdir(html_folder)
     images_folder = os.path.join(html_folder, "images")
     mkdir_if_not_isdir(images_folder)
-    copyfile(
+    shutil.copyfile(
         github_mark_path, os.path.join(images_folder, "github-mark-64px.png"),
     )
 
@@ -120,7 +120,7 @@ def get_github_mark(html_folder):
 #     mkdir_if_not_isdir(html_folder)
 #     scripts_folder = os.path.join(html_folder, "scripts")
 #     mkdir_if_not_isdir(scripts_folder)
-#     copyfile(sorttable_js_path, os.path.join(scripts_folder, "sorttable.js"))
+#     shutil.copyfile(sorttable_js_path, os.path.join(scripts_folder, "sorttable.js"))
 
 
 def get_downloads():

@@ -5,6 +5,7 @@ import re
 from utils import mkdir_if_not_isdir, get_base_template_args, write_html
 from get_downloads import get_downloads
 from get_bible_data import get_bible_books, get_book_nums, get_verse_counts
+from reformat_psalm_119 import reformat_psalm_119
 
 bible_books = get_bible_books()
 bible_book_names = {
@@ -29,7 +30,7 @@ def get_top_7_words(csv_path):
     return top_7_words
 
 
-def get_bible_chapter_text(book_num, book_abbrev, chapter):
+def get_bible_chapter_text(book_num, book_abbrev, chapter, custom_paragraphing=False):
 
     book_int = (int(book_num) + 1) if (int(book_num) <= 39) else (int(book_num) + 30)
     revised_book_num = str(book_int).zfill(3)
@@ -42,32 +43,42 @@ def get_bible_chapter_text(book_num, book_abbrev, chapter):
     chapter_path = os.path.join(source_files, chapter_file)
 
     with open(chapter_path, "r", encoding="utf-8", newline="") as read_file:
-        lines = read_file.readlines()
+        lines = read_file.readlines()[2:]
 
-    lines2 = []
+    if custom_paragraphing and book_abbrev == "Psa" and chapter == "119":
+        lines = reformat_psalm_119(lines)
+        # if book_abbrev == "Psa" and chapter == "119":
+        #     lines.append([
+        #         "<pre style='font-family:Georgia,serif;'>",
+        #         + reformat_psalm_119(lines),
+        #         + "</pre>"]
+        #     )
 
-    for line in lines[2:]:
+    html_lines = []
 
-        # TODO: If this is Psalm chapter 119, then add:
-        #   Hebrew letters before lines 1, 9, etc.
-        #   Ending/beginning paragraph tags (</p> ... <p>) before lines 9, 17, etc.
+    for line in lines:
 
-        line = re.sub("(^.+)", "\n                \\1", line.strip())
+        line = re.sub("(^.+)", "\n                \\1", line.strip("\n"))
         #   Indent only the Bible text's HTML SOURCE code by 16-spaces
         #   (4 spaces in from the enclosing <p> and </p>).
 
-        line = line.replace("    ¶ ", "</p>\n            <p>\n                ")
-        #   Replace text's paragraph markers with properly (un-)indented
-        #   HTML paragraph ending/beginning paragraph tags (</p> ... <p>).
+        if not custom_paragraphing:
+            line = line.replace("    ¶ ", "</p>\n            <p>\n                ")
+            #   Replace text's paragraph markers with properly (un-)indented
+            #   HTML paragraph ending/beginning paragraph tags (</p> ... <p>).
 
-        lines2.append(line)
+        html_lines.append(line)
 
-    bible_chapter_text = "                " + "".join(lines2).strip()
+    return (
+        f'            {"" if custom_paragraphing else "<p>"}\n'
+        + f'                {"".join(html_lines).strip()}\n'
+        + f'            {"" if custom_paragraphing else "</p>"}'
+    )
 
-    return bible_chapter_text
 
-
-def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
+def write_bible_chapter(
+    book_abbrev, chapter, words_in_chapter, rows, custom_paragraphing=False
+):
 
     description = (
         f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]} {chapter}"
@@ -95,7 +106,9 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
         description, ",".join(keywords), description
     )
 
-    bible_chapter_text = get_bible_chapter_text(book_num, book_abbrev, chapter)
+    bible_chapter_text = get_bible_chapter_text(
+        book_num, book_abbrev, chapter, custom_paragraphing=custom_paragraphing,
+    )
 
     new_template_args = {
         "images_path": "../images",
@@ -120,7 +133,10 @@ def write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows):
     )
 
 
-def main():
+def write_genesis_1():
+
+    """ Write an abridged version of the HTML chapter file for Genesis 1
+    """
 
     gen001_word_freq = """word,numInChap,numInKjv,simpleRelFreq,weightedRelFreq
 TOTAL (Gen 1),797,790663
@@ -146,11 +162,55 @@ yielding,5,7,564759,712.6
     chapter = "1"
     words_in_chapter = "797"
     rows = [
-        ["whales", "1", "1", "992.0", "790,663"],
-        ["yielding", "5", "7", "708.6", "564,759"],
+        ["whales", "1", "1", "790,663", "992.0"],
+        ["yielding", "5", "7", "564,759", "712.6"],
     ]
 
     write_bible_chapter(book_abbrev, chapter, words_in_chapter, rows)
+
+
+def write_psalm_119():
+
+    """ Write an abridged version of the HTML chapter file for Psalm 119
+    """
+
+    gen001_word_freq = """word,numInChap,numInKjv,simpleRelFreq,weightedRelFreq
+TOTAL (Psa 119),2423,790663
+forged,1,1,790663,326.3
+grease,1,1,790663,326.3
+"""
+    html_folder = os.path.join(os.getcwd(), "public_html")
+    mkdir_if_not_isdir(html_folder)
+    chapter_folder = os.path.join(html_folder, "01-gen")
+    mkdir_if_not_isdir(chapter_folder)
+
+    with open(
+        os.path.join(chapter_folder, "psa119-word-freq.csv"),
+        "w",
+        encoding="utf-8",
+        newline="",
+    ) as write_file:
+        write_file.write(gen001_word_freq)
+
+    get_downloads()
+
+    book_abbrev = "Psa"
+    chapter = "119"
+    words_in_chapter = "797"
+    rows = [
+        ["forged", "1", "1", "790,663", "326.3"],
+        ["grease", "1", "1", "790,663", "326.3"],
+    ]
+
+    write_bible_chapter(
+        book_abbrev, chapter, words_in_chapter, rows, custom_paragraphing=True
+    )
+
+
+def main():
+
+    write_genesis_1()
+    write_psalm_119()
 
 
 if __name__ == "__main__":
