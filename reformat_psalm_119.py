@@ -1,3 +1,7 @@
+""" Reformat Psalm 119, by doing the following for each 8-line stanza:
+        Enclose it within a pair of opening/closeing paragraph tags (</p> ... <p>)
+        Prefix it with the corresponding Hebrew letter (followed by its English name)
+"""
 import os
 
 HEBREW_LETTER_NAMES = [
@@ -29,21 +33,16 @@ HEBREW_LETTER_NAMES = [
 def get_hebrew_letter(index):
 
     alef = "\u05D0"
-    # return f"{HEBREW_LETTER_NAMES[index].uppcapitalizeer()} ({ord(chr(ord(alef) + index))})"
-    return f"{HEBREW_LETTER_NAMES[index].upper()} {chr(ord(alef) + index)}"
+    return f"{chr(ord(alef) + index)} {HEBREW_LETTER_NAMES[index].upper()}"
 
 
 def reformat_psalm_119(inp_lines):
-
-    # If this is Psalm chapter 119, then add:
-    #   Hebrew letters before lines 1, 9, etc.
-    #   Ending/beginning paragraph tags (</p> ... <p>) before lines 9, 17, etc.
 
     out_lines = []
 
     for verse, inp_line in enumerate(inp_lines, start=1):
 
-        if (verse % 8) == 1:  # if 1st verse of 1 of Psalm 119's 22 8-line stanzas
+        if (verse % 8) == 1:  # if 1st verse of one of Psalm 119's 22 8-line stanzas
             if verse != 1:
                 out_lines.append("\n")
             out_lines.append(
