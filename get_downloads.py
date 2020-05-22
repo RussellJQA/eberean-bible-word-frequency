@@ -30,6 +30,10 @@ You may copy the King James Version of the Holy Bible freely. If you find a typo
 
 """
 
+# TODO: I manually downloaded https://ebible.org/kjv/kjvtxt.zip and extracted Psalms.txt from it,
+#   in order to extract the Psalm subtibles from it.
+#   That downloading and extraction should be included here.
+
 import os
 import re
 import shutil

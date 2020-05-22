@@ -60,18 +60,24 @@ def build_frequency_lists(frequency):
 
 def calc_word_freq(passage):
 
-    # TODO (possibly): Generate some statistics like mean, median, and mode frequency
     # TODO (possibly): Generate alternative versions with and without italicized words
+
     frequency_this_passage = {}
     for line in passage:
+
         line = re.sub(r"[¶’]\S*", "", line).strip()
-        # Eliminate paragraph markers, possessives, and leading/trailing blanks
+        # Eliminate paragraph markers, possessives, and leading/trailing whitespace
+
         words = re.sub(r"[^a-z\- ]+", "", line, flags=re.IGNORECASE)
+
         for word in words.split():
+
             if word != "LORD":  # Differentiate between "lord"/"Lord" and "LORD"
                 # TODO: Possibly do something more generic, like:
                 #       if not ((len(word) >= 2) and (word == word.isupper()):
                 word = word.casefold()
+                # NOTE: casefold() is an alternative to lower() that [unlike lower()]
+                # also lowercases non-ASCII characters
 
             if word in frequency_this_passage:
                 frequency_this_passage[word] += 1
@@ -93,7 +99,7 @@ def calc_and_write_word_frequency_files(frequency_lists_chapters):
                     else:
                         word_frequency[word] = count
 
-    output_folder = "frequency_jsons"
+    output_folder = "data"
     mkdir_if_not_isdir(output_folder)
 
     # Write dict of KJV words, each paired (in a list) with its # of occurrences
@@ -150,7 +156,7 @@ def create_raw_freq_data():
 
 def get_word_frequency():
 
-    json_path = os.path.join("frequency_jsons", "word_frequency.json")
+    json_path = os.path.join("data", "word_frequency.json")
     if not os.path.exists(json_path):
         create_raw_freq_data()
 

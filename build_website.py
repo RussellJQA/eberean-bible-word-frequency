@@ -235,10 +235,10 @@ def build_web_site():
     # Such a function might be used for calculating (relative) word frequencies for the OT, NT,
     # individual book, daily readings, etc.
 
-    frequency_jsons = os.path.join(os.getcwd(), "frequency_jsons")
-    mkdir_if_not_isdir(frequency_jsons)
+    data_dir = os.path.join(os.getcwd(), "data")
+    mkdir_if_not_isdir(data_dir)
 
-    read_fn = os.path.join(frequency_jsons, "word_frequency_lists_chapters.json")
+    read_fn = os.path.join(data_dir, "word_frequency_lists_chapters.json")
     if not os.path.exists(read_fn):
         create_raw_freq_data()
 
@@ -264,7 +264,7 @@ def build_web_site():
                 words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
             )
 
-    write_fn = os.path.join(frequency_jsons, "chapters_relative_word_frequency.json")
+    write_fn = os.path.join(data_dir, "chapters_relative_word_frequency.json")
     with open(write_fn, "w") as write_file:
         json.dump(chapters_relative_word_frequency, write_file, indent=4)
 
