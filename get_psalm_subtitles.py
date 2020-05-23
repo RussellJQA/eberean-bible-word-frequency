@@ -1,8 +1,6 @@
 import os.path
 import re
 
-from utils import mkdir_if_not_isdir
-
 
 def get_psalm_subtitles():
 
@@ -10,7 +8,7 @@ def get_psalm_subtitles():
     psalms_with_subtitles = os.path.join(script_dir, "downloads", "Psalms.txt")
 
     data_dir = os.path.join(script_dir, "data")
-    mkdir_if_not_isdir(data_dir)
+    os.makedirs(data_dir, exist_ok=True)
 
     with open(psalms_with_subtitles, "r", encoding="utf-8") as read_file:
         lines = read_file.readlines()

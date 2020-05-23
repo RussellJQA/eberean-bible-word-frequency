@@ -8,7 +8,6 @@ import json
 import os
 import shutil
 
-from utils import mkdir_if_not_isdir
 from get_downloads import get_downloads
 from get_bible_data import get_book_nums
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
@@ -51,7 +50,7 @@ def get_book_folder(html_folder, book_abbrev):
     book_num_name = f"{zfilled_book_num}-{book_abbrev.lower()}"
 
     book_folder = os.path.join(html_folder, book_num_name)
-    mkdir_if_not_isdir(book_folder)
+    os.makedirs(book_folder, exist_ok=True)
 
     return book_folder
 
@@ -199,17 +198,15 @@ def write_chapter_files(
 
 def copy_scripts(html_folder):
 
-    mkdir_if_not_isdir(html_folder)
     styles_folder = os.path.join(html_folder, "scripts")
-    mkdir_if_not_isdir(styles_folder)
+    os.makedirs(styles_folder, exist_ok=True)
     shutil.copyfile("scripts/sorttable.js", os.path.join(styles_folder, "sorttable.js"))
 
 
 def copy_styles(html_folder):
 
-    mkdir_if_not_isdir(html_folder)
     styles_folder = os.path.join(html_folder, "styles")
-    mkdir_if_not_isdir(styles_folder)
+    os.makedirs(styles_folder, exist_ok=True)
     shutil.copyfile("styles/style.css", os.path.join(styles_folder, "style.css"))
     shutil.copyfile(
         "styles/style-freq-tables.css",
@@ -220,7 +217,7 @@ def copy_styles(html_folder):
 def build_web_site():
 
     html_folder = os.path.join(os.getcwd(), "public_html")
-    mkdir_if_not_isdir(html_folder)
+    os.makedirs(html_folder, exist_ok=True)
     copy_scripts(html_folder)
     copy_styles(html_folder)
     get_downloads()  # Download KJV chapter files, GitHub mark, and sorttable.js, if needed
@@ -236,7 +233,7 @@ def build_web_site():
     # individual book, daily readings, etc.
 
     data_dir = os.path.join(os.getcwd(), "data")
-    mkdir_if_not_isdir(data_dir)
+    os.makedirs(data_dir, exist_ok=True)
 
     read_fn = os.path.join(data_dir, "word_frequency_lists_chapters.json")
     if not os.path.exists(read_fn):

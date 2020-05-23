@@ -2,7 +2,7 @@ import csv
 import os
 import re
 
-from utils import mkdir_if_not_isdir, get_base_template_args, write_html
+from utils import get_base_template_args, write_html
 from get_downloads import get_downloads
 from get_bible_data import get_bible_books, get_book_nums, get_verse_counts
 from reformat_psalm_119 import reformat_psalm_119
@@ -97,7 +97,7 @@ def write_bible_chapter(
     html_folder = os.path.join(
         os.getcwd(), "public_html", f"{book_num}-{book_abbrev.lower()}"
     )
-    mkdir_if_not_isdir(html_folder)
+    os.makedirs(html_folder, exist_ok=True)
     csv_file_name = f"{book_abbrev.lower()}{str(chapter).zfill(3)}-word-freq.csv"
     keywords += get_top_7_words(os.path.join(html_folder, csv_file_name))
     # Include top 7 words in the page's keywords metatag
@@ -143,10 +143,8 @@ TOTAL (Gen 1),797,790663
 whales,1,1,790663,992.0
 yielding,5,7,564759,712.6
 """
-    html_folder = os.path.join(os.getcwd(), "public_html")
-    mkdir_if_not_isdir(html_folder)
-    chapter_folder = os.path.join(html_folder, "01-gen")
-    mkdir_if_not_isdir(chapter_folder)
+    chapter_folder = os.path.join(os.getcwd(), "public_html", "01-gen")
+    os.makedirs(chapter_folder, exist_ok=True)
 
     with open(
         os.path.join(chapter_folder, "gen001-word-freq.csv"),
@@ -179,10 +177,8 @@ TOTAL (Psa 119),2423,790663
 forged,1,1,790663,326.3
 grease,1,1,790663,326.3
 """
-    html_folder = os.path.join(os.getcwd(), "public_html")
-    mkdir_if_not_isdir(html_folder)
-    chapter_folder = os.path.join(html_folder, "01-gen")
-    mkdir_if_not_isdir(chapter_folder)
+    chapter_folder = os.path.join(os.getcwd(), "public_html", "01-gen")
+    os.makedirs(chapter_folder, exist_ok=True)
 
     with open(
         os.path.join(chapter_folder, "psa119-word-freq.csv"),

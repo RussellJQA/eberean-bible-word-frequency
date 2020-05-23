@@ -34,7 +34,7 @@ import os
 import re
 import shutil
 
-from utils import mkdir_if_not_isdir, unzip_data
+from utils import unzip_data
 from get_bible_data import get_binary_file_via_from_web
 
 
@@ -62,7 +62,7 @@ def get_kjv_chapter_files():
     """
 
     download_folder = "downloads"
-    mkdir_if_not_isdir(download_folder)
+    os.makedirs(download_folder, exist_ok=True)
     zip_fn = "eng-kjv_readaloud.zip"
     zip_path = os.path.join(download_folder, zip_fn)
 
@@ -97,7 +97,7 @@ def get_kjv_psalms_with_subtitles():
     """
 
     download_folder = "downloads"
-    mkdir_if_not_isdir(download_folder)
+    os.makedirs(download_folder, exist_ok=True)
     zip_fn = "kjvtxt.zip"
     zip_path = os.path.join(download_folder, zip_fn)
 
@@ -124,9 +124,8 @@ def get_github_mark(html_folder):
         )
         unzip_data("downloads", "GitHub-Mark.zip")
 
-    mkdir_if_not_isdir(html_folder)
     images_folder = os.path.join(html_folder, "images")
-    mkdir_if_not_isdir(images_folder)
+    os.makedirs(images_folder, exist_ok=True)
     shutil.copyfile(
         github_mark_path, os.path.join(images_folder, "github-mark-64px.png"),
     )
@@ -145,9 +144,8 @@ def get_github_mark(html_folder):
 #             "downloads",
 #         )
 
-#     mkdir_if_not_isdir(html_folder)
 #     scripts_folder = os.path.join(html_folder, "scripts")
-#     mkdir_if_not_isdir(scripts_folder)
+#     os.makedirs(scripts_folder, exist_ok=True)
 #     shutil.copyfile(sorttable_js_path, os.path.join(scripts_folder, "sorttable.js"))
 
 
