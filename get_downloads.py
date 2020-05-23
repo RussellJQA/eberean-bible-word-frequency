@@ -30,10 +30,6 @@ You may copy the King James Version of the Holy Bible freely. If you find a typo
 
 """
 
-# TODO: I manually downloaded https://ebible.org/kjv/kjvtxt.zip and extracted Psalms.txt from it,
-#   in order to extract the Psalm subtibles from it.
-#   That downloading and extraction should be included here.
-
 import os
 import re
 import shutil
@@ -57,10 +53,10 @@ def is_desired_kjv_file(filename):
     return not (match1 or match2 or match3)
 
 
-def get_kjv():
+def get_kjv_chapter_files():
 
     """
-    If KJV .zip file not yet downloaded or user (when prompted) requests to download it:
+    If KJV chapters .zip file isn't yet downloaded or user (when prompted) requests to download it:
         Download it
         Unzip it
     """
@@ -81,15 +77,40 @@ def get_kjv():
             force_download=True,
         )
         unzip_data(
-            "downloads",
-            "eng-kjv_readaloud.zip",
-            "kjv_chapter_files",
-            is_desired_kjv_file,
+            download_folder,
+            zip_fn,
+            unzip_subfolder="kjv_chapter_files",
+            check_files=is_desired_kjv_file,
         )
         # Un-zipping un-zips 1191 files:
         #   1,189 KJV Bible chapter files
         #   copr.htm                        copyright info (as extracted from above)
         #   eng-kjv_000_000_000_read.txt    a README.txt file
+
+
+def get_kjv_psalms_with_subtitles():
+
+    """
+    If KJV books .zip file isn't yet downloaded or user (when prompted) requests to download it:
+        Download it
+        Unzip it
+    """
+
+    download_folder = "downloads"
+    mkdir_if_not_isdir(download_folder)
+    zip_fn = "kjvtxt.zip"
+    zip_path = os.path.join(download_folder, zip_fn)
+
+    prompt = (
+        f"\nFile {zip_fn} already exists, do you want to download it anyway [y/N]?: "
+    )
+    if (not os.path.exists(zip_path)) or ((input(prompt)).lower() == "n"):
+        get_binary_file_via_from_web(
+            "https://ebible.org/kjv/", zip_fn, download_folder, force_download=True,
+        )
+        unzip_data(
+            download_folder, zip_fn, check_files=lambda book: (book == "Psalms.txt"),
+        )
 
 
 def get_github_mark(html_folder):
@@ -111,6 +132,9 @@ def get_github_mark(html_folder):
     )
 
 
+# TODO: Currently, I'm using a modified version of sorttable.js, so I can't just re-download it.
+#   So, either download it and programmatically modify it, of just link from the modified code to the original.
+
 # def get_sorttable_js(html_folder):
 
 #     sorttable_js_path = "downloads/sorttable.js"
@@ -129,7 +153,9 @@ def get_github_mark(html_folder):
 
 def get_downloads():
 
-    get_kjv()
+    get_kjv_chapter_files()
+    get_kjv_psalms_with_subtitles()
+
     html_folder = os.path.join(os.getcwd(), "public_html")
     get_github_mark(html_folder)
 
