@@ -6,8 +6,13 @@
     <meta charset="UTF-8">
     <meta name="description" content="${description}">
     <meta name="keywords" content="${keywords}">
-    <meta name="date" content="${datestamp}">
-    <meta name="last-modified" content="${datestamp}">
+## For now, at least, exclude meta tags which contain the full date, for the following reasons:
+##      During development, it makes diff'ing easier.
+##      Some popular Websites, such as RealPython.com don't have them.
+##      It's probably better not to have them than to have them inaccurate.
+##      To add them, I'll need some way of updating them, r.t. just always overwriting them
+##    <meta name="date" content="${datestamp}">
+##    <meta name="last-modified" content="${datestamp}">
     <meta name="language" content="english">
     <meta name="author" content="${author} (${site})">
     <meta name="copyright" content="${year} ${author}. All rights reserved.">
