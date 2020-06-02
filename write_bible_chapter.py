@@ -32,18 +32,14 @@ def get_top_7_words(csv_path):
 
 def get_bible_chapter_text(book_num, book_abbrev, chapter, custom_paragraphing=False):
 
-    book_int = (int(book_num) + 1) if (int(book_num) <= 39) else (int(book_num) + 30)
-    revised_book_num = str(book_int).zfill(3)
-    chapter_num = chapter.zfill(3 if (book_abbrev == "Psa") else 2)
-    chapter_file = (
-        f"eng-kjv_{revised_book_num}_{book_abbrev.upper()}_{chapter_num}_read.txt"
-    )
+    chapter_num = chapter.zfill(3)
+    chapter_file = f"{book_num}_{book_abbrev.upper()}_{chapter_num}.txt"
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    source_files = os.path.join(script_dir, "downloads", "kjv_chapter_files")
+    source_files = os.path.join(script_dir, "data", "kjv_no_subtitles")
     chapter_path = os.path.join(source_files, chapter_file)
 
     with open(chapter_path, "r", encoding="utf-8", newline="") as read_file:
-        lines = read_file.readlines()[2:]
+        lines = read_file.readlines()
 
     if custom_paragraphing and book_abbrev == "Psa" and chapter == "119":
         lines = reformat_psalm_119(lines)

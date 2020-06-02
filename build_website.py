@@ -9,6 +9,7 @@ import os
 import shutil
 
 from get_downloads import get_downloads
+from create_kjv_no_subtitles import create_kjv_no_subtitles
 from get_bible_data import get_book_nums
 from create_raw_freq_data import create_raw_freq_data, get_word_frequency
 from write_site_index import write_site_index
@@ -221,6 +222,7 @@ def build_web_site():
     copy_scripts(html_folder)
     copy_styles(html_folder)
     get_downloads()  # Download KJV chapter files, GitHub mark, and sorttable.js, if needed
+    create_kjv_no_subtitles()
 
     write_site_index()  # Write master index file
     write_examples()

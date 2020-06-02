@@ -4,16 +4,16 @@ import os.path
 import re
 
 from get_downloads import get_downloads
+from create_kjv_no_subtitles import create_kjv_no_subtitles
 
 
 def get_full_ref(chapter_file):
 
-    book_number_name_chapter = os.path.basename(chapter_file)[9:-9]
+    book_number_name_chapter = os.path.basename(chapter_file)[0:10]
     # basename is, for example, eng-kjv_002_GEN_01_read.txt
-    book_abbr = book_number_name_chapter[3:6].title()  # Gen, Exo, ..., Rev
-    chapter_number = book_number_name_chapter[7:10].lstrip("0").rstrip("_")
-    # Filenames normally contain 2-digit chapter numbers, but have 3 for Psalms
-    # Remove leading 0s (as from "01" and "001") and trailing "_"s (as from "01_")
+    book_abbr = book_number_name_chapter[3:6].title()  # GEN, EXO, ..., REV
+    chapter_number = book_number_name_chapter[7:].lstrip("0")
+    # Remove leading 0s (as from "01" and "001")
 
     # Calculate verse counts
     full_ref = book_abbr + " " + chapter_number
@@ -107,7 +107,7 @@ def calc_and_write_word_frequency_files(frequency_lists_chapters):
     for word, count in sorted(word_frequency.items()):
         word_frequency_sorted[word] = count
     with open(os.path.join(output_folder, "word_frequency.json"), "w") as write_file:
-        json.dump(word_frequency_sorted, write_file)
+        json.dump(word_frequency_sorted, write_file, indent=4)
 
     word_frequency_lists = build_frequency_lists(word_frequency)
     with open(
@@ -125,30 +125,29 @@ def create_raw_freq_data():
 
     frequency_lists_chapters = {}
 
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    source_files = os.path.join(script_dir, "downloads", "kjv_chapter_files")
-
     get_downloads()  # Download KJV chapter files, if needed
-    kjv_chapter_files = sorted(glob.glob(os.path.join(source_files, "*.txt")))
+    create_kjv_no_subtitles()
+
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    source_files = os.path.join(script_dir, "data", "kjv_no_subtitles")
+    kjv_no_subtitles = sorted(glob.glob(os.path.join(source_files, "*.txt")))
     # sorted() because glob() may return the list in an arbitrary order
 
-    for chapter_file in kjv_chapter_files:
+    for chapter_file in kjv_no_subtitles[:-1]:
+        # Skip reformatted_psalm119.txt
 
-        if not chapter_file.endswith("eng-kjv_000_000_000_read.txt"):
-            #   Ignore what's essentially a README.txt file
+        with open(chapter_file, "r", encoding="utf-8") as read_file:
 
-            with open(chapter_file, "r", encoding="utf-8") as read_file:
+            lines = read_file.readlines()
+            # There's no need to exclude the blank line at the end of chapter files,
+            # since readlines() already seems to ignore it.
 
-                lines = read_file.readlines()
-                # There's no need to exclude the blank line at the end of chapter files,
-                # since readlines() already seems to ignore it.
+            full_ref = get_full_ref(chapter_file)
 
-                full_ref = get_full_ref(chapter_file)
-
-                freq_this_chapter = calc_word_freq(lines[2:])
-                frequency_lists_chapters[full_ref] = build_frequency_lists(
-                    freq_this_chapter
-                )
+            freq_this_chapter = calc_word_freq(lines[2:])
+            frequency_lists_chapters[full_ref] = build_frequency_lists(
+                freq_this_chapter
+            )
 
     calc_and_write_word_frequency_files(frequency_lists_chapters)
 
@@ -156,8 +155,9 @@ def create_raw_freq_data():
 def get_word_frequency():
 
     json_path = os.path.join("data", "word_frequency.json")
-    if not os.path.exists(json_path):
-        create_raw_freq_data()
+    # if not os.path.exists(json_path):
+    #     create_raw_freq_data()
+    create_raw_freq_data()
 
     with open(json_path, "r") as read_file:
         json_data = json.load(read_file)

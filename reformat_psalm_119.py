@@ -58,11 +58,11 @@ def reformat_psalm_119(inp_lines):
 def write_reformatted_psalm_119():
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    source_files = os.path.join(script_dir, "downloads", "kjv_chapter_files")
+    source_files = os.path.join(script_dir, "data", "kjv_no_subtitles")
 
-    chapter_file = os.path.join(source_files, "eng-kjv_020_PSA_119_read.txt")
+    chapter_file = os.path.join(source_files, "19_PSA_119.txt")
     with open(chapter_file, "r", encoding="utf-8", newline="") as read_file:
-        out_lines = reformat_psalm_119(read_file.readlines()[2:])
+        out_lines = reformat_psalm_119(read_file.readlines())
 
     reformatted_chapter_file = os.path.join(source_files, "reformatted_psalm119.txt")
     with open(reformatted_chapter_file, "w", encoding="utf-8") as write_file:
