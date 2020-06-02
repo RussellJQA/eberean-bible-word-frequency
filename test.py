@@ -8,11 +8,18 @@ def get_counter(lines):
 
     word_counter = collections.Counter()
 
+    # TODO: See if there's a place for using Counter's methods
+    # [elements(), most_common(), subtract(), and/or update()]
+    # or Counter's arithmetic operators (+, -, &, and/or |).
+    # See pymotw.com/2/collections/counter.html and guru99.com/python-counter-collections-example.html
+
+    # TODO: See if there's a place to use collections.defaultdict
+
     for line in lines:  # Split multi-line string into list of lines
 
         line = re.sub(r"[¶’]\S*", "", line).strip()
         # Eliminate paragraph markers, possessives, and leading/trailing whitespace
-        words = re.sub(r"[^a-z\- ]+", "", line, flags=re.IGNORECASE)
+        words = re.sub(r"[^a-zæ\- ]+", "", line, flags=re.IGNORECASE)
 
         words2 = [
             (word if (word == "LORD") else word.casefold())
@@ -82,7 +89,7 @@ def print_match_info(weighted_pattern_match, total_line):
     if 0.9999 <= rounded_weighted_freq <= 1.0001:
 
         total_pattern = (
-            r"TOTAL \(([0-9A-Za-z]{3}) ([0-9]{1,3})\),([0-9]{1,4}),([0-9]{6})"
+            r"TOTAL \(([0-9A-ZÆa-zæ]{3}) ([0-9]{1,3})\),([0-9]{1,4}),([0-9]{6})"
         )
         match = re.search(total_pattern, total_line)
         if match:
@@ -108,7 +115,7 @@ def print_match_info(weighted_pattern_match, total_line):
 
 def find_weighted_near_one():
 
-    weighted_pattern = "([A-Za-z]*)(,)([0-9.]*)(,)([0-9.]*)(,[0-9.]*,)([0-9.]*$)"
+    weighted_pattern = "([A-ZÆa-zæ]*)(,)([0-9.]*)(,)([0-9.]*)(,[0-9.]*,)([0-9.]*$)"
     subfolders = os.scandir(
         os.path.join(os.path.dirname(os.path.realpath(__file__)), "public_html")
     )

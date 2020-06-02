@@ -1,3 +1,4 @@
+import collections
 import glob
 import json
 import os.path
@@ -61,13 +62,14 @@ def calc_word_freq(passage):
 
     # TODO (possibly): Generate alternative versions with and without italicized words
 
-    frequency_this_passage = {}
+    frequency_this_passage = collections.Counter()
+
     for line in passage:
 
         line = re.sub(r"[¶’]\S*", "", line).strip()
         # Eliminate paragraph markers, possessives, and leading/trailing whitespace
 
-        words = re.sub(r"[^a-z\- ]+", "", line, flags=re.IGNORECASE)
+        words = re.sub(r"[^a-zæ\- ]+", "", line, flags=re.IGNORECASE)
 
         for word in words.split():
 
@@ -78,25 +80,20 @@ def calc_word_freq(passage):
                 # NOTE: casefold() is an alternative to lower() that [unlike lower()]
                 # also lowercases non-ASCII characters
 
-            if word in frequency_this_passage:
-                frequency_this_passage[word] += 1
-            else:
-                frequency_this_passage[word] = 1
+            frequency_this_passage[word] += 1
 
     return frequency_this_passage
 
 
 def calc_and_write_word_frequency_files(frequency_lists_chapters):
 
-    word_frequency = {}
+    word_frequency = collections.Counter()
+
     for (_, frequency_list) in frequency_lists_chapters.items():
         for count, words in frequency_list.items():
             if words != ["TOTAL WORDS"]:
                 for word in words:
-                    if word in word_frequency:
-                        word_frequency[word] += count
-                    else:
-                        word_frequency[word] = count
+                    word_frequency[word] += count
 
     output_folder = "data"
     os.makedirs(output_folder, exist_ok=True)
