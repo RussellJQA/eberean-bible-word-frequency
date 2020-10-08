@@ -4,6 +4,9 @@ import os
 import re
 
 # TODOs:
+#
+# ***** Make tests pytest-compliant! *****
+#
 # function to sum word frequencies?
 #     chapters -> books
 #         books -> testaments

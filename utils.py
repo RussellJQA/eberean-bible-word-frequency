@@ -90,9 +90,8 @@ def write_html(base_template_args, new_template_args, mako_file, html_folder,
 
     os.makedirs(html_folder, exist_ok=True)
 
-    # Merge dictionaries
-    filled_in_template_args = {**base_template_args, **new_template_args}
-    # In Python 3.9, PEP 584 will let you merge  2 dicts using | or |=
+    # Merge dictionaries using Python 3.9's new PEP 584 "|" operator
+    filled_in_template_args = base_template_args | new_template_args
 
     template_lookup = mako.lookup.TemplateLookup([""])
     raw_template = mako.template.Template(filename=mako_file,
