@@ -5,7 +5,6 @@ from utils import get_binary_file_via_from_web
 
 
 def get_web_json_data(web_folder, json_fn, download_folder):
-
     """ Gets JSON data from the Web.
     """
 
@@ -22,25 +21,26 @@ def get_web_json_data(web_folder, json_fn, download_folder):
 def get_bible_books():
 
     web_folder = (
-        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
-    )
+        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/"
+        "BibleMetaData/")
     return get_web_json_data(web_folder, "bible_books.json", "downloads")
 
 
 def get_book_nums():
 
     web_folder = (
-        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
-    )
+        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/"
+        "BibleMetaData/")
     return get_web_json_data(web_folder, "book_numbers.json", "downloads")
 
 
 def get_verse_counts():
 
     web_folder = (
-        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/BibleMetaData/"
-    )
-    return get_web_json_data(web_folder, "verse_counts_by_chapter.json", "downloads")
+        "https://raw.githubusercontent.com/RussellJQA/eBEREAN/master/"
+        "BibleMetaData/")
+    return get_web_json_data(web_folder, "verse_counts_by_chapter.json",
+                             "downloads")
 
 
 def main():
@@ -56,8 +56,8 @@ def main():
     verse_counts_by_chapter = get_verse_counts()
     if (chapters := len(verse_counts_by_chapter)) != 1189:
         print(
-            f"The Bible has 1,189 chapters, but 'verse_counts_by_chapter' has {chapters} chapters."
-        )
+            f"The Bible has 1,189 chapters, but 'verse_counts_by_chapter' has"
+            f" {chapters} chapters.")
 
 
 if __name__ == "__main__":

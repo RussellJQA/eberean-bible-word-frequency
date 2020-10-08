@@ -4,26 +4,33 @@
 
 
 King James Version + Apocrypha
-The King James Version or Authorized Version of the Holy Bible, using the standardized text of 1769, with Apocrypha/Deuterocanon
+The King James Version or Authorized Version of the Holy Bible, using the
+standardized text of 1769, with Apocrypha/Deuterocanon
 [Public Domain](http://en.wikipedia.org/wiki/Public_domain)
 Language: [English](http://www.ethnologue.org/language/eng)
 Dialect: archaic British
 
-Letters patent issued by King James with no expiration date means that to print this translation in the United Kingdom or import printed copies into the UK,
+Letters patent issued by King James with no expiration date means that to print
+this translation in the United Kingdom or import printed copies into the UK,
 you need permission.
-Currently, the Cambridge University Press, the Oxford University Press, and Collins have the exclusive right to print this Bible
-translation in the UK. This royal decree has no effect outside of the UK, where this work is firmly in the Public Domain.
-Please see http://www.cambridge.org/about-us/who-we-are/queens-printers-patent and https://en.wikipedia.org/wiki/King_James_Version#Copyright_status
-for more information.
-This free text of the King James Version of the Holy Bible is brought to you courtesy of the
-[Crosswire Bible Society](https://crosswire.org/) and [eBible.org](https://ebible.org/).
+Currently, the Cambridge University Press, the Oxford University Press, and
+Collins have the exclusive right to print this Bible translation in the UK.
+This royal decree has no effect outside of the UK, where this work is firmly
+in the Public Domain.
+Please see http://www.cambridge.org/about-us/who-we-are/queens-printers-patent
+and https://en.wikipedia.org/wiki/King_James_Version#Copyright_status for more
+information.
+This free text of the King James Version of the Holy Bible is brought to you
+courtesy of the [Crosswire Bible Society](https://crosswire.org/) and
+[eBible.org](https://ebible.org/).
 
 
 2018-08-27
 
 ...
 
-You may copy the King James Version of the Holy Bible freely. If you find a typo that is not just an archaic spelling,
+You may copy the King James Version of the Holy Bible freely.
+If you find a typo that is not just an archaic spelling,
 [please report it](http://ebible.org/cgi-bin/comment.cgi).
 
 ...
@@ -40,10 +47,12 @@ from get_bible_data import get_binary_file_via_from_web
 
 def is_desired_kjv_file(filename):
 
-    apocryphal_pattern1 = "eng-kjv_04[123456789]_[3A-Z]{3,3}_[0-9]{2,2}_read.txt"
+    apocryphal_pattern1 = (
+        "eng-kjv_04[123456789]_[3A-Z]{3,3}_[0-9]{2,2}_read.txt")
     match1 = re.search(apocryphal_pattern1, filename)
 
-    apocryphal_pattern2 = "eng-kjv_05[0123456789]_[12A-Z]{3,3}_[0-9]{2,2}_read.txt"
+    apocryphal_pattern2 = (
+        "eng-kjv_05[0123456789]_[12A-Z]{3,3}_[0-9]{2,2}_read.txt")
     match2 = re.search(apocryphal_pattern2, filename)
 
     # keys.asc (PGP keys) or signature.txt.asc (PGP signed message)
@@ -54,9 +63,9 @@ def is_desired_kjv_file(filename):
 
 
 def get_kjv_chapter_files():
-
     """
-    If KJV chapters .zip file isn't yet downloaded or user (when prompted) requests to download it:
+    If KJV chapters .zip file isn't yet downloaded or user (when prompted)
+    requests to download it:
         Download it
         Unzip it
     """
@@ -66,9 +75,8 @@ def get_kjv_chapter_files():
     zip_fn = "eng-kjv_readaloud.zip"
     zip_path = os.path.join(download_folder, zip_fn)
 
-    prompt = (
-        f"\nFile {zip_fn} already exists, do you want to download it anyway [y/N]?: "
-    )
+    prompt = (f"\nFile {zip_fn} already exists,"
+              " do you want to download it anyway [y/N]?: ")
     if (not os.path.exists(zip_path)) or ((input(prompt)).lower() == "n"):
         get_binary_file_via_from_web(
             "https://ebible.org/Scriptures/",
@@ -84,14 +92,14 @@ def get_kjv_chapter_files():
         )
         # Un-zipping un-zips 1191 files:
         #   1,189 KJV Bible chapter files
-        #   copr.htm                        copyright info (as extracted from above)
+        #   copr.htm                        © info (as extracted from above)
         #   eng-kjv_000_000_000_read.txt    a README.txt file
 
 
 def get_kjv_psalms_with_subtitles():
-
     """
-    If KJV books .zip file isn't yet downloaded or user (when prompted) requests to download it:
+    If KJV books .zip file isn't yet downloaded or user (when prompted)
+    requests to download it:
         Download it
         Unzip it
     """
@@ -101,15 +109,19 @@ def get_kjv_psalms_with_subtitles():
     zip_fn = "kjvtxt.zip"
     zip_path = os.path.join(download_folder, zip_fn)
 
-    prompt = (
-        f"\nFile {zip_fn} already exists, do you want to download it anyway [y/N]?: "
-    )
+    prompt = (f"\nFile {zip_fn} already exists,"
+              " do you want to download it anyway [y/N]?: ")
     if (not os.path.exists(zip_path)) or ((input(prompt)).lower() == "n"):
         get_binary_file_via_from_web(
-            "https://ebible.org/kjv/", zip_fn, download_folder, force_download=True,
+            "https://ebible.org/kjv/",
+            zip_fn,
+            download_folder,
+            force_download=True,
         )
         unzip_data(
-            download_folder, zip_fn, check_files=lambda book: (book == "Psalms.txt"),
+            download_folder,
+            zip_fn,
+            check_files=lambda book: (book == "Psalms.txt"),
         )
 
 
@@ -127,26 +139,30 @@ def get_github_mark(html_folder):
     images_folder = os.path.join(html_folder, "images")
     os.makedirs(images_folder, exist_ok=True)
     shutil.copyfile(
-        github_mark_path, os.path.join(images_folder, "github-mark-64px.png"),
+        github_mark_path,
+        os.path.join(images_folder, "github-mark-64px.png"),
     )
 
+    # TODO: Currently, I'm using a modified version of sorttable.js,
+    #   so I can't just re-download it.
+    #   So, either download it and programmatically modify it,
+    #   or just link from the modified code to the original.
 
-# TODO: Currently, I'm using a modified version of sorttable.js, so I can't just re-download it.
-#   So, either download it and programmatically modify it, of just link from the modified code to the original.
+    # def get_sorttable_js(html_folder):
 
-# def get_sorttable_js(html_folder):
+    #     sorttable_js_path = "downloads/sorttable.js"
+    #     if not os.path.exists(sorttable_js_path):
+    #         get_binary_file_via_from_web(
+    #             "https://www.kryogenix.org/code/browser/sorttable/",
+    #             "sorttable.js",
+    #             "downloads",
+    #         )
 
-#     sorttable_js_path = "downloads/sorttable.js"
-#     if not os.path.exists(sorttable_js_path):
-#         get_binary_file_via_from_web(
-#             "https://www.kryogenix.org/code/browser/sorttable/",
-#             "sorttable.js",
-#             "downloads",
-#         )
+    #     scripts_folder = os.path.join(html_folder, "scripts")
+    #     os.makedirs(scripts_folder, exist_ok=True)
 
-#     scripts_folder = os.path.join(html_folder, "scripts")
-#     os.makedirs(scripts_folder, exist_ok=True)
-#     shutil.copyfile(sorttable_js_path, os.path.join(scripts_folder, "sorttable.js"))
+    # shutil.copyfile(sorttable_js_path,
+    #                 os.path.join(scripts_folder, "sorttable.js"))
 
 
 def get_downloads():

@@ -19,20 +19,20 @@ from write_bible_chapter import write_bible_chapter
 
 
 def round_4_to_6_sigfigs(num):
-    """ If there are more than 4 significant figures to the left of the decimal point:
+    """ If there are > 4 significant figures to the left of the decimal point:
             Round to the number of sigfits to the left of the decimal point
         Else:
             Round to 4 sigfigs
         Rounding based on:
             https://stackoverflow.com/questions/3410976/how-to-round-a-number-to-significant-figures-in-python/3411731
     NOTE: For words_in_bible = 790663,
-          we only need to allow for up to 6 sigfigs to the left of the decimal point
+          we need to allow for up to 6 sigfigs to the left of the decimal point
     """
-    if num >= (10 ** 5):
+    if num >= (10**5):
         return int("%.6g" % num)
-    if num >= (10 ** 4):
+    if num >= (10**4):
         return int("%.5g" % num)
-    if num >= (10 ** 3):
+    if num >= (10**3):
         return int("%.4g" % num)
     return float("%.4g" % num)
 
@@ -56,9 +56,8 @@ def get_book_folder(html_folder, book_abbrev):
     return book_folder
 
 
-def get_chapter_word_freqs(
-    words_in_bible, words_in_chapter, word_frequencies, word_frequency
-):
+def get_chapter_word_freqs(words_in_bible, words_in_chapter, word_frequencies,
+                           word_frequency):
 
     chapter_word_freqs = {}
     for (chapter_frequency, words) in word_frequencies.items():
@@ -67,28 +66,26 @@ def get_chapter_word_freqs(
             for word in words:
                 times_in_bible = word_frequency[word]
 
-                simple_relative_frequency = (
-                    words_in_bible * times_in_chapter
-                ) / times_in_bible
-                # Equivalently: words_in_bible * (times_in_chapter / times_in_bible)
+                simple_relative_frequency = (words_in_bible *
+                                             times_in_chapter) / times_in_bible
+                # IOW: words_in_bible * (times_in_chapter / times_in_bible)
 
                 values = [
                     times_in_chapter,
                     times_in_bible,
                     round_4_to_6_sigfigs(simple_relative_frequency),
                     # Below is weighted_relative_frequency (rounded)
-                    round_4_to_6_sigfigs(
-                        (simple_relative_frequency / words_in_chapter)
-                        + (times_in_chapter - 1)
-                    ),
+                    round_4_to_6_sigfigs((simple_relative_frequency /
+                                          words_in_chapter) +
+                                         (times_in_chapter - 1)),
                 ]
 
-                # weighted_relative_frequency was chosen so that (for example) for Exodus 5's:
+                # weighted_relative_frequency chosen so that (e.g) for Ex. 5's:
                 #    8 out of 16 occurrences of straw
                 #    1 out of 2 occurrences of dealest
-                # weighted_relative_frequency for "straw" would be greater than for "dealest"
+                # weighted_relative_frequency for "straw" > for "dealest"
 
-                # The print() statements below were used (1 at a time) to help me
+                # The print() statements below were used (1 at a time) to help
                 # to determine what to use for weighted_relative_frequency.
 
                 # if times_in_chapter == times_in_bible:
@@ -96,7 +93,8 @@ def get_chapter_word_freqs(
 
                 # if 2 * times_in_chapter == times_in_bible:
                 #     print(
-                #         f"\t{times_in_chapter} out of {times_in_bible} occurrences of {word}"
+                #         f"\t{times_in_chapter} out of {times_in_bible}"
+                #         f" occurrences of {word}"
                 #     )
 
                 chapter_word_freqs[word] = values
@@ -104,18 +102,20 @@ def get_chapter_word_freqs(
     return chapter_word_freqs
 
 
-def get_relative_word_frequency(words_in_bible, word_frequencies, word_frequency):
+def get_relative_word_frequency(words_in_bible, word_frequencies,
+                                word_frequency):
 
     words_in_chapter = int(next(iter(word_frequencies)))
 
     relative_word_frequency = {}
     relative_word_frequency["TOTAL WORDS"] = [words_in_chapter]
-    chapter_word_freqs = get_chapter_word_freqs(
-        words_in_bible, words_in_chapter, word_frequencies, word_frequency
-    )
+    chapter_word_freqs = get_chapter_word_freqs(words_in_bible,
+                                                words_in_chapter,
+                                                word_frequencies,
+                                                word_frequency)
     for chapter_word_freq, values in sorted(
-        chapter_word_freqs.items(), key=sort_desc_by_simple_desc_by_weighted_asc_by_word
-    ):
+            chapter_word_freqs.items(),
+            key=sort_desc_by_simple_desc_by_weighted_asc_by_word):
         relative_word_frequency[chapter_word_freq] = values
 
     return relative_word_frequency
@@ -126,32 +126,40 @@ def write_chapter_csv(words_in_bible, key, csv_fn, relative_word_frequency):
     with open(csv_fn, mode="w", newline="") as csv_file:
         # newline="" prevents blank lines from being added between rows
         writer = csv.writer(csv_file, delimiter=",", quotechar='"')
-        writer.writerow(
-            ["word", "numInChap", "numInKjv", "simpleRelFreq", "weightedRelFreq",]
-        )
+        writer.writerow([
+            "word",
+            "numInChap",
+            "numInKjv",
+            "simpleRelFreq",
+            "weightedRelFreq",
+        ])
         #   Column header row
 
         for count, chapter_word_freq in enumerate(relative_word_frequency):
             values = relative_word_frequency[chapter_word_freq]
             if count:  # Data row
-                writer.writerow(
-                    [chapter_word_freq, values[0], values[1], values[2], values[3],]
-                )
+                writer.writerow([
+                    chapter_word_freq,
+                    values[0],
+                    values[1],
+                    values[2],
+                    values[3],
+                ])
             else:  # Totals row
-                writer.writerow(
-                    [
-                        f"TOTAL ({key})",
-                        relative_word_frequency[chapter_word_freq][0],
-                        words_in_bible,
-                    ]
-                )
+                writer.writerow([
+                    f"TOTAL ({key})",
+                    relative_word_frequency[chapter_word_freq][0],
+                    words_in_bible,
+                ])
 
 
 def write_chapter_html(book_abbrev, chapter, relative_word_frequency):
 
     words_in_chapter = "{:,}".format(relative_word_frequency["TOTAL WORDS"][0])
-    del relative_word_frequency["TOTAL WORDS"]  # Not wanted for dict comprehension
-    #   OK to do here, since CSVs were already written, and we're now done with this extra entry
+    del relative_word_frequency[
+        "TOTAL WORDS"]  # Not wanted for dict comprehension
+    #   OK to do here, since CSVs were already written,
+    #   and we're now done with this extra entry
 
     # Some possible alternatives for the sortable table implementation:
     #   1. https://www.w3schools.com/howto/howto_js_sort_table.asp
@@ -160,9 +168,11 @@ def write_chapter_html(book_abbrev, chapter, relative_word_frequency):
     #   4. https://stefanhoelzl.github.io/vue.py/examples/grid_component/
     #       source at
     #       https://github.com/stefanhoelzl/vue.py/blob/master/examples/grid_component/app.py
-    #   5. https://anvil.works/docs/data-tables/data-tables-in-code#searching-querying-a-table
+    #   5. https://anvil.works/docs/data-tables/
+    #           data-tables-in-code#searching-querying-a-table
 
-    # Corresponding .csv column headings: word, numInChap, numInKjv, simpleRelFreq, weightedRelFreq
+    # Corresponding .csv column headings:
+    #   word, numInChap, numInKjv, simpleRelFreq, weightedRelFreq
     rows = [
         [
             item[0],
@@ -170,8 +180,7 @@ def write_chapter_html(book_abbrev, chapter, relative_word_frequency):
             "{:,}".format(item[1][1]),  # formats with a 1,000s separator
             "{:,}".format(item[1][2]),
             item[1][3],
-        ]
-        for item in relative_word_frequency.items()
+        ] for item in relative_word_frequency.items()
     ]
 
     write_bible_chapter(
@@ -183,15 +192,13 @@ def write_chapter_html(book_abbrev, chapter, relative_word_frequency):
     )
 
 
-def write_chapter_files(
-    words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
-):
+def write_chapter_files(words_in_bible, key, book_abbrev, book_folder,
+                        relative_word_frequency):
 
     chapter = key[4:]
 
     csv_fn = os.path.join(
-        book_folder, f"{book_abbrev.lower()}{chapter.zfill(3)}-word-freq.csv"
-    )
+        book_folder, f"{book_abbrev.lower()}{chapter.zfill(3)}-word-freq.csv")
     write_chapter_csv(words_in_bible, key, csv_fn, relative_word_frequency)
 
     write_chapter_html(book_abbrev, chapter, relative_word_frequency)
@@ -201,14 +208,16 @@ def copy_scripts(html_folder):
 
     styles_folder = os.path.join(html_folder, "scripts")
     os.makedirs(styles_folder, exist_ok=True)
-    shutil.copyfile("scripts/sorttable.js", os.path.join(styles_folder, "sorttable.js"))
+    shutil.copyfile("scripts/sorttable.js",
+                    os.path.join(styles_folder, "sorttable.js"))
 
 
 def copy_styles(html_folder):
 
     styles_folder = os.path.join(html_folder, "styles")
     os.makedirs(styles_folder, exist_ok=True)
-    shutil.copyfile("styles/style.css", os.path.join(styles_folder, "style.css"))
+    shutil.copyfile("styles/style.css", os.path.join(styles_folder,
+                                                     "style.css"))
     shutil.copyfile(
         "styles/style-freq-tables.css",
         os.path.join(styles_folder, "style-freq-tables.css"),
@@ -221,18 +230,19 @@ def build_web_site():
     os.makedirs(html_folder, exist_ok=True)
     copy_scripts(html_folder)
     copy_styles(html_folder)
-    get_downloads()  # Download KJV chapter files, GitHub mark, and sorttable.js, if needed
+    get_downloads(
+    )  # Download KJV chapter files, GitHub mark, and sorttable.js, if needed
     create_kjv_no_subtitles()
 
     write_site_index()  # Write master index file
     write_examples()
 
     # TODO:
-    # Refactor using a function which instead of calculating word frequencies in a chapter
-    # relative to word frequencies in the Bible,
-    # calculates word frequencies in a subunit, relative to word frequencies in a unit.
-    # Such a function might be used for calculating (relative) word frequencies for the OT, NT,
-    # individual book, daily readings, etc.
+    # Refactor using a function which instead of calculating word frequencies
+    # in a chapter relative to word frequencies in the Bible,
+    # calculates word freq.s in a subunit, relative to word freq.s in a unit.
+    # Such a fcn. might be used for calculating (relative) word freq.s for
+    # the OT, NT, individual books, daily readings, etc.
 
     data_dir = os.path.join(os.getcwd(), "data")
     os.makedirs(data_dir, exist_ok=True)
@@ -250,8 +260,7 @@ def build_web_site():
         word_frequency_lists_chapters = json.load(read_file)
         for (key, word_frequencies) in word_frequency_lists_chapters.items():
             relative_word_frequency = get_relative_word_frequency(
-                words_in_bible, word_frequencies, word_frequency
-            )
+                words_in_bible, word_frequencies, word_frequency)
             chapters_relative_word_frequency[key] = relative_word_frequency
 
             book_abbrev = key[0:3]
@@ -259,9 +268,8 @@ def build_web_site():
                 book_folder = get_book_folder(html_folder, book_abbrev)
                 write_bible_book_index(book_abbrev)
                 print(f"Writing files for {book_abbrev}.")
-            write_chapter_files(
-                words_in_bible, key, book_abbrev, book_folder, relative_word_frequency
-            )
+            write_chapter_files(words_in_bible, key, book_abbrev, book_folder,
+                                relative_word_frequency)
 
     write_fn = os.path.join(data_dir, "chapters_relative_word_frequency.json")
     with open(write_fn, "w") as write_file:

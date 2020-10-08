@@ -6,16 +6,16 @@ import mako.template  # pip install Mako
 import mako.lookup  # pip install Mako
 import requests  # pip install requests
 
-
-# I replaced calls to this function with calls to os.makedirs(folder, exist_ok=True)
+# Replaced calls to this fcn. with calls to os.makedirs(folder, exist_ok=True)
 # def mkdir_if_not_isdir(folder):
 # if not os.path.isdir(folder):
 #     os.mkdir(folder)
 
 
-def get_binary_file_via_from_web(
-    web_folder, binary_file, download_folder, force_download=False
-):
+def get_binary_file_via_from_web(web_folder,
+                                 binary_file,
+                                 download_folder,
+                                 force_download=False):
 
     os.makedirs(download_folder, exist_ok=True)
     download_file = os.path.join(download_folder, binary_file)
@@ -32,22 +32,24 @@ def get_binary_file_via_from_web(
             print(f"Download failed with status code: {resp.status_code}")
 
 
-def unzip_data(download_folder, zip_fn, unzip_subfolder=None, check_files=None):
+def unzip_data(download_folder,
+               zip_fn,
+               unzip_subfolder=None,
+               check_files=None):
 
-    unzip_path = (
-        download_folder
-        if unzip_subfolder is None
-        else os.path.join(download_folder, unzip_subfolder)
-    )
+    unzip_path = (download_folder if unzip_subfolder is None else os.path.join(
+        download_folder, unzip_subfolder))
     os.makedirs(unzip_path, exist_ok=True)
 
-    with zipfile.ZipFile(os.path.join(download_folder, zip_fn), "r") as zip_ref:
+    with zipfile.ZipFile(os.path.join(download_folder, zip_fn),
+                         "r") as zip_ref:
 
         if check_files is None:
             zip_ref.extractall(unzip_path)
         else:
             file_list = zip_ref.namelist()
-            print(f"\nZip file {zip_fn} contains {len(file_list)} archived files.")
+            print(f"\nZip file {zip_fn} contains "
+                  f" {len(file_list)} archived files.")
 
             desired_files = [file for file in file_list if check_files(file)]
             print(f"Unzipping the {len(desired_files)} desired file(s).")
@@ -59,22 +61,32 @@ def get_base_template_args(description, keywords, title_h1):
     datestamp = datetime.date.today().strftime("%Y-%m-%d")
 
     base_template_args = {
-        "description": "eBEREAN (electronic Bible Exploration REsources and ANalysis) - "
-        + description,
-        "keywords": keywords,
-        "datestamp": datestamp,
-        "author": "Russell Johnson",
-        "site": "RussellJQA/eberean-bible-word-frequency",
-        "year": datestamp[0:4],
-        "og_site_name": "RussellJQA/eberean-bible-word-frequency",
-        "title_h1": title_h1,
-        "github_account": "https://github.com/RussellJQA",
+        "description":
+        "eBEREAN (electronic Bible Exploration REsources and ANalysis) - " +
+        description,
+        "keywords":
+        keywords,
+        "datestamp":
+        datestamp,
+        "author":
+        "Russell Johnson",
+        "site":
+        "RussellJQA/eberean-bible-word-frequency",
+        "year":
+        datestamp[0:4],
+        "og_site_name":
+        "RussellJQA/eberean-bible-word-frequency",
+        "title_h1":
+        title_h1,
+        "github_account":
+        "https://github.com/RussellJQA",
     }
 
     return base_template_args
 
 
-def write_html(base_template_args, new_template_args, mako_file, html_folder, html_fn):
+def write_html(base_template_args, new_template_args, mako_file, html_folder,
+               html_fn):
 
     os.makedirs(html_folder, exist_ok=True)
 
@@ -83,10 +95,12 @@ def write_html(base_template_args, new_template_args, mako_file, html_folder, ht
     # In Python 3.9, PEP 584 will let you merge  2 dicts using | or |=
 
     template_lookup = mako.lookup.TemplateLookup([""])
-    raw_template = mako.template.Template(filename=mako_file, lookup=template_lookup)
+    raw_template = mako.template.Template(filename=mako_file,
+                                          lookup=template_lookup)
     filled_in_template = raw_template.render(**filled_in_template_args)
 
-    with open(
-        os.path.join(html_folder, html_fn), "w", encoding="utf-8", newline=""
-    ) as write_file:
+    with open(os.path.join(html_folder, html_fn),
+              "w",
+              encoding="utf-8",
+              newline="") as write_file:
         write_file.write(filled_in_template)

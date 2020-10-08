@@ -47,38 +47,40 @@ def build_frequency_lists(frequency):
     frequency_lists[occurrences] = words_with_this_frequency[:]
     frequency_lists = {total_words: ["TOTAL WORDS"], **frequency_lists}
 
-    total_words2 = 0  # Essentially, recalc total_words a 2nd way, for comparison.
+    # Essentially, recalc total_words a 2nd way, for comparison.
+    total_words2 = 0
     for key, value in sorted(frequency_lists.items(), reverse=True):
         if value != ["TOTAL WORDS"]:
+            # Increment by num. of occurrences * num. of words with that num.
             total_words2 += int(key) * len(value)
-            # Increment by number of occurrences * number of words with that number
     if total_words != total_words2:
-        print(f"total_words ({total_words}) != to total_words2 ({total_words2})")
+        print(
+            f"total_words ({total_words}) != to total_words2 ({total_words2})")
 
     return frequency_lists
 
 
 def calc_word_freq(passage):
 
-    # TODO (possibly): Generate alternative versions with and without italicized words
+    # TODO(possibly): Generate alternative versions with & w/o italicized words
 
     frequency_this_passage = collections.Counter()
 
     for line in passage:
 
         line = re.sub(r"[¶’]\S*", "", line).strip()
-        # Eliminate paragraph markers, possessives, and leading/trailing whitespace
+        # Eliminate paragraph markers, possessives, & lead/trail-ing whitespace
 
         words = re.sub(r"[^a-zæ\- ]+", "", line, flags=re.IGNORECASE)
 
         for word in words.split():
 
-            if word != "LORD":  # Differentiate between "lord"/"Lord" and "LORD"
+            if word != "LORD":  # Differentiate between "lord"/"Lord" & "LORD"
                 # TODO: Possibly do something more generic, like:
                 #       if not ((len(word) >= 2) and (word == word.isupper()):
                 word = word.casefold()
-                # NOTE: casefold() is an alternative to lower() that [unlike lower()]
-                # also lowercases non-ASCII characters
+                # NOTE: casefold() is an alternative to lower() that
+                #  [unlike lower()] also lowercases non-ASCII characters
 
             frequency_this_passage[word] += 1
 
@@ -98,23 +100,24 @@ def calc_and_write_word_frequency_files(frequency_lists_chapters):
     output_folder = "data"
     os.makedirs(output_folder, exist_ok=True)
 
-    # Write dict of KJV words, each paired (in a list) with its # of occurrences
+    # Write dict of KJV words, each paired (in a list)
+    #   with its number of occurrences
     # {["a", 8282], ["aaron", 350], ["aaronites", 2], ... ["zuzims", 1]}
     word_frequency_sorted = {}
     for word, count in sorted(word_frequency.items()):
         word_frequency_sorted[word] = count
-    with open(os.path.join(output_folder, "word_frequency.json"), "w") as write_file:
+    with open(os.path.join(output_folder, "word_frequency.json"),
+              "w") as write_file:
         json.dump(word_frequency_sorted, write_file, indent=4)
 
     word_frequency_lists = build_frequency_lists(word_frequency)
-    with open(
-        os.path.join(output_folder, "word_frequency_lists.json"), "w"
-    ) as write_file:
+    with open(os.path.join(output_folder, "word_frequency_lists.json"),
+              "w") as write_file:
         json.dump(word_frequency_lists, write_file, indent=4)
 
     with open(
-        os.path.join(output_folder, "word_frequency_lists_chapters.json"), "w"
-    ) as write_file:
+            os.path.join(output_folder, "word_frequency_lists_chapters.json"),
+            "w") as write_file:
         json.dump(frequency_lists_chapters, write_file, indent=4)
 
 
@@ -127,24 +130,24 @@ def create_raw_freq_data():
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
     source_files = os.path.join(script_dir, "data", "kjv_no_subtitles")
-    kjv_no_subtitles = sorted(glob.glob(os.path.join(source_files, "*.txt")))
-    # sorted() because glob() may return the list in an arbitrary order
 
+    # Sort because glob() may return the list in an arbitrary order
+    kjv_no_subtitles = sorted(glob.glob(os.path.join(source_files, "*.txt")))
+
+    # Skip reformatted_psalm119.txt
     for chapter_file in kjv_no_subtitles[:-1]:
-        # Skip reformatted_psalm119.txt
 
         with open(chapter_file, "r", encoding="utf-8") as read_file:
 
-            lines = read_file.readlines()
-            # There's no need to exclude the blank line at the end of chapter files,
+            # No need to exclude the blank line at the end of chapter files,
             # since readlines() already seems to ignore it.
+            lines = read_file.readlines()
 
             full_ref = get_full_ref(chapter_file)
 
             freq_this_chapter = calc_word_freq(lines[2:])
             frequency_lists_chapters[full_ref] = build_frequency_lists(
-                freq_this_chapter
-            )
+                freq_this_chapter)
 
     calc_and_write_word_frequency_files(frequency_lists_chapters)
 
@@ -166,9 +169,8 @@ def main():
     word_frequency = get_word_frequency()
     expected_num_words = 12553
     if (num_words := len(word_frequency)) != expected_num_words:
-        print(
-            f"\nThe number of unique words was {num_words}, rather than the expected {expected_num_words}.\n"
-        )
+        print(f"\nThe number of unique words was {num_words},"
+              f" rather than the expected {expected_num_words}.\n")
 
 
 if __name__ == "__main__":

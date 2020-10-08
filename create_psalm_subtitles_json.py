@@ -24,7 +24,8 @@ def get_subtitles():
         if match:
             psalm_title = match.group(1)
             previous_psalm_title_loc = line_count
-        elif previous_psalm_title_loc and line_count == previous_psalm_title_loc + 2:
+        elif (previous_psalm_title_loc
+              and (line_count == previous_psalm_title_loc + 2)):
             if line[0] != "{":
                 subtitle = line.strip()
                 subtitles[psalm_title] = subtitle
@@ -37,7 +38,8 @@ def write_subtitles():
     subtitles = get_subtitles()
     output_folder = "data"
     os.makedirs(output_folder, exist_ok=True)
-    with open(os.path.join(output_folder, "subtitles.json"), "w") as write_file:
+    with open(os.path.join(output_folder, "subtitles.json"),
+              "w") as write_file:
         json.dump(subtitles, write_file, indent=4)
 
 

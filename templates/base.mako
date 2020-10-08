@@ -40,9 +40,10 @@
             <a href="#top">Back to Top</a>
 ## In HTML5, no "top" anchor is needed
             <a href="https://github.com/RussellJQA/eberean-bible-word-frequency" target="_blank"><img src="${images_path}/github-mark-64px.png" height="16" width="16" alt="GitHub repository"><span class="github-link-text">Website source code</span></a>
-        </nav>
-        <p>Built with <a href="https://www.makotemplates.org/" target="_blank">Mako templates</a> in <a href="https://www.python.org/" target="_blank">Python</a></p>
-        <p>Copyright &copy; ${year} by <a href="${github_account}" target="_blank">${author}</a></p>
+## TODO: Add Twitter icon image link
+       </nav>
+        <p>&copy; ${year} <a href="${github_account}" target="_blank">${author}</a></p>
+        <p>Powered with <a href="https://www.python.org/" target="_blank">Python</a> and <a href="https://www.makotemplates.org/" target="_blank">Mako</a></p>
     </%block></footer>
 
 </body>

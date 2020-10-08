@@ -1,6 +1,8 @@
 """ Reformat Psalm 119, by doing the following for each 8-line stanza:
-        Enclose it within a pair of opening/closeing paragraph tags (</p> ... <p>)
-        Prefix it with the corresponding Hebrew letter (followed by its English name)
+        Enclose it within a pair of opening/closeing paragraph tags
+        (</p> ... <p>)
+        Prefix it with the corresponding Hebrew letter
+        (followed by its English name)
 """
 import os
 
@@ -42,12 +44,13 @@ def reformat_psalm_119(inp_lines):
 
     for verse, inp_line in enumerate(inp_lines, start=1):
 
-        if (verse % 8) == 1:  # if 1st verse of one of Psalm 119's 22 8-line stanzas
+        # if 1st verse of one of Psalm 119's 22 8-line stanzas
+        if (verse % 8) == 1:
             if verse != 1:
                 out_lines.append("\n")
-            out_lines.append(
-                f"<p>\n                    {get_hebrew_letter(verse // 8)}<br>\n"
-            )  # Intentional integer division
+            out_lines.append("<p>\n                    "
+                             f"{get_hebrew_letter(verse // 8)}<br>\n"
+                             )  # Intentional integer division
         out_lines.append(f"    {verse}: {inp_line.strip()}<br>\n")
         if (verse % 8) == 0:
             out_lines.append("</p>\n")
@@ -64,7 +67,8 @@ def write_reformatted_psalm_119():
     with open(chapter_file, "r", encoding="utf-8", newline="") as read_file:
         out_lines = reformat_psalm_119(read_file.readlines())
 
-    reformatted_chapter_file = os.path.join(source_files, "reformatted_psalm119.txt")
+    reformatted_chapter_file = os.path.join(source_files,
+                                            "reformatted_psalm119.txt")
     with open(reformatted_chapter_file, "w", encoding="utf-8") as write_file:
         write_file.writelines(out_lines)
 

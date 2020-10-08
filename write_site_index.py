@@ -14,9 +14,9 @@ def get_bible_book_index_hrefs():
     for bible_book in bible_books:
         book_abbrev = bible_books[bible_book][0]
         book_num = str(get_book_nums()[book_abbrev]).zfill(2)
-        bible_book_index_hrefs[
-            bible_book
-        ] = f"{book_num}-{book_abbrev.lower()}/{book_abbrev.lower()}-index.html"
+        bible_book_index_hrefs[bible_book] = (
+            f"{book_num}-"
+            f"{book_abbrev.lower()}/{book_abbrev.lower()}-index.html")
 
     return bible_book_index_hrefs
 

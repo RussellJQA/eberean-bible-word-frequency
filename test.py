@@ -3,6 +3,20 @@ import glob
 import os
 import re
 
+# TODOs:
+# function to sum word frequencies?
+#     chapters -> books
+#         books -> testaments
+#             testaments -> Bible
+#
+# iteration functions
+#     on subsection change
+#         set section frequency
+#     on done
+#         final settings of section frequency
+#
+# AND/OR, perhaps a function like get_counter() below.
+
 
 def get_counter(lines):
 
@@ -11,14 +25,16 @@ def get_counter(lines):
     # TODO: See if there's a place for using Counter's methods
     # [elements(), most_common(), subtract(), and/or update()]
     # or Counter's arithmetic operators (+, -, &, and/or |).
-    # See pymotw.com/2/collections/counter.html and guru99.com/python-counter-collections-example.html
+    # See pymotw.com/2/collections/counter.html and
+    # guru99.com/python-counter-collections-example.html
 
     # TODO: See if there's a place to use collections.defaultdict
 
     for line in lines:  # Split multi-line string into list of lines
 
+        # Eliminate paragraph markers, possessives, and
+        # leading/trailing whitespace
         line = re.sub(r"[¶’]\S*", "", line).strip()
-        # Eliminate paragraph markers, possessives, and leading/trailing whitespace
         words = re.sub(r"[^a-zæ\- ]+", "", line, flags=re.IGNORECASE)
 
         words2 = [
@@ -35,12 +51,13 @@ def get_counter(lines):
 
 def test_counters():
 
-    source_files = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), "downloads", "kjv_chapter_files"
-    )
+    source_files = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                "downloads", "kjv_chapter_files")
 
     book_counter = collections.Counter()
-    for chapter_file in ["eng-kjv_002_GEN_01_read.txt", "eng-kjv_002_GEN_02_read.txt"]:
+    for chapter_file in [
+            "eng-kjv_002_GEN_01_read.txt", "eng-kjv_002_GEN_02_read.txt"
+    ]:
 
         chapter_path = os.path.join(source_files, chapter_file)
 
@@ -60,8 +77,8 @@ def test_counters():
 def test_match_counts_in_csvs():
 
     subfolders = os.scandir(
-        os.path.join(os.path.dirname(os.path.realpath(__file__)), "public_html")
-    )
+        os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                     "public_html"))
 
     for subfolder in subfolders:
         match_counts = []
@@ -86,11 +103,10 @@ def test_match_counts_in_csvs():
 def print_match_info(weighted_pattern_match, total_line):
 
     rounded_weighted_freq = float(weighted_pattern_match.group(7))
-    if 0.9999 <= rounded_weighted_freq <= 1.0001:
+    total_pattern = (
+        r"TOTAL \(([0-9A-ZÆa-zæ]{3}) ([0-9]{1,3})\),([0-9]{1,4}),([0-9]{6})")
 
-        total_pattern = (
-            r"TOTAL \(([0-9A-ZÆa-zæ]{3}) ([0-9]{1,3})\),([0-9]{1,4}),([0-9]{6})"
-        )
+    if 0.9999 <= rounded_weighted_freq <= 1.0001:
         match = re.search(total_pattern, total_line)
         if match:
             word = weighted_pattern_match.group(1)
@@ -104,21 +120,23 @@ def print_match_info(weighted_pattern_match, total_line):
             words_in_kjv = int(match.group(4))
 
             simple_freq = words_in_kjv * num_in_chapter / num_in_kjv
-            weighted_freq2 = "{:.16f}".format(
-                (simple_freq / words_in_chapter) + (num_in_chapter - 1)
-            )
+            weighted_freq2 = "{:.16f}".format((simple_freq /
+                                               words_in_chapter) +
+                                              (num_in_chapter - 1))
 
-            print(f"{weighted_freq2} {weighted_freq1} {book} {chapter}: {word}")
+            print(
+                f"{weighted_freq2} {weighted_freq1} {book} {chapter}: {word}")
         else:
             print("No match")
 
 
 def find_weighted_near_one():
 
-    weighted_pattern = "([A-ZÆa-zæ]*)(,)([0-9.]*)(,)([0-9.]*)(,[0-9.]*,)([0-9.]*$)"
+    weighted_pattern = \
+        "([A-ZÆa-zæ]*)(,)([0-9.]*)(,)([0-9.]*)(,[0-9.]*,)([0-9.]*$)"
     subfolders = os.scandir(
-        os.path.join(os.path.dirname(os.path.realpath(__file__)), "public_html")
-    )
+        os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                     "public_html"))
 
     for subfolder in subfolders:
         if subfolder.is_dir():
@@ -128,14 +146,18 @@ def find_weighted_near_one():
                     with open(csv_file, "r", encoding="utf-8") as read_file:
                         lines = read_file.readlines()
                         for line in lines[2:]:
-                            # Exclude 1st 2 lines, since they're header info like:
-                            #   word,numInChap,numInKjv,simpleRelFreq,weightedRelFreq
+                            # Exclude 1st 2 lines,
+                            # since they're header info like:
+                            #   word,numInChap,numInKjv,simpleRelFreq,
+                            #       weightedRelFreq
                             #   TOTAL (Gen 1),797,790663
 
-                            weighted_pattern_match = re.search(weighted_pattern, line)
+                            weighted_pattern_match = re.search(
+                                weighted_pattern, line)
                             if weighted_pattern_match:
                                 print_match_info(
-                                    weighted_pattern_match, total_line=lines[1],
+                                    weighted_pattern_match,
+                                    total_line=lines[1],
                                 )
     # The output, sorted is:
     # 1.0001960764470443 1.0000 1Sa 10: away

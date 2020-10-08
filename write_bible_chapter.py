@@ -9,12 +9,12 @@ from reformat_psalm_119 import reformat_psalm_119
 
 bible_books = get_bible_books()
 bible_book_names = {
-    bible_books[bible_book][0]: bible_book for bible_book in bible_books
+    bible_books[bible_book][0]: bible_book
+    for bible_book in bible_books
 }
 
 
 def get_top_7_words(csv_path):
-
     """From the page's linked-to .csv file, get a list of its 7 words with the
     highest weightedRelFreq (the .csv's first 7 words)
     """
@@ -30,7 +30,10 @@ def get_top_7_words(csv_path):
     return top_7_words
 
 
-def get_bible_chapter_text(book_num, book_abbrev, chapter, custom_paragraphing=False):
+def get_bible_chapter_text(book_num,
+                           book_abbrev,
+                           chapter,
+                           custom_paragraphing=False):
 
     chapter_num = chapter.zfill(3)
     chapter_file = f"{book_num}_{book_abbrev.upper()}_{chapter_num}.txt"
@@ -59,26 +62,26 @@ def get_bible_chapter_text(book_num, book_abbrev, chapter, custom_paragraphing=F
         #   (4 spaces in from the enclosing <p> and </p>).
 
         if not custom_paragraphing:
-            line = line.replace("    ¶ ", "</p>\n            <p>\n                ")
+            line = line.replace("    ¶ ",
+                                "</p>\n            <p>\n                ")
             #   Replace text's paragraph markers with properly (un-)indented
             #   HTML paragraph ending/beginning paragraph tags (</p> ... <p>).
 
         html_lines.append(line)
 
-    return (
-        f'            {"" if custom_paragraphing else "<p>"}\n'
-        + f'                {"".join(html_lines).strip()}\n'
-        + f'            {"" if custom_paragraphing else "</p>"}'
-    )
+    return (f'            {"" if custom_paragraphing else "<p>"}\n' +
+            f'                {"".join(html_lines).strip()}\n' +
+            f'            {"" if custom_paragraphing else "</p>"}')
 
 
-def write_bible_chapter(
-    book_abbrev, chapter, words_in_chapter, rows, custom_paragraphing=False
-):
+def write_bible_chapter(book_abbrev,
+                        chapter,
+                        words_in_chapter,
+                        rows,
+                        custom_paragraphing=False):
 
-    description = (
-        f"KJV Bible Chapter Word Frequencies: {bible_book_names[book_abbrev]} {chapter}"
-    )
+    description = (f"KJV Bible Chapter Word Frequencies:"
+                   f" {bible_book_names[book_abbrev]} {chapter}")
 
     keywords = [
         "KJV",
@@ -90,20 +93,23 @@ def write_bible_chapter(
     ]
 
     book_num = f"{str(get_book_nums()[book_abbrev]).zfill(2)}"
-    html_folder = os.path.join(
-        os.getcwd(), "public_html", f"{book_num}-{book_abbrev.lower()}"
-    )
+    html_folder = os.path.join(os.getcwd(), "public_html",
+                               f"{book_num}-{book_abbrev.lower()}")
     os.makedirs(html_folder, exist_ok=True)
-    csv_file_name = f"{book_abbrev.lower()}{str(chapter).zfill(3)}-word-freq.csv"
+    csv_file_name = (f"{book_abbrev.lower()}{str(chapter).zfill(3)}"
+                     "-word-freq.csv")
     keywords += get_top_7_words(os.path.join(html_folder, csv_file_name))
     # Include top 7 words in the page's keywords metatag
 
-    base_template_args = get_base_template_args(
-        description, ",".join(keywords), description
-    )
+    base_template_args = get_base_template_args(description,
+                                                ",".join(keywords),
+                                                description)
 
     bible_chapter_text = get_bible_chapter_text(
-        book_num, book_abbrev, chapter, custom_paragraphing=custom_paragraphing,
+        book_num,
+        book_abbrev,
+        chapter,
+        custom_paragraphing=custom_paragraphing,
     )
 
     new_template_args = {
@@ -130,7 +136,6 @@ def write_bible_chapter(
 
 
 def write_genesis_1():
-
     """ Write an abridged version of the HTML chapter file for Genesis 1
     """
 
@@ -143,10 +148,10 @@ yielding,5,7,564759,712.6
     os.makedirs(chapter_folder, exist_ok=True)
 
     with open(
-        os.path.join(chapter_folder, "gen001-word-freq.csv"),
-        "w",
-        encoding="utf-8",
-        newline="",
+            os.path.join(chapter_folder, "gen001-word-freq.csv"),
+            "w",
+            encoding="utf-8",
+            newline="",
     ) as write_file:
         write_file.write(gen001_word_freq)
 
@@ -164,7 +169,6 @@ yielding,5,7,564759,712.6
 
 
 def write_psalm_119():
-
     """ Write an abridged version of the HTML chapter file for Psalm 119
     """
 
@@ -177,10 +181,10 @@ grease,1,1,790663,326.3
     os.makedirs(chapter_folder, exist_ok=True)
 
     with open(
-        os.path.join(chapter_folder, "psa119-word-freq.csv"),
-        "w",
-        encoding="utf-8",
-        newline="",
+            os.path.join(chapter_folder, "psa119-word-freq.csv"),
+            "w",
+            encoding="utf-8",
+            newline="",
     ) as write_file:
         write_file.write(gen001_word_freq)
 
@@ -194,9 +198,11 @@ grease,1,1,790663,326.3
         ["grease", "1", "1", "790,663", "326.3"],
     ]
 
-    write_bible_chapter(
-        book_abbrev, chapter, words_in_chapter, rows, custom_paragraphing=True
-    )
+    write_bible_chapter(book_abbrev,
+                        chapter,
+                        words_in_chapter,
+                        rows,
+                        custom_paragraphing=True)
 
 
 def main():

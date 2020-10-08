@@ -8,7 +8,8 @@ def write_bible_book_index(book_abbrev):
 
     bible_books = get_bible_books()
     bible_book_names = {
-        bible_books[bible_book][0]: bible_book for bible_book in bible_books
+        bible_books[bible_book][0]: bible_book
+        for bible_book in bible_books
     }
     bible_book_name = bible_book_names[book_abbrev]
     book_length = bible_books[bible_book_name][1]
@@ -16,7 +17,8 @@ def write_bible_book_index(book_abbrev):
     description = f"KJV Bible Chapter Word Frequencies: {bible_book_name}"
     base_template_args = get_base_template_args(
         description,
-        ",".join(["KJV", "Bible", bible_book_name, "chapter", "word frequency"]),
+        ",".join(
+            ["KJV", "Bible", bible_book_name, "chapter", "word frequency"]),
         description,
     )
 
@@ -30,7 +32,8 @@ def write_bible_book_index(book_abbrev):
 
     book_num = f"{str(get_book_nums()[book_abbrev]).zfill(2)}"
     html_folder = os.path.join(os.getcwd(), "public_html")
-    chapter_folder = os.path.join(html_folder, f"{book_num}-{book_abbrev.lower()}")
+    chapter_folder = os.path.join(html_folder,
+                                  f"{book_num}-{book_abbrev.lower()}")
     os.makedirs(chapter_folder, exist_ok=True)
     write_html(
         base_template_args,

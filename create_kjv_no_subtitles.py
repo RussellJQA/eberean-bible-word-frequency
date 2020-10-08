@@ -28,15 +28,20 @@ def create_kjv_no_subtitles():
             match = re.search(pattern, basename)
             if match:
                 book_num = int(match.group(1))
-                book_num = (book_num - 1) if (book_num <= 40) else (book_num - 30)
+                book_num = (book_num - 1) if (book_num <= 40) else (book_num -
+                                                                    30)
                 chapter_num = str(int(match.group(3))).zfill(3)
-                basename = f"{str(book_num).zfill(2)}{match.group(2)}{chapter_num}.txt"
+                basename = (f"{str(book_num).zfill(2)}"
+                            f"{match.group(2)}{chapter_num}.txt")
 
             bare_bones_chapter_file = os.path.join(bare_bones_kjv, basename)
-            with open(bare_bones_chapter_file, "w", encoding="utf-8") as write_file:
+            with open(bare_bones_chapter_file, "w",
+                      encoding="utf-8") as write_file:
                 for line in lines[2:]:
-                    line = re.sub("¶ ", "", line)  # Eliminate paragraph markers
-                    write_file.writelines(line.lstrip(" "))  # Eliminate leading blanks
+                    line = re.sub("¶ ", "",
+                                  line)  # Eliminate paragraph markers
+                    write_file.writelines(
+                        line.lstrip(" "))  # Eliminate leading blanks
 
 
 def main():
